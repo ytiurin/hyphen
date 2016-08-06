@@ -39,9 +39,6 @@
       levels[i] = 0;
 
     while(patternData = patterns[patternIndex++]){
-      if(!patternData.pattern)
-        continue;
-
       var patternEntityIndex = text.toLocaleLowerCase()
         .indexOf(patternData.text);
 
@@ -196,24 +193,38 @@
     return patternData;
   }
 
+  function purifyPatterns(text)
+  {
+    return text
+      // Remove comments
+      .replace(/%.*/g,'')
+      // Remove repeating spaces
+      .replace(/\s+/g,' ')
+      // Trim spaces
+      .replace(/^\s|\s$/g,'')
+      // Split to Array
+      .split(' ');
+  }
+
   // Hyphenator factory
   return function(patternsDefinition, settings){
     var
 
+    // Settings
     debug = (settings&&settings.debug!==undefined&&settings.debug)
       ||SETTING_DEBUG,
     hyphenChar = (settings&&settings.hyphenChar!==undefined&&settings.hyphenChar)
       ||SETTING_HYPHEN_CHAR;
 
     // Preprocess patterns
-    var patterns = patternsDefinition.patterns.split(/\s/)
+    var patterns = purifyPatterns(patternsDefinition.patterns)
       .map(function(pattern){
         return preprocessPattern(pattern);
       });
 
     // Prepare cache
     var cache={};
-    patternsDefinition.exceptions.split(/\s/)
+    purifyPatterns(patternsDefinition.exceptions)
       .forEach(function(exception){
         cache[exception.replace(/\-/g,'')] = exception.replace(/\-/g,hyphenChar);
       });
