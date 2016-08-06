@@ -4958,6 +4958,7 @@ yes5ter1y
 z3ian.
 z3o1phr
 z2z3w
+% end of additional patterns.
 `;
 
   // Hyphenation exceptions
