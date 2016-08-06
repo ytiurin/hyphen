@@ -12,7 +12,7 @@
     module.exports = factory();
   } else {
     // Browser globals (root is window)
-    root.hyphenationPatternsEnGb = factory();
+    root.hyphenationPatternsEnUs = factory();
   }
 }(this, function () {
 
