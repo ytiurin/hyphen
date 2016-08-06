@@ -1,3 +1,4 @@
+// Hyphenation patterns for UK English
 // Based on http://mirrors.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-en-gb.tex
 // Source www.ctan.org
 

@@ -1,3 +1,4 @@
+// Hyphenation patterns for US English
 // Based on http://mirrors.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-en-us.tex
 // Source www.ctan.org
 
