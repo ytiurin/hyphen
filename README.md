@@ -8,3 +8,15 @@ var hyphenate = createHyphenator(hyphenationPatternsEnGb);
 
 hyphenatedText = hyphenate(initialText);
 ```
+
+###Demo
+<a href="https://jsfiddle.net/ytiurin/ctwwwL0f/" target="_blank">JSFiddle</a>
+
+###Install
+```
+npm install hyphen
+```
+or
+```
+bower install hyphen
+```
