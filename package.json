@@ -1,0 +1,25 @@
+{
+  "name": "hyphen",
+  "version": "1.0.0",
+  "description": "Franklin M. Liang's hyphenation algorithm, implemented in Javascript.",
+  "main": "hyphen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ytiurin/hyphen"
+  },
+  "keywords": [
+    "hyphen",
+    "hyphenation",
+    "hyphenator",
+    "soft"
+  ],
+  "author": "Eugene Tiurin <yevhentiurin@gmail.com> (https://github.com/ytiurin)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ytiurin/hyphen/issues"
+  },
+  "homepage": "https://github.com/ytiurin/hyphen"
+}
