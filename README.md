@@ -32,5 +32,114 @@ or
 bower install hyphe
 ```
 
+
+###Configuration
+
+There is a couple of settings you can use to configure hyphenator function:
+
+- To change the default soft-hyphen (\u00AD) character to something else, use `hyphenChar: "-"`
+```javascript
+var hyphenator = createHyphenator(hyphenationPatternsEnGb, {hyphenChar:'-'})
+```
+
+- To enable the logging output to the console, use `debug: true`
+```javascript
+var hyphenator = createHyphenator(hyphenationPatternsEnGb, {debug:true})
+```
+
+
+###Supported languages
+- Afrikaans
+- Ancient Greek
+- Armenian
+- Assamese
+- Bahasa Indonesia
+- Basque
+- Bengali
+- Bulgarian
+- Catalan
+- Chinese pinyin syllables
+- Church Slavonic
+- Classical Latin
+- Coptic
+- Croatian
+- Czech
+- Danish
+- Dutch
+- Esperanto
+- Estonian
+- Ethiopic
+- Finnish
+- French
+- Friulan
+- Galician
+- GB English
+- Georgian
+- German
+- Gujarati
+- Hindi
+- Hungarian
+- Icelandic Plain
+- Interlingua
+- Irish
+- Italian
+- Kannada
+- Kurmanji
+- Latin
+- Latvian
+- Lithuanian
+- Liturgical Latin
+- Malayalam
+- Marathi
+- Modern Monotonic
+- Modern Polytonic
+- Mongolian
+- Norwegian
+- Norwegian Bokmal
+- Norwegian Nynorsk
+- Occitan
+- Oriy
+- Panjabi
+- Piedmontese
+- Polish
+- Portuguese
+- Romanian
+- Romansh
+- Russian
+- Sanskrit and Prakrit
+- Serbian Cyrillic
+- Serbocroatian Cyrillic
+- Serbocroatian Latin
+- Slovak
+- Slovenian
+- Spanish
+- Swedish
+- Swiss-German
+- Tamil
+- Telugu
+- Thai
+- Turkish
+- Turkmen
+- Ukrainian
+- Upper Sorbian
+- US English
+- Welsh
+
+
+###Hyphenation in CSS
+The CSS `hyphens` property is intended to add hyphenation support to modern browsers without Javascript.
+```css
+p {
+  hyphens: auto;
+}
+```
+It is part of the [CSS Text Level 3](https://drafts.csswg.org/css-text-3/#hyphens-property) specification. The browser compatibility list can be found on the [related MDN page](https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens).
+
+###Alternatives
+Check out other well-known Javascript implementations of hyphenation algorithm:
+
+- [Hyphenator.js](http://mnater.github.io/Hyphenator/) Javascript that implements client-side hyphenation of HTML-Documents.
+- [Hypher](https://github.com/bramstein/hypher) A fast and small JavaScript hyphenation engine.
+
 ###License
 MIT
