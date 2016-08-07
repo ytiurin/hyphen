@@ -18,5 +18,5 @@ npm install hyphen
 ```
 or
 ```
-bower install hyphen
+bower install hyphe
 ```
