@@ -22,3 +22,6 @@ or
 ```
 bower install hyphe
 ```
+
+###License
+MIT
