@@ -37,12 +37,12 @@ bower install hyphe
 
 There is a couple of settings you can use to configure hyphenator function:
 
-- To change the default soft-hyphen (\u00AD) character to something else, use `hyphenChar: "-"`
+- To change the default soft hyphen `\u00AD` character to something else, use `hyphenChar: "-"`
 ```javascript
 var hyphenator = createHyphenator(hyphenationPatternsEnGb, {hyphenChar:'-'})
 ```
 
-- To enable the logging output to the console, use `debug: true`
+- To enable the console output of the hyphenation process, use `debug: true`
 ```javascript
 var hyphenator = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 ```
@@ -127,7 +127,7 @@ var hyphenator = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 
 
 ###Hyphenation in CSS
-The CSS `hyphens` property is intended to add hyphenation support to modern browsers without Javascript.
+The CSS `hyphens` property is intended to add hyphenation support to modern browsers without Javascript:
 ```css
 p {
   hyphens: auto;
