@@ -5,7 +5,7 @@ hyphen
 
 ![Franklin M. Liang's hyphenation algorithm](https://ytiurin.github.io/hyphen/01.png)
 
-This is an implementation of Franklin M. Liang's hyphenation algorithm in Javascript. It relies on fast programming technics to reduce execution time. The accuracy of hyphenation results depends on the quality of predefined patterns collections, that are different for every language. This implementation uses patterns collections from TeX website http://www.ctan.org/.
+This is an JavaScript implementation of Franklin M. Liang's hyphenation algorithm. It relies on fast programming techniques to reduce execution time. The accuracy of hyphenation results depend on the quality of predefined patterns collections, that are different for every language. This implementation uses patterns collections from the TeX website, http://www.ctan.org/.
 
 ```javascript
 var initialText = "A certain king had a beautiful garden"
@@ -35,7 +35,7 @@ bower install hyphe
 
 ###Configuration
 
-There is a couple of settings you can use to configure hyphenator function:
+There are a couple of settings you can use to configure hyphenator function:
 
 - To change the default soft hyphen `\u00AD` character to something else, use `hyphenChar: "-"`
 ```javascript
@@ -66,6 +66,8 @@ var hyphenator = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 - Czech
 - Danish
 - Dutch
+- English (GB)
+- English (US)
 - Esperanto
 - Estonian
 - Ethiopic
@@ -73,7 +75,6 @@ var hyphenator = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 - French
 - Friulan
 - Galician
-- GB English
 - Georgian
 - German
 - Gujarati
@@ -122,7 +123,6 @@ var hyphenator = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 - Turkmen
 - Ukrainian
 - Upper Sorbian
-- US English
 - Welsh
 
 
@@ -136,7 +136,7 @@ p {
 It is part of the [CSS Text Level 3](https://drafts.csswg.org/css-text-3/#hyphens-property) specification. The browser compatibility list can be found on the [related MDN page](https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens).
 
 ###Alternatives
-Check out other well-known Javascript implementations of hyphenation algorithm:
+Check out other well-known Javascript hyphenation algorithm implementations:
 
 - [Hyphenator.js](http://mnater.github.io/Hyphenator/) Javascript that implements client-side hyphenation of HTML-Documents.
 - [Hypher](https://github.com/bramstein/hypher) A fast and small JavaScript hyphenation engine.
