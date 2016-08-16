@@ -8,10 +8,10 @@ hyphen
 This is an JavaScript implementation of Franklin M. Liang's hyphenation algorithm. It relies on fast programming techniques to reduce execution time. The accuracy of hyphenation results depend on the quality of predefined patterns collections, that are different for every language. This implementation uses patterns collections from the TeX website, http://www.ctan.org/.
 
 ```javascript
-var initialText = "A certain king had a beautiful garden"
 var hyphenate = createHyphenator(hyphenationPatternsEnGb);
 
-hyphenatedText = hyphenate(initialText);
+var initialText = "A certain king had a beautiful garden"
+var hyphenatedText = hyphenate(initialText);
 // A cer-tain king had a beau-ti-ful garden
 ```
 
@@ -39,12 +39,12 @@ There are a couple of settings you can use to configure hyphenator function:
 
 - To change the default soft hyphen `\u00AD` character to something else, use `hyphenChar: "-"`
 ```javascript
-var hyphenator = createHyphenator(hyphenationPatternsEnGb, {hyphenChar:'-'})
+var hyphenate = createHyphenator(hyphenationPatternsEnGb, {hyphenChar:'-'})
 ```
 
 - To enable the console output of the hyphenation process, use `debug: true`
 ```javascript
-var hyphenator = createHyphenator(hyphenationPatternsEnGb, {debug:true})
+var hyphenate = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 ```
 
 
