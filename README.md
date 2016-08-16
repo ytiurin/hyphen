@@ -1,6 +1,6 @@
 [![npm](https://img.shields.io/npm/v/hyphen.svg?maxAge=2592000)]()
 
-hyphen
+hy-phen
 ========
 
 ![Franklin M. Liang's hyphenation algorithm](https://ytiurin.github.io/hyphen/01.png)
