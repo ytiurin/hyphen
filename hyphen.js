@@ -58,10 +58,15 @@
 
     levels[0]=levels[1]=levels[levels.length-1]=levels[levels.length-2]=0;
 
-    var hyphenatedText='';
-    var leveledText='';
+    var
+
+    hyphenatedText='',
+    leveledText='',
+    debugHyphenatedText='';
+
     for(var i=0;i<levels.length;i++){
       hyphenatedText += (levels[i]%2===1?hyphenChar:'') + text.charAt(i);
+      debugHyphenatedText += (levels[i]%2===1?'-':'') + text.charAt(i);
       leveledText += (levels[i]>0?levels[i]:'') + text.charAt(i);
     }
 
@@ -71,7 +76,7 @@
         .concat(['->'])
         .concat(levels)
         .concat(['->',leveledText])
-        .concat(['->',hyphenatedText]));
+        .concat(['->',debugHyphenatedText]));
 
     return hyphenatedText;
   }
@@ -118,7 +123,9 @@
 
     readWord = iterateSourceText(text),
 
-    states = {hyphenateWord: 1, concatenate: 2};
+    states = {hyphenateWord: 1, concatenate: 2},
+
+    processedN=0,hyphenatedN=0;
 
     while(nextWord = readWord.next()){
       var state = nextWord.length > 4 ? states.hyphenateWord : states.concatenate;
@@ -127,12 +134,21 @@
         case states.hyphenateWord:
           if(!cache[nextWord])
             cache[nextWord] = hyphenateWord(nextWord, patterns, debug, hyphenChar);
+
+          if(nextWord !== cache[nextWord])
+            hyphenatedN++;
+
           nextWord = cache[nextWord];
 
         case states.concatenate:
           newText += nextWord;
       }
+
+      processedN++;
     }
+
+    if(debug)
+      console.log('----------------\nHyphenation stats: '+processedN+' words processed, '+hyphenatedN+' words hyphenated');
 
     return newText;
   }
