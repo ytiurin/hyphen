@@ -87,9 +87,9 @@
         var nextChar, nextWord = '';
 
         while(nextChar = text.charAt(nextCharIndex++)){
-          var charIsAlphanumeric = /\w/.test(nextChar);
+          var charIsSpaceOrSpecial = /\s|[\!-\@\[-\`\{-\¿]/.test(nextChar);
 
-          var state = charIsAlphanumeric ? states.readWord : (
+          var state = !charIsSpaceOrSpecial ? states.readWord : (
             state === states.readWord ? states.returnWord : states.returnChar);
 
           switch(state){
