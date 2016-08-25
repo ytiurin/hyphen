@@ -110,6 +110,9 @@
               return nextChar;
           }
         }
+        if (nextWord !== '') {
+          return nextWord;
+        }
       }
     }
   }
