@@ -15,15 +15,15 @@ var hyphenatedText = hyphenate(initialText);
 // A cer-tain king had a beau-ti-ful garden
 ```
 
-###Demo
+### Demo
 <a href="https://jsfiddle.net/ytiurin/ctwwwL0f/" target="_blank">JSFiddle</a>
 
 
-###Algorithm description
+### Algorithm description
 <a href="https://tug.org/docs/liang/liang-thesis.pdf" target="_blank">PDF Document</a>
 
 
-###Install
+### Install
 ```
 npm install hyphen
 ```
@@ -33,7 +33,7 @@ bower install hyphe
 ```
 
 
-###Configuration
+### Configuration
 
 There are a couple of settings you can use to configure hyphenator function:
 
@@ -48,7 +48,7 @@ var hyphenate = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 ```
 
 
-###Supported languages
+### Supported languages
 - Afrikaans
 - Ancient Greek
 - Armenian
@@ -126,7 +126,7 @@ var hyphenate = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 - Welsh
 
 
-###Hyphenation in CSS
+### Hyphenation in CSS
 The CSS `hyphens` property is intended to add hyphenation support to modern browsers without Javascript:
 ```css
 p {
@@ -135,11 +135,11 @@ p {
 ```
 It is part of the [CSS Text Level 3](https://drafts.csswg.org/css-text-3/#hyphens-property) specification. The browser compatibility list can be found on the [related MDN page](https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens).
 
-###Alternatives
+### Alternatives
 Check out other well-known Javascript hyphenation algorithm implementations:
 
 - [Hyphenator.js](http://mnater.github.io/Hyphenator/) Javascript that implements client-side hyphenation of HTML-Documents.
 - [Hypher](https://github.com/bramstein/hypher) A fast and small JavaScript hyphenation engine.
 
-###License
+### License
 MIT
