@@ -29,7 +29,7 @@
 
   function hyphenateWord(text, patterns, debug, hyphenChar)
   {
-    var pattern, patternIndex = 0;
+    var pattern, patternData, patternIndex = 0;
 
     var p=[];
 
