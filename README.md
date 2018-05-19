@@ -29,7 +29,7 @@ npm install hyphen
 ```
 or
 ```
-bower install hyphe
+bower install hyphen
 ```
 
 
