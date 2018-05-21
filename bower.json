@@ -1,5 +1,5 @@
 {
-  "name": "hyphen",
+  "name": "hyphe",
   "description": "Franklin M. Liang's hyphenation algorithm, implemented in Javascript.",
   "main": "hyphen.js",
   "authors": [
