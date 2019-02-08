@@ -1,0 +1,7 @@
+TRANSLATE TEX TO JS FILE:
+node tex2js.js <source_file.tex> <dest_file.js> --gsuf=<global_suffix>
+
+global_suffix is suffix of a global variable name
+
+TEX SOURCES:
+http://mirror.ox.ac.uk/sites/ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/
