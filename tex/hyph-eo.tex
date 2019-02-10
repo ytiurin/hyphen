@@ -1,24 +1,37 @@
-// Hyphenation patterns for Esperanto
-// Based on http://mirrors.ctan.org/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex/hyph-eo.tex
-// Source www.ctan.org
-
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], factory);
-  } else if (typeof module === 'object' && module.exports) {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory();
-  } else {
-    // Browser globals (root is window)
-    root.hyphenationPatternsEo = factory();
-  }
-}(this, function () {
-
-  // Hyphenation patterns
-  var patterns=`
+% title: Hyphenation patterns for Esperanto
+% copyright: Copyright (C) 1999 Sergei B. Pokrovsky (Sergio Pokrovskij)
+% notice: This file is part of the hyph-utf8 package.
+%     See http://www.hyphenation.org/tex for more information.
+% language:
+%     name: Esperanto
+%     tag: eo
+% version: 1.0 1999-08-10
+% authors:
+%   -
+%     name: Sergei B. Pokrovsky
+%     contact: pok (at) iis.nsk.su
+% licence:
+%     name: LPPL
+%     version: 1
+%     or_later: true
+%     url: https://latex-project.org/lppl/
+% changes:
+%     - 1999-07-25  0.0  First try with the hyphenation patterns by Paul Peeraerts
+%     - 1999-08-10  1.0  Complete redesign of the patterns by S.B. Pokrovsky
+% hyphenmins:
+%     typesetting:
+%         left: 2
+%         right: 2
+% ==========================================
+% More documentation can be found near the end of this file.
+%
+\begingroup
+% Makrooj por la finaĵoj:
+\def\adj#1{#1a. #1aj. #1ajn. #1an. #1e.}
+\edef\nom#1{\adj{#1} #1o. #1oj. #1ojn. #1on.}
+\def\ver#1{#1as. #1i. #1is. #1os. #1u. #1us.}
+%
+\patterns{
 a1 e1 i1 o1 u1       % ebligu tranĉon post la vokaloj,
 2aj. 2ajn. 2an. 2as. % krom se antaŭ finaĵo,
 en. is. 2oj. 2ojn. 2on. 2os. 2us.
@@ -478,14 +491,28 @@ s1v 4s1z
 4z1b 4z1c 4z1d 4z1f 4z1g 4z1h4 4z1j2 4z1k 4z1l
 z2lot
 4z1m 4z1n 4z1p 4z1r 4z1s 4z1t 4z1v 4z1ĉ 4z1ĝ 4z1ĵ 4z1ŝ
-`;
+}         % Pattern end
+\endgroup
+\endinput
 
-  // Hyphenation exceptions
-  var exceptions=`
-`;
-
-  return {
-    patterns: patterns,
-    exceptions: exceptions
-  };
-}));
+% Author:         Sergei B. Pokrovsky 
+% Versiondate:    1999-07-25
+%
+% These hyphenation patterns are designed for use with the default value
+%
+%
+% % LETTERS:
+% \charsubdef 230 = 94 099 % ĉ
+% \charsubdef 198 = 94 067 % Ĉ
+% \charsubdef 248 = 94 103 % ĝ
+% \charsubdef 216 = 94 071 % Ĝ
+% \charsubdef 182 = 94 104 % ĥ
+% \charsubdef 166 = 94 072 % Ĥ
+% \charsubdef 188 = 94 017 % ĵ
+% \charsubdef 172 = 94 074 % Ĵ
+% \charsubdef 254 = 94 115 % ŝ
+% \charsubdef 222 = 94 083 % Ŝ
+% \charsubdef 253 = 21 117 % ŭ
+% \charsubdef 221 = 21 085 % Ŭ
+%
+% *** Here ends ``eohyphn.tex''.

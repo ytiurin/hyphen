@@ -68,7 +68,6 @@ var hyphenate = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 - Dutch
 - English (GB)
 - English (US)
-- Esperanto
 - Estonian
 - Ethiopic
 - Finnish
@@ -100,6 +99,7 @@ var hyphenate = createHyphenator(hyphenationPatternsEnGb, {debug:true})
 - Norwegian Nynorsk
 - Occitan
 - Oriy
+- Pāli
 - Panjabi
 - Piedmontese
 - Polish

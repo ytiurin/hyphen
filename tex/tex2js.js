@@ -4,7 +4,9 @@ var SOURCE_ENCODING = "utf8";
 var REG_CLOSE = /}/;
 var REG_TERM_CLOSE = /(.*)}/;
 var REG_VAR = /\\(\w+)/;
+var REG_VAR_VAL = /\\(\w+) (.+)/;
 var REG_VAR_OPEN = /\\(.+){/;
+var REG_VAR_OPEN_TERM = /\\(.+){(.+)/;
 var REG_VAR_OPEN_CLOSE = /\\(.+){(.*)}/;
 
 var fs = require("fs");
@@ -40,18 +42,25 @@ while ((texline = texlines[z++]) !== undefined) {
   if (POINTER_TERM_DEFINITION) {
     jschunk = jschunk0.replace(/(\S+)/g, '"$&",');
   }
-  if (REG_VAR.test(texline)) {
+  if (REG_VAR.test(jschunk0)) {
     jschunk = jschunk0.replace(REG_VAR, "var $1;");
   }
-  if (REG_VAR_OPEN.test(texline)) {
+  if (REG_VAR_VAL.test(jschunk0)) {
+    jschunk = jschunk0.replace(REG_VAR_VAL, 'var $1 = "$2";');
+  }
+  if (REG_VAR_OPEN.test(jschunk0)) {
     jschunk = jschunk0.replace(REG_VAR_OPEN, "var $1 = [");
     POINTER_TERM_DEFINITION = true;
   }
-  if (REG_TERM_CLOSE.test(texline)) {
+  if (REG_VAR_OPEN_TERM.test(jschunk0)) {
+    jschunk = jschunk0.replace(REG_VAR_OPEN_TERM, 'var $1 = ["$2",');
+    POINTER_TERM_DEFINITION = true;
+  }
+  if (REG_TERM_CLOSE.test(jschunk0)) {
     jschunk = jschunk0.replace(REG_TERM_CLOSE, '"$1"];');
     POINTER_TERM_DEFINITION = false;
   }
-  if (REG_VAR_OPEN_CLOSE.test(texline)) {
+  if (REG_VAR_OPEN_CLOSE.test(jschunk0)) {
     jschunk = jschunk0.replace(REG_VAR_OPEN_CLOSE, 'var $1 = "$2";');
   }
   jsline[0] = jschunk;
