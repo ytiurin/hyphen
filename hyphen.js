@@ -97,7 +97,7 @@
           nextWord = "";
 
         while ((nextChar = text.charAt(nextCharIndex++))) {
-          var charIsSpaceOrSpecial = /\s|[\!-\@\[-\`\{-\¿]/.test(nextChar);
+          var charIsSpaceOrSpecial = /\s|[\!-\@\[-\`\{-\xbf]/.test(nextChar);
 
           var state = !charIsSpaceOrSpecial
             ? states.readWord
