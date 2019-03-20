@@ -244,16 +244,19 @@
           settings.hyphenChar !== undefined &&
           settings.hyphenChar) ||
         SETTING_HYPHEN_CHAR,
-        cache = {};
-
+      cache = {},
       // Preprocess patterns
-    var patterns = (patternsDefinition.patterns.splice ? patternsDefinition.patterns : purifyPatterns(patternsDefinition.patterns)).map(function(
-        pattern
-      ) {
+      patterns = (patternsDefinition.patterns.splice
+        ? patternsDefinition.patterns
+        : purifyPatterns(patternsDefinition.patterns)
+      ).map(function(pattern) {
         return preprocessPattern(pattern);
       });
-      // Prepare cache
-    (patternsDefinition.exceptions.splice ? patternsDefinition.exceptions : purifyPatterns(patternsDefinition.exceptions)).forEach(function(exception) {
+    // Prepare cache
+    (patternsDefinition.exceptions.splice
+      ? patternsDefinition.exceptions
+      : purifyPatterns(patternsDefinition.exceptions)
+    ).forEach(function(exception) {
       cache[exception.replace(/\-/g, "")] = exception.replace(
         /\-/g,
         hyphenChar
