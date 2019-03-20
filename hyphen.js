@@ -247,11 +247,11 @@
         cache = {};
 
       // Preprocess patterns
-      patterns = (patternsDefinition.patterns.splice ? patternsDefinition.patterns : purifyPatterns(patternsDefinition.patterns)).map(function(
+    var patterns = (patternsDefinition.patterns.splice ? patternsDefinition.patterns : purifyPatterns(patternsDefinition.patterns)).map(function(
         pattern
       ) {
         return preprocessPattern(pattern);
-      }),
+      });
       // Prepare cache
     (patternsDefinition.exceptions.splice ? patternsDefinition.exceptions : purifyPatterns(patternsDefinition.exceptions)).forEach(function(exception) {
       cache[exception.replace(/\-/g, "")] = exception.replace(
