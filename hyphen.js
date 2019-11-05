@@ -35,25 +35,32 @@
     for (var i = levels.length; i--; ) levels[i] = 0;
 
     while ((patternData = patterns[patternIndex++])) {
-      var patternEntityIndex = text
-        .toLocaleLowerCase()
-        .indexOf(patternData.text);
+      var fromChar = 0;
+      var endPattern = false;
+      while (!endPattern) {
+        var patternEntityIndex = text
+          .toLocaleLowerCase()
+          .indexOf(patternData.text,fromChar);
 
-      var patternFits =
-        patternEntityIndex > -1 &&
-        (patternData.stickToLeft ? patternEntityIndex === 0 : true) &&
-        (patternData.stickToRight
-          ? patternEntityIndex + patternData.text.length === text.length
-          : true);
+        var patternFits =
+          patternEntityIndex > -1 &&
+          (patternData.stickToLeft ? patternEntityIndex === 0 : true) &&
+          (patternData.stickToRight ? patternEntityIndex + patternData.text.length === text.length : true);
 
-      if (patternFits) {
-        p.push(patternData.pattern + ">" + patternData.levels.join(""));
+        if (patternFits) {
+          p.push(patternData.pattern + ">" + patternData.levels.join(""));
 
-        for (var i = 0; i < patternData.levels.length; i++)
-          levels[patternEntityIndex + i] = Math.max(
-            patternData.levels[i],
-            levels[patternEntityIndex + i]
-          );
+          for (var i = 0; i < patternData.levels.length; i++)
+            levels[patternEntityIndex + i] = Math.max(
+              patternData.levels[i],
+              levels[patternEntityIndex + i]
+            );
+        }
+        if (patternEntityIndex > -1 && patternData.text.length > 0) {
+          fromChar = patternEntityIndex+1;
+        } else {
+          endPattern = true;
+        }
       }
     }
 
