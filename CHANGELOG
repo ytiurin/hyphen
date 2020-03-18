@@ -1,0 +1,53 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.2.1] - 2020-03-18
+### Changed
+- Reduced NPM package size
+
+## [1.2.0] - 2020-03-18
+### Fixed
+- Fixed badly processed repeated patterns in a word by [@jaumeortola](https://github.com/jaumeortola)
+- Fixed a case when a special character is considered a letter
+
+## [1.1.1] - 2019-03-20
+### Changed
+- Replaced a unicode literal char with a corresponding code by [@oskarkook](https://github.com/oskarkook)
+### Fixed
+- Bugfix by [@krisztianb](https://github.com/krisztianb)
+
+## [1.1.0] - 2019-02-10
+### Changed
+- Rebuilt patterns with tex2js translator
+### Fixed
+- Fixed bad patternData by [@datakurre](https://github.com/datakurre)
+- Fixed typos by [@millette](https://github.com/millette)
+
+## [1.0.2] - 2016-08-28
+### Fixed
+- Fixed bad return value when EOF by [@nicosierra](https://github.com/nicosierra)
+
+## [1.0.1] - 2016-08-18
+### Added
+- Output stats in debug mode
+### Fixed
+- Fixed typos by [@jhwohlgemuth](https://github.com/jhwohlgemuth)
+- Fixed bad word extraction
+
+## [1.0.0] - 2016-08-07
+### Added
+- First working version with 75 language patterns
+
+[Unreleased]: https://github.com/ytiurin/hyphen/compare/v1.2.1...HEAD
+[v1.2.1]: https://github.com/ytiurin/hyphen/compare/v1.2.0...v1.2.1
+[v1.2.0]: https://github.com/ytiurin/hyphen/compare/v1.1.1...v1.2.0
+[v1.1.1]: https://github.com/ytiurin/hyphen/compare/v1.1.0...v1.1.1
+[v1.1.0]: https://github.com/ytiurin/hyphen/compare/1.0.2...v1.1.0
+[1.0.2]: https://github.com/ytiurin/hyphen/compare/1.0.1...1.0.2
+[1.0.1]: https://github.com/ytiurin/hyphen/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/ytiurin/hyphen/releases/tag/1.0.0
