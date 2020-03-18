@@ -24,17 +24,14 @@
     SETTING_HYPHEN_CHAR = "\u00AD";
 
   function hyphenateWord(text, patterns, debug, hyphenChar) {
-    var pattern,
+    var levels = new Array(text.length + 1),
+      loweredText = text.toLocaleLowerCase(),
+      p = [],
+      pattern,
       patternData,
       patternIndex = 0;
 
-    var p = [];
-
-    var levels = new Array(text.length + 1);
-
     for (var i = levels.length; i--; ) levels[i] = 0;
-
-    var loweredText = text.toLocaleLowerCase();
 
     while ((patternData = patterns[patternIndex++])) {
       var fromChar = 0;
@@ -48,7 +45,9 @@
         var patternFits =
           patternEntityIndex > -1 &&
           (patternData.stickToLeft ? patternEntityIndex === 0 : true) &&
-          (patternData.stickToRight ? patternEntityIndex + patternData.text.length === text.length : true);
+          (patternData.stickToRight
+            ? patternEntityIndex + patternData.text.length === text.length
+            : true);
 
         if (patternFits) {
           p.push(patternData.pattern + ">" + patternData.levels.join(""));
@@ -112,8 +111,8 @@
           var state = !charIsSpaceOrSpecial
             ? states.readWord
             : state === states.readWord
-              ? states.returnWord
-              : states.returnChar;
+            ? states.returnWord
+            : states.returnChar;
 
           switch (state) {
             case states.readWord:
@@ -201,8 +200,8 @@
             ? states.stickToLeft
             : states.stickToRight
           : charIsNumber
-            ? states.level
-            : states.alphabet;
+          ? states.level
+          : states.alphabet;
 
       switch (state) {
         case states.alphabet:
