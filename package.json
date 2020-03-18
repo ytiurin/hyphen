@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/ytiurin/hyphen/issues"
   },
-  "homepage": "https://github.com/ytiurin/hyphen"
+  "homepage": "https://github.com/ytiurin/hyphen",
+  "files": [
+    "patterns"
+  ]
 }
