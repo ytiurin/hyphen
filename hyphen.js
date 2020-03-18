@@ -34,13 +34,16 @@
 
     for (var i = levels.length; i--; ) levels[i] = 0;
 
+    var loweredText = text.toLocaleLowerCase();
+
     while ((patternData = patterns[patternIndex++])) {
       var fromChar = 0;
       var endPattern = false;
       while (!endPattern) {
-        var patternEntityIndex = text
-          .toLocaleLowerCase()
-          .indexOf(patternData.text,fromChar);
+        var patternEntityIndex = loweredText.indexOf(
+          patternData.text,
+          fromChar
+        );
 
         var patternFits =
           patternEntityIndex > -1 &&
