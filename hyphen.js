@@ -57,7 +57,7 @@
             );
         }
         if (patternEntityIndex > -1 && patternData.text.length > 0) {
-          fromChar = patternEntityIndex+1;
+          fromChar = patternEntityIndex + patternData.text.length + 1;
         } else {
           endPattern = true;
         }
