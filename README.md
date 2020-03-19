@@ -5,7 +5,7 @@ hy-phen
 
 ![Franklin M. Liang's hyphenation algorithm](https://ytiurin.github.io/hyphen/01.png)
 
-This is a JavaScript implementation of Franklin M. Liang's hyphenation algorithm. It relies on fast programming techniques to reduce execution time. The accuracy of hyphenation results depend on the quality of predefined patterns collections, that are different for every language. This implementation uses patterns collections from the TeX website, http://www.ctan.org/.
+This script implements [Franklin M. Liang's hyphenation algorithm](https://tug.org/docs/liang/ "Frank Liang wrote his Stanford Ph.D. thesis on a hyphenation algorithm that is standard in TeX, and has been adapted to numerous languages."). It relies on fast programming techniques to reduce execution time. The accuracy of hyphenation results depend on the quality of predefined patterns collections, that are different for every language. This implementation uses patterns collections from the [ctan.org](https://ctan.org/ "The Comprehensive TEX Archive Network (CTAN) is the central place for all kinds of material around TEX.").
 
 ```javascript
 var hyphenate = createHyphenator(hyphenationPatternsEnGb);
