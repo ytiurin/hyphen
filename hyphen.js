@@ -95,58 +95,87 @@
     return hyphenatedText;
   }
 
-  function iterateSourceText(text) {
-    var nextCharIndex = 0;
+  function createTextChunkReader(text) {
+    var nextCharIndex = 0,
+      state,
+      STATE_READ_TAG = 1,
+      STATE_READ_WORD = 2,
+      STATE_RETURN_CHAR = 3,
+      STATE_RETURN_TAG = 4,
+      STATE_RETURN_WORD = 5;
 
-    var states = { readWord: 1, returnWord: 2, returnChar: 3 };
+    return function() {
+      var nextChar,
+        nextWord = "";
 
-    return {
-      next: function() {
-        var nextChar,
-          nextWord = "";
+      while ((nextChar = text.charAt(nextCharIndex++))) {
+        var charIsLetter = !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar),
+          charIsAngleOpen = nextChar === "<",
+          charIsAngleClose = nextChar === ">";
 
-        while ((nextChar = text.charAt(nextCharIndex++))) {
-          var charIsSpaceOrSpecial = /\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(
-            nextChar
-          );
-
-          var state = !charIsSpaceOrSpecial
-            ? states.readWord
-            : state === states.readWord
-            ? states.returnWord
-            : states.returnChar;
-
-          switch (state) {
-            case states.readWord:
-              nextWord += nextChar;
-              break;
-
-            case states.returnWord:
-              nextCharIndex--;
-              return nextWord;
-
-            case states.returnChar:
-              return nextChar;
+        do {
+          if (state === STATE_READ_TAG) {
+            if (charIsAngleClose) {
+              state = STATE_RETURN_TAG;
+            }
+            break;
           }
+
+          if (charIsLetter) {
+            state = STATE_READ_WORD;
+            break;
+          }
+
+          if (state === STATE_READ_WORD) {
+            state = STATE_RETURN_WORD;
+            break;
+          }
+
+          state = STATE_RETURN_CHAR;
+        } while (0);
+
+        if (charIsAngleOpen && state !== STATE_RETURN_WORD) {
+          state = STATE_READ_TAG;
         }
-        if (nextWord !== "") {
-          return nextWord;
+
+        switch (state) {
+          case STATE_READ_TAG:
+            nextWord += nextChar;
+            break;
+
+          case STATE_READ_WORD:
+            nextWord += nextChar;
+            break;
+
+          case STATE_RETURN_CHAR:
+            return nextChar;
+
+          case STATE_RETURN_TAG:
+            nextWord += nextChar;
+            return nextWord;
+
+          case STATE_RETURN_WORD:
+            nextCharIndex--;
+            return nextWord;
         }
       }
+      return nextWord || void 0;
     };
   }
 
   function start(text, patterns, cache, debug, hyphenChar) {
     var newText = "",
       nextWord,
-      readWord = iterateSourceText(text),
+      readNextTextChunk = createTextChunkReader(text),
       states = { hyphenateWord: 1, concatenate: 2 },
       processedN = 0,
       hyphenatedN = 0;
 
-    while ((nextWord = readWord.next())) {
+    while ((nextWord = readNextTextChunk())) {
       var state =
-        nextWord.length > 4 ? states.hyphenateWord : states.concatenate;
+        nextWord.length > 4 && nextWord[0] !== "<"
+          ? states.hyphenateWord
+          : states.concatenate;
 
       switch (state) {
         case states.hyphenateWord:
