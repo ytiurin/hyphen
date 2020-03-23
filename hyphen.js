@@ -20,6 +20,7 @@
   }
 })(this, function() {
   var // settings
+    SETTING_ASYNC_MODE = false,
     SETTING_DEBUG = false,
     SETTING_HYPHEN_CHAR = "\u00AD";
 
@@ -163,7 +164,7 @@
     };
   }
 
-  function start(text, patterns, cache, debug, hyphenChar) {
+  function start(text, patterns, cache, debug, hyphenChar, isAsync) {
     var newText = "",
       nextWord,
       readNextTextChunk = createTextChunkReader(text),
@@ -171,43 +172,86 @@
       processedN = 0,
       hyphenatedN = 0;
 
-    while ((nextWord = readNextTextChunk())) {
-      var state =
-        nextWord.length > 4 && nextWord[0] !== "<"
-          ? states.hyphenateWord
-          : states.concatenate;
+    var kmax = 0,
+      kmin = 0,
+      kavg = 0;
 
-      switch (state) {
-        case states.hyphenateWord:
-          if (!cache[nextWord])
-            cache[nextWord] = hyphenateWord(
-              nextWord,
-              patterns,
-              debug,
-              hyphenChar
-            );
+    var allTime = new Date(),
+      workTime = 0;
 
-          if (nextWord !== cache[nextWord]) hyphenatedN++;
+    var resolveNewText = function() {};
 
-          nextWord = cache[nextWord];
+    (function nextTick() {
+      var loopStart = new Date();
+      var k = 0;
 
-        case states.concatenate:
-          newText += nextWord;
+      while (
+        (!isAsync || new Date() - loopStart < 10) &&
+        (nextWord = readNextTextChunk())
+      ) {
+        var state =
+          nextWord.length > 4 && nextWord[0] !== "<"
+            ? states.hyphenateWord
+            : states.concatenate;
+
+        switch (state) {
+          case states.hyphenateWord:
+            if (!cache[nextWord])
+              cache[nextWord] = hyphenateWord(
+                nextWord,
+                patterns,
+                debug,
+                hyphenChar
+              );
+
+            if (nextWord !== cache[nextWord]) hyphenatedN++;
+
+            nextWord = cache[nextWord];
+
+          case states.concatenate:
+            newText += nextWord;
+        }
+
+        processedN++;
+        k++;
       }
+      workTime += new Date() - loopStart;
+      kmax = Math.max(kmax, k);
+      kmin = (kmin && Math.min(kmin, k)) || k;
+      kavg = (kavg && (kavg + k) / 2) || k;
 
-      processedN++;
+      if (!nextWord) {
+        done();
+      } else {
+        setTimeout(nextTick);
+      }
+    })();
+
+    function done() {
+      allTime = new Date() - allTime;
+      resolveNewText(newText);
+
+      if (debug)
+        console.log(
+          "----------------\nHyphenation stats: " +
+            processedN +
+            " words processed, " +
+            hyphenatedN +
+            " words hyphenated"
+        );
+      console.log(`Work time: ${workTime / 1000}`);
+      console.log(`Wait time: ${(allTime - workTime) / 1000}`);
+      console.log(`All time: ${allTime / 1000}`);
+      console.log(`kmax ${kmax}, kmin ${kmin}, kavg ${kavg}`);
     }
 
-    if (debug)
-      console.log(
-        "----------------\nHyphenation stats: " +
-          processedN +
-          " words processed, " +
-          hyphenatedN +
-          " words hyphenated"
-      );
-
-    return newText;
+    if (isAsync) {
+      return new Promise(function(resolve) {
+        resolveNewText = resolve;
+      });
+    } else {
+      return newText;
+    }
   }
 
   // extract useful data from pattern
@@ -284,6 +328,9 @@
           settings.hyphenChar !== undefined &&
           settings.hyphenChar) ||
         SETTING_HYPHEN_CHAR,
+      asyncMode =
+        (settings && settings.async !== undefined && settings.async) ||
+        SETTING_ASYNC_MODE,
       cache = {},
       // Preprocess patterns
       patterns = (patternsDefinition.patterns.splice
@@ -305,7 +352,7 @@
 
     // Hyphenator function
     return function(text) {
-      return start(text, patterns, cache, debug, hyphenChar);
+      return start(text, patterns, cache, debug, hyphenChar, asyncMode);
     };
   };
 });
