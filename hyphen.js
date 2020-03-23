@@ -172,10 +172,6 @@
       processedN = 0,
       hyphenatedN = 0;
 
-    var kmax = 0,
-      kmin = 0,
-      kavg = 0;
-
     var allTime = new Date(),
       workTime = 0;
 
@@ -183,7 +179,6 @@
 
     (function nextTick() {
       var loopStart = new Date();
-      var k = 0;
 
       while (
         (!isAsync || new Date() - loopStart < 10) &&
@@ -213,12 +208,8 @@
         }
 
         processedN++;
-        k++;
       }
       workTime += new Date() - loopStart;
-      kmax = Math.max(kmax, k);
-      kmin = (kmin && Math.min(kmin, k)) || k;
-      kavg = (kavg && (kavg + k) / 2) || k;
 
       if (!nextWord) {
         done();
@@ -231,7 +222,7 @@
       allTime = new Date() - allTime;
       resolveNewText(newText);
 
-      if (debug)
+      if (debug) {
         console.log(
           "----------------\nHyphenation stats: " +
             processedN +
@@ -239,10 +230,10 @@
             hyphenatedN +
             " words hyphenated"
         );
-      console.log(`Work time: ${workTime / 1000}`);
-      console.log(`Wait time: ${(allTime - workTime) / 1000}`);
-      console.log(`All time: ${allTime / 1000}`);
-      console.log(`kmax ${kmax}, kmin ${kmin}, kavg ${kavg}`);
+        console.log(`Work time: ${workTime / 1000}`);
+        console.log(`Wait time: ${(allTime - workTime) / 1000}`);
+        console.log(`All time: ${allTime / 1000}`);
+      }
     }
 
     if (isAsync) {
