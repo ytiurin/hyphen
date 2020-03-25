@@ -96,29 +96,31 @@
     return hyphenatedText;
   }
 
-  function createTextChunkReader(text) {
-    var nextCharIndex = 0,
-      state,
-      STATE_READ_TAG = 1,
-      STATE_READ_WORD = 2,
-      STATE_RETURN_CHAR = 3,
-      STATE_RETURN_TAG = 4,
-      STATE_RETURN_WORD = 5;
+  function createTextChunkReader(text, hyphenChar) {
+    function readNextTextChunk() {
+      var nextTextChunk = "";
 
-    return function() {
-      var nextChar,
-        nextWord = "";
+      shouldHyphenate = void 0;
 
-      while ((nextChar = text.charAt(nextCharIndex++))) {
-        var charIsLetter = !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar),
+      chunkReader: while (nextCharIndex <= text.length) {
+        var nextChar = text.charAt(nextCharIndex++),
+          charIsLetter =
+            !!nextChar && !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar),
           charIsAngleOpen = nextChar === "<",
-          charIsAngleClose = nextChar === ">";
+          charIsAngleClose = nextChar === ">",
+          charIsHyphen = nextChar === hyphenChar;
 
         do {
           if (state === STATE_READ_TAG) {
             if (charIsAngleClose) {
               state = STATE_RETURN_TAG;
             }
+            break;
+          }
+
+          if (charIsHyphen) {
+            shouldHyphenate = SHOULD_SKIP;
+            state = STATE_READ_WORD;
             break;
           }
 
@@ -129,95 +131,64 @@
 
           if (state === STATE_READ_WORD) {
             state = STATE_RETURN_WORD;
+            shouldHyphenate =
+              shouldHyphenate || (nextTextChunk.length > 4 && SHOULD_HYPHENATE);
             break;
           }
 
+          shouldHyphenate = SHOULD_SKIP;
           state = STATE_RETURN_CHAR;
         } while (0);
 
         if (charIsAngleOpen && state !== STATE_RETURN_WORD) {
+          shouldHyphenate = SHOULD_SKIP;
           state = STATE_READ_TAG;
         }
 
         switch (state) {
           case STATE_READ_TAG:
-            nextWord += nextChar;
+            nextTextChunk += nextChar;
             break;
 
           case STATE_READ_WORD:
-            nextWord += nextChar;
+            nextTextChunk += nextChar;
             break;
 
           case STATE_RETURN_CHAR:
-            return nextChar;
+            nextTextChunk = nextChar;
+            break chunkReader;
 
           case STATE_RETURN_TAG:
-            nextWord += nextChar;
-            return nextWord;
+            nextTextChunk += nextChar;
+            break chunkReader;
 
           case STATE_RETURN_WORD:
             nextCharIndex--;
-            return nextWord;
+            break chunkReader;
         }
       }
-      return nextWord || void 0;
-    };
+      return nextTextChunk || void 0;
+    }
+
+    function shouldNextHyphenate() {
+      return shouldHyphenate === SHOULD_HYPHENATE;
+    }
+
+    var nextCharIndex = 0,
+      SHOULD_HYPHENATE = 1,
+      SHOULD_SKIP = 2,
+      shouldHyphenate,
+      STATE_READ_TAG = 1,
+      STATE_READ_WORD = 2,
+      STATE_RETURN_CHAR = 3,
+      STATE_RETURN_TAG = 4,
+      STATE_RETURN_WORD = 5,
+      state;
+
+    return [readNextTextChunk, shouldNextHyphenate];
   }
 
   function start(text, patterns, cache, debug, hyphenChar, isAsync) {
-    var newText = "",
-      nextWord,
-      readNextTextChunk = createTextChunkReader(text),
-      states = { hyphenateWord: 1, concatenate: 2 },
-      processedN = 0,
-      hyphenatedN = 0;
-
-    var allTime = new Date(),
-      workTime = 0;
-
-    var resolveNewText = function() {};
-
-    (function nextTick() {
-      var loopStart = new Date();
-
-      while (
-        (!isAsync || new Date() - loopStart < 10) &&
-        (nextWord = readNextTextChunk())
-      ) {
-        var state =
-          nextWord.length > 4 && nextWord[0] !== "<"
-            ? states.hyphenateWord
-            : states.concatenate;
-
-        switch (state) {
-          case states.hyphenateWord:
-            if (!cache[nextWord])
-              cache[nextWord] = hyphenateWord(
-                nextWord,
-                patterns,
-                debug,
-                hyphenChar
-              );
-
-            if (nextWord !== cache[nextWord]) hyphenatedN++;
-
-            nextWord = cache[nextWord];
-
-          case states.concatenate:
-            newText += nextWord;
-        }
-
-        processedN++;
-      }
-      workTime += new Date() - loopStart;
-
-      if (!nextWord) {
-        done();
-      } else {
-        setTimeout(nextTick);
-      }
-    })();
-
     function done() {
       allTime = new Date() - allTime;
       resolveNewText(newText);
@@ -235,6 +206,60 @@
         console.log(`All time: ${allTime / 1000}`);
       }
     }
+
+    var newText = "",
+      nextTextChunk,
+      reader = createTextChunkReader(text, hyphenChar),
+      readNextTextChunk = reader[0],
+      shouldNextHyphenate = reader[1],
+      states = { hyphenateWord: 1, concatenate: 2 },
+      processedN = 0,
+      hyphenatedN = 0;
+
+    var allTime = new Date(),
+      workTime = 0;
+
+    var resolveNewText = function() {};
+
+    (function nextTick() {
+      var loopStart = new Date();
+
+      while (
+        (!isAsync || new Date() - loopStart < 10) &&
+        (nextTextChunk = readNextTextChunk())
+      ) {
+        var state = shouldNextHyphenate()
+          ? states.hyphenateWord
+          : states.concatenate;
+
+        switch (state) {
+          case states.hyphenateWord:
+            if (!cache[nextTextChunk])
+              cache[nextTextChunk] = hyphenateWord(
+                nextTextChunk,
+                patterns,
+                debug,
+                hyphenChar
+              );
+
+            if (nextTextChunk !== cache[nextTextChunk]) hyphenatedN++;
+
+            nextTextChunk = cache[nextTextChunk];
+
+          case states.concatenate:
+            newText += nextTextChunk;
+        }
+
+        processedN++;
+      }
+      workTime += new Date() - loopStart;
+
+      if (!nextTextChunk) {
+        done();
+      } else {
+        setTimeout(nextTick);
+      }
+    })();
 
     if (isAsync) {
       return new Promise(function(resolve) {
