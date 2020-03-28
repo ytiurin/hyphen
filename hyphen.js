@@ -34,29 +34,44 @@
       ? this
       : {};
 
-  function createHyphenator(patternsDefinition, settings) {
-    var // Settings
-      debug =
-        (settings && settings.debug !== undefined && settings.debug) ||
-        SETTING_DEBUG,
-      hyphenChar =
-        (settings &&
-          settings.hyphenChar !== undefined &&
-          settings.hyphenChar) ||
-        SETTING_HYPHEN_CHAR,
-      asyncMode =
-        (settings && settings.async !== undefined && settings.async) ||
-        SETTING_ASYNC_MODE,
-      // Prepare cache
-      cache = patternsDefinition.exceptions.reduce(function (cache, exception) {
-        cache[exception.replace(/\-/g, "")] = exception.replace(
-          /\-/g,
-          hyphenChar
-        );
-        return cache;
-      }, {}),
-      // Preprocess patterns
+  function cloneObj(source) {
+    var target = {};
+    for (var key in source) {
+      target[key] = source[key];
+    }
+    return target;
+  }
+
+  function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
+    return patternsDefinition.exceptions.reduce(function (
+      exceptions,
+      exception
+    ) {
+      exceptions[exception.replace(/\-/g, "")] = exception.replace(
+        /\-/g,
+        hyphenChar
+      );
+      return exceptions;
+    },
+    {});
+  }
+
+  function createHyphenator(patternsDefinition, options) {
+    options = options || {};
+    var //
+      asyncMode = options.async || SETTING_ASYNC_MODE,
+      caches = {},
+      debug = options.debug || SETTING_DEBUG,
+      exceptions = {},
+      hyphenChar = options.hyphenChar || SETTING_HYPHEN_CHAR,
       patterns = patternsDefinition.patterns.map(preprocessPattern);
+
+    // Prepare cache
+    exceptions[hyphenChar] = exceptionsFromDefinition(
+      patternsDefinition,
+      hyphenChar
+    );
+    caches[hyphenChar] = cloneObj(exceptions[hyphenChar]);
 
     if (asyncMode && !("Promise" in _global)) {
       throw new Error(
@@ -64,8 +79,28 @@
       );
     }
 
-    return function (text) {
-      return start(text, patterns, cache, debug, hyphenChar, asyncMode);
+    return function (text, options) {
+      options = options || {};
+      var //
+        localAsyncMode = options.asyncMode || asyncMode,
+        localDebug = options.debug || debug,
+        localHyphenChar = options.hyphenChar || hyphenChar;
+
+      exceptions[localHyphenChar] =
+        exceptions[localHyphenChar] ||
+        exceptionsFromDefinition(patternsDefinition, localHyphenChar);
+
+      caches[localHyphenChar] =
+        caches[localHyphenChar] || cloneObj(exceptions[localHyphenChar]);
+
+      return start(
+        text,
+        patterns,
+        caches[localHyphenChar],
+        localDebug,
+        localHyphenChar,
+        localAsyncMode
+      );
     };
   }
   function createTextChunkReader(text, hyphenChar) {
@@ -289,7 +324,7 @@
         console.log(
           "----------------\nHyphenation stats: " +
             processedN +
-            " words processed, " +
+            " text chunks processed, " +
             hyphenatedN +
             " words hyphenated"
         );

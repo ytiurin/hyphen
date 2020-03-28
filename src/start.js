@@ -7,7 +7,7 @@ function start(text, patterns, cache, debug, hyphenChar, isAsync) {
       console.log(
         "----------------\nHyphenation stats: " +
           processedN +
-          " words processed, " +
+          " text chunks processed, " +
           hyphenatedN +
           " words hyphenated"
       );
