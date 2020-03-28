@@ -4,7 +4,11 @@
   "description": "Franklin M. Liang's hyphenation algorithm, implemented in Javascript.",
   "main": "hyphen.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js",
+    "lint": "npx eslint hyphen.js",
+    "start": "npm run watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "npx nodemon -w ./src build.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +28,10 @@
   "homepage": "https://github.com/ytiurin/hyphen",
   "files": [
     "patterns"
-  ]
+  ],
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2",
+    "prettier": "^2.0.2"
+  }
 }

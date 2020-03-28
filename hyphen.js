@@ -5,7 +5,7 @@
  *  Released under the MIT license
  *  https://github.com/ytiurin/hyphen/blob/master/LICENSE
  */
-(function(root, factory) {
+(function (root, factory) {
   if (typeof define === "function" && define.amd) {
     // AMD. Register as an anonymous module.
     define([], factory);
@@ -18,84 +18,56 @@
     // Browser globals (root is window)
     root.createHyphenator = factory();
   }
-})(this, function() {
-  var // settings
+})(this, function () {
+  var //
     SETTING_ASYNC_MODE = false,
     SETTING_DEBUG = false,
     SETTING_HYPHEN_CHAR = "\u00AD";
 
-  function hyphenateWord(text, patterns, debug, hyphenChar) {
-    var levels = new Array(text.length + 1),
-      loweredText = text.toLocaleLowerCase(),
-      p = [],
-      pattern,
-      patternData,
-      patternIndex = 0;
+  var _global =
+    typeof global === "object"
+      ? global
+      : typeof window === "object"
+      ? /* eslint-disable-next-line no-undef */
+        window
+      : typeof this === "object"
+      ? this
+      : {};
 
-    for (var i = levels.length; i--; ) levels[i] = 0;
-
-    while ((patternData = patterns[patternIndex++])) {
-      var fromChar = 0;
-      var endPattern = false;
-      while (!endPattern) {
-        var patternEntityIndex = loweredText.indexOf(
-          patternData.text,
-          fromChar
+  function createHyphenator(patternsDefinition, settings) {
+    var // Settings
+      debug =
+        (settings && settings.debug !== undefined && settings.debug) ||
+        SETTING_DEBUG,
+      hyphenChar =
+        (settings &&
+          settings.hyphenChar !== undefined &&
+          settings.hyphenChar) ||
+        SETTING_HYPHEN_CHAR,
+      asyncMode =
+        (settings && settings.async !== undefined && settings.async) ||
+        SETTING_ASYNC_MODE,
+      // Prepare cache
+      cache = patternsDefinition.exceptions.reduce(function (cache, exception) {
+        cache[exception.replace(/\-/g, "")] = exception.replace(
+          /\-/g,
+          hyphenChar
         );
+        return cache;
+      }, {}),
+      // Preprocess patterns
+      patterns = patternsDefinition.patterns.map(preprocessPattern);
 
-        var patternFits =
-          patternEntityIndex > -1 &&
-          (patternData.stickToLeft ? patternEntityIndex === 0 : true) &&
-          (patternData.stickToRight
-            ? patternEntityIndex + patternData.text.length === text.length
-            : true);
-
-        if (patternFits) {
-          p.push(patternData.pattern + ">" + patternData.levels.join(""));
-
-          for (var i = 0; i < patternData.levels.length; i++)
-            levels[patternEntityIndex + i] = Math.max(
-              patternData.levels[i],
-              levels[patternEntityIndex + i]
-            );
-        }
-        if (patternEntityIndex > -1 && patternData.text.length > 0) {
-          fromChar = patternEntityIndex + patternData.text.length + 1;
-        } else {
-          endPattern = true;
-        }
-      }
-    }
-
-    levels[0] = levels[1] = levels[levels.length - 1] = levels[
-      levels.length - 2
-    ] = 0;
-
-    var hyphenatedText = "",
-      leveledText = "",
-      debugHyphenatedText = "";
-
-    for (var i = 0; i < levels.length; i++) {
-      hyphenatedText +=
-        (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
-      debugHyphenatedText += (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
-      leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
-    }
-
-    if (debug)
-      console.log.apply(
-        console,
-        [text, "->"]
-          .concat(p)
-          .concat(["->"])
-          .concat(levels)
-          .concat(["->", leveledText])
-          .concat(["->", debugHyphenatedText])
+    if (asyncMode && !("Promise" in _global)) {
+      throw new Error(
+        "Failed to create hyphenator: Could not find global Promise object, needed for hyphenator to work in async mode"
       );
+    }
 
-    return hyphenatedText;
+    return function (text) {
+      return start(text, patterns, cache, debug, hyphenChar, asyncMode);
+    };
   }
-
   function createTextChunkReader(text, hyphenChar) {
     function readNextTextChunk() {
       var nextTextChunk = "";
@@ -103,7 +75,8 @@
       shouldHyphenate = void 0;
 
       chunkReader: while (nextCharIndex <= text.length) {
-        var nextChar = text.charAt(nextCharIndex++),
+        var //
+          nextChar = text.charAt(nextCharIndex++),
           charIsLetter =
             !!nextChar && !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar),
           charIsAngleOpen = nextChar === "<",
@@ -174,7 +147,8 @@
       return shouldHyphenate === SHOULD_HYPHENATE;
     }
 
-    var nextCharIndex = 0,
+    var //
+      nextCharIndex = 0,
       SHOULD_HYPHENATE = 1,
       SHOULD_SKIP = 2,
       shouldHyphenate,
@@ -187,7 +161,125 @@
 
     return [readNextTextChunk, shouldNextHyphenate];
   }
+  function hyphenateWord(text, patterns, debug, hyphenChar) {
+    var //
+      levels = new Array(text.length + 1),
+      loweredText = text.toLocaleLowerCase(),
+      p = [],
+      patternData,
+      patternIndex = 0;
 
+    for (var i = levels.length; i--; ) levels[i] = 0;
+
+    while ((patternData = patterns[patternIndex++])) {
+      var //
+        fromChar = 0,
+        endPattern = false;
+      while (!endPattern) {
+        var //
+          patternEntityIndex = loweredText.indexOf(patternData.text, fromChar),
+          patternFits =
+            patternEntityIndex > -1 &&
+            (patternData.stickToLeft ? patternEntityIndex === 0 : true) &&
+            (patternData.stickToRight
+              ? patternEntityIndex + patternData.text.length === text.length
+              : true);
+
+        if (patternFits) {
+          p.push(patternData.pattern + ">" + patternData.levels.join(""));
+
+          for (var i = 0; i < patternData.levels.length; i++)
+            levels[patternEntityIndex + i] = Math.max(
+              patternData.levels[i],
+              levels[patternEntityIndex + i]
+            );
+        }
+        if (patternEntityIndex > -1 && patternData.text.length > 0) {
+          fromChar = patternEntityIndex + patternData.text.length + 1;
+        } else {
+          endPattern = true;
+        }
+      }
+    }
+
+    levels[0] = levels[1] = levels[levels.length - 1] = levels[
+      levels.length - 2
+    ] = 0;
+
+    var //
+      hyphenatedText = "",
+      leveledText = "",
+      debugHyphenatedText = "";
+
+    for (var i = 0; i < levels.length; i++) {
+      hyphenatedText +=
+        (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
+      debugHyphenatedText += (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
+      leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
+    }
+
+    if (debug)
+      console.log.apply(
+        console,
+        [text, "->"]
+          .concat(p)
+          .concat(["->"])
+          .concat(levels)
+          .concat(["->", leveledText])
+          .concat(["->", debugHyphenatedText])
+      );
+
+    return hyphenatedText;
+  }
+  function preprocessPattern(pattern) {
+    var //
+      patternCharIndex = 0,
+      patternChar,
+      patternData = {
+        pattern: pattern,
+        text: "",
+        levels: [],
+        stickToLeft: 0,
+        stickToRight: 0
+      },
+      states = { alphabet: 1, level: 2, stickToLeft: 3, stickToRight: 4 };
+
+    while ((patternChar = pattern.charAt(patternCharIndex++))) {
+      var //
+        charIsDot = patternChar === ".",
+        charIsNumber = !charIsDot && /\d/.test(patternChar),
+        state = charIsDot
+          ? patternCharIndex - 1 === 0
+            ? states.stickToLeft
+            : states.stickToRight
+          : charIsNumber
+          ? states.level
+          : states.alphabet;
+
+      switch (state) {
+        case states.alphabet:
+          !prevCharIsNumber && patternData.levels.push(0);
+          patternData.text += patternChar;
+          break;
+
+        case states.level:
+          patternData.levels.push(parseInt(patternChar));
+          break;
+
+        case states.stickToLeft:
+          patternData.stickToLeft = true;
+          break;
+
+        case states.stickToRight:
+          patternData.stickToRight = true;
+          break;
+      }
+
+      var prevCharIsNumber = charIsNumber;
+    }
+
+    return patternData;
+  }
   function start(text, patterns, cache, debug, hyphenChar, isAsync) {
     function done() {
       allTime = new Date() - allTime;
@@ -201,13 +293,14 @@
             hyphenatedN +
             " words hyphenated"
         );
-        console.log(`Work time: ${workTime / 1000}`);
-        console.log(`Wait time: ${(allTime - workTime) / 1000}`);
-        console.log(`All time: ${allTime / 1000}`);
+        console.log("Work time: " + workTime / 1000);
+        console.log("Wait time: " + (allTime - workTime) / 1000);
+        console.log("All time: " + allTime / 1000);
       }
     }
 
-    var newText = "",
+    var //
+      newText = "",
       nextTextChunk,
       reader = createTextChunkReader(text, hyphenChar),
       readNextTextChunk = reader[0],
@@ -216,10 +309,11 @@
       processedN = 0,
       hyphenatedN = 0;
 
-    var allTime = new Date(),
+    var //
+      allTime = new Date(),
       workTime = 0;
 
-    var resolveNewText = function() {};
+    var resolveNewText = function () {};
 
     (function nextTick() {
       var loopStart = new Date();
@@ -262,113 +356,13 @@
     })();
 
     if (isAsync) {
-      return new Promise(function(resolve) {
+      /* eslint-disable-next-line no-undef */
+      return new Promise(function (resolve) {
         resolveNewText = resolve;
       });
     } else {
       return newText;
     }
   }
-
-  // extract useful data from pattern
-  function preprocessPattern(pattern) {
-    var patternCharIndex = 0,
-      patternChar,
-      patternData = {
-        pattern: pattern,
-        text: "",
-        levels: [],
-        stickToLeft: 0,
-        stickToRight: 0
-      },
-      states = { alphabet: 1, level: 2, stickToLeft: 3, stickToRight: 4 };
-
-    while ((patternChar = pattern.charAt(patternCharIndex++))) {
-      var charIsDot = patternChar === ".",
-        charIsNumber = !charIsDot && /\d/.test(patternChar),
-        state = charIsDot
-          ? patternCharIndex - 1 === 0
-            ? states.stickToLeft
-            : states.stickToRight
-          : charIsNumber
-          ? states.level
-          : states.alphabet;
-
-      switch (state) {
-        case states.alphabet:
-          !prevCharIsNumber && patternData.levels.push(0);
-          patternData.text += patternChar;
-          break;
-
-        case states.level:
-          patternData.levels.push(parseInt(patternChar));
-          break;
-
-        case states.stickToLeft:
-          patternData.stickToLeft = true;
-          break;
-
-        case states.stickToRight:
-          patternData.stickToRight = true;
-          break;
-      }
-
-      var prevCharIsNumber = charIsNumber;
-    }
-
-    return patternData;
-  }
-
-  function purifyPatterns(text) {
-    return (
-      text
-        // Remove comments
-        .replace(/%.*/g, "")
-        // Remove repeating spaces
-        .replace(/\s+/g, " ")
-        // Trim spaces
-        .replace(/^\s|\s$/g, "")
-        // Split to Array
-        .split(" ")
-    );
-  }
-
-  // Hyphenator factory
-  return function(patternsDefinition, settings) {
-    var // Settings
-      debug =
-        (settings && settings.debug !== undefined && settings.debug) ||
-        SETTING_DEBUG,
-      hyphenChar =
-        (settings &&
-          settings.hyphenChar !== undefined &&
-          settings.hyphenChar) ||
-        SETTING_HYPHEN_CHAR,
-      asyncMode =
-        (settings && settings.async !== undefined && settings.async) ||
-        SETTING_ASYNC_MODE,
-      cache = {},
-      // Preprocess patterns
-      patterns = (patternsDefinition.patterns.splice
-        ? patternsDefinition.patterns
-        : purifyPatterns(patternsDefinition.patterns)
-      ).map(function(pattern) {
-        return preprocessPattern(pattern);
-      });
-    // Prepare cache
-    (patternsDefinition.exceptions.splice
-      ? patternsDefinition.exceptions
-      : purifyPatterns(patternsDefinition.exceptions)
-    ).forEach(function(exception) {
-      cache[exception.replace(/\-/g, "")] = exception.replace(
-        /\-/g,
-        hyphenChar
-      );
-    });
-
-    // Hyphenator function
-    return function(text) {
-      return start(text, patterns, cache, debug, hyphenChar, asyncMode);
-    };
-  };
+  return createHyphenator;
 });
