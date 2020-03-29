@@ -1,3 +1,4 @@
+const DIR_SELF = "scripts";
 const DIR_SRC = "src";
 const DIR_UMD = "umd";
 
@@ -13,7 +14,8 @@ const { join } = require("path");
 const { readFileSync, readdirSync, writeFileSync } = require("fs");
 const prettier = require("prettier");
 
-const pathSrc = join(__dirname, DIR_SRC);
+const pathRoot = __dirname.replace(DIR_SELF,'');
+const pathSrc = join(pathRoot, DIR_SRC);
 const pathUMD = join(__dirname, DIR_UMD);
 
 const filepaths = [].concat(
