@@ -42,6 +42,13 @@
     return target;
   }
 
+  function keyOrDefault(object, key, defaultValue) {
+    if (key in object) {
+      return object[key];
+    }
+    return defaultValue;
+  }
+
   function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
     return patternsDefinition.exceptions.reduce(function (
       exceptions,
@@ -59,11 +66,11 @@
   function createHyphenator(patternsDefinition, options) {
     options = options || {};
     var //
-      asyncMode = options.async || SETTING_ASYNC_MODE,
+      asyncMode = keyOrDefault(options, "async", SETTING_ASYNC_MODE),
       caches = {},
-      debug = options.debug || SETTING_DEBUG,
+      debug = keyOrDefault(options, "debug", SETTING_DEBUG),
       exceptions = {},
-      hyphenChar = options.hyphenChar || SETTING_HYPHEN_CHAR,
+      hyphenChar = keyOrDefault(options, "hyphenChar", SETTING_HYPHEN_CHAR),
       patterns = patternsDefinition.patterns.map(preprocessPattern);
 
     // Prepare cache
@@ -82,9 +89,9 @@
     return function (text, options) {
       options = options || {};
       var //
-        localAsyncMode = options.asyncMode || asyncMode,
-        localDebug = options.debug || debug,
-        localHyphenChar = options.hyphenChar || hyphenChar;
+        localAsyncMode = keyOrDefault(options, "async", asyncMode),
+        localDebug = keyOrDefault(options, "debug", debug),
+        localHyphenChar = keyOrDefault(options, "hyphenChar", hyphenChar);
 
       exceptions[localHyphenChar] =
         exceptions[localHyphenChar] ||
