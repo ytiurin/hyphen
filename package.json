@@ -7,7 +7,7 @@
     "build": "node ./scripts/build.js && node ./scripts/build-exports.js",
     "lint": "npx eslint hyphen.js",
     "start": "npm run watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "watch": "npx nodemon -w ./src ./scripts/build.js"
   },
   "repository": {
@@ -16,9 +16,9 @@
   },
   "keywords": [
     "hyphen",
+    "hyphenate",
     "hyphenation",
-    "hyphenator",
-    "soft"
+    "hyphenator"
   ],
   "author": "Eugene Tiurin <yevhentiurin@gmail.com> (https://github.com/ytiurin)",
   "license": "MIT",
@@ -33,6 +33,7 @@
   ],
   "devDependencies": {
     "eslint": "^6.8.0",
+    "jest": "^25.2.3",
     "nodemon": "^2.0.2",
     "prettier": "^2.0.2"
   }
