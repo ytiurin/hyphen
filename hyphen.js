@@ -357,7 +357,7 @@
 
     var resolveNewText = function () {};
 
-    (function nextTick() {
+    function nextTick() {
       var loopStart = new Date();
 
       while (
@@ -395,14 +395,16 @@
       } else {
         setTimeout(nextTick);
       }
-    })();
+    }
 
     if (isAsync) {
+      setTimeout(nextTick);
       /* eslint-disable-next-line no-undef */
       return new Promise(function (resolve) {
         resolveNewText = resolve;
       });
     } else {
+      nextTick();
       return newText;
     }
   }
