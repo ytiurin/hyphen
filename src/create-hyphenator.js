@@ -1,7 +1,8 @@
 var //
   SETTING_ASYNC_MODE = false,
   SETTING_DEBUG = false,
-  SETTING_HYPHEN_CHAR = "\u00AD";
+  SETTING_HYPHEN_CHAR = "\u00AD",
+  SETTING_SKIP_HTML = false;
 
 var _global =
   typeof global === "object"
@@ -46,7 +47,8 @@ function createHyphenator(patternsDefinition, options) {
     debug = keyOrDefault(options, "debug", SETTING_DEBUG),
     exceptions = {},
     hyphenChar = keyOrDefault(options, "hyphenChar", SETTING_HYPHEN_CHAR),
-    patterns = patternsDefinition.patterns.map(preprocessPattern);
+    patterns = patternsDefinition.patterns.map(preprocessPattern),
+    skipHTML = keyOrDefault(options, "html", SETTING_SKIP_HTML);
 
   // Prepare cache
   exceptions[hyphenChar] = exceptionsFromDefinition(
@@ -66,7 +68,8 @@ function createHyphenator(patternsDefinition, options) {
     var //
       localAsyncMode = keyOrDefault(options, "async", asyncMode),
       localDebug = keyOrDefault(options, "debug", debug),
-      localHyphenChar = keyOrDefault(options, "hyphenChar", hyphenChar);
+      localHyphenChar = keyOrDefault(options, "hyphenChar", hyphenChar),
+      localSkipHTML = keyOrDefault(options, "html", skipHTML);
 
     exceptions[localHyphenChar] =
       exceptions[localHyphenChar] ||
@@ -81,6 +84,7 @@ function createHyphenator(patternsDefinition, options) {
       caches[localHyphenChar],
       localDebug,
       localHyphenChar,
+      localSkipHTML,
       localAsyncMode
     );
   };

@@ -22,7 +22,8 @@
   var //
     SETTING_ASYNC_MODE = false,
     SETTING_DEBUG = false,
-    SETTING_HYPHEN_CHAR = "\u00AD";
+    SETTING_HYPHEN_CHAR = "\u00AD",
+    SETTING_SKIP_HTML = false;
 
   var _global =
     typeof global === "object"
@@ -71,7 +72,8 @@
       debug = keyOrDefault(options, "debug", SETTING_DEBUG),
       exceptions = {},
       hyphenChar = keyOrDefault(options, "hyphenChar", SETTING_HYPHEN_CHAR),
-      patterns = patternsDefinition.patterns.map(preprocessPattern);
+      patterns = patternsDefinition.patterns.map(preprocessPattern),
+      skipHTML = keyOrDefault(options, "html", SETTING_SKIP_HTML);
 
     // Prepare cache
     exceptions[hyphenChar] = exceptionsFromDefinition(
@@ -91,7 +93,8 @@
       var //
         localAsyncMode = keyOrDefault(options, "async", asyncMode),
         localDebug = keyOrDefault(options, "debug", debug),
-        localHyphenChar = keyOrDefault(options, "hyphenChar", hyphenChar);
+        localHyphenChar = keyOrDefault(options, "hyphenChar", hyphenChar),
+        localSkipHTML = keyOrDefault(options, "html", skipHTML);
 
       exceptions[localHyphenChar] =
         exceptions[localHyphenChar] ||
@@ -106,11 +109,12 @@
         caches[localHyphenChar],
         localDebug,
         localHyphenChar,
+        localSkipHTML,
         localAsyncMode
       );
     };
   }
-  function createTextChunkReader(text, hyphenChar) {
+  function createTextChunkReader(text, hyphenChar, skipHTML) {
     function readNextTextChunk() {
       var nextTextChunk = "";
 
@@ -123,12 +127,13 @@
             !!nextChar && !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar),
           charIsAngleOpen = nextChar === "<",
           charIsAngleClose = nextChar === ">",
-          charIsHyphen = nextChar === hyphenChar;
+          charIsHyphen = nextChar === hyphenChar,
+          charIsSpacelike = /\s/.test(nextChar);
 
         do {
           if (state === STATE_READ_TAG) {
-            if (charIsAngleClose) {
-              state = STATE_RETURN_TAG;
+            if (charIsAngleClose || charIsSpacelike) {
+              state = STATE_RETURN_UNTOUCHED;
             }
             break;
           }
@@ -152,10 +157,10 @@
           }
 
           shouldHyphenate = SHOULD_SKIP;
-          state = STATE_RETURN_CHAR;
+          state = STATE_RETURN_UNTOUCHED;
         } while (0);
 
-        if (charIsAngleOpen && state !== STATE_RETURN_WORD) {
+        if (charIsAngleOpen && state !== STATE_RETURN_WORD && skipHTML) {
           shouldHyphenate = SHOULD_SKIP;
           state = STATE_READ_TAG;
         }
@@ -169,11 +174,7 @@
             nextTextChunk += nextChar;
             break;
 
-          case STATE_RETURN_CHAR:
-            nextTextChunk = nextChar;
-            break chunkReader;
-
-          case STATE_RETURN_TAG:
+          case STATE_RETURN_UNTOUCHED:
             nextTextChunk += nextChar;
             break chunkReader;
 
@@ -196,9 +197,8 @@
       shouldHyphenate,
       STATE_READ_TAG = 1,
       STATE_READ_WORD = 2,
-      STATE_RETURN_CHAR = 3,
-      STATE_RETURN_TAG = 4,
-      STATE_RETURN_WORD = 5,
+      STATE_RETURN_UNTOUCHED = 3,
+      STATE_RETURN_WORD = 4,
       state;
 
     return [readNextTextChunk, shouldNextHyphenate];
@@ -322,7 +322,7 @@
 
     return patternData;
   }
-  function start(text, patterns, cache, debug, hyphenChar, isAsync) {
+  function start(text, patterns, cache, debug, hyphenChar, skipHTML, isAsync) {
     function done() {
       allTime = new Date() - allTime;
       resolveNewText(newText);
@@ -344,7 +344,7 @@
     var //
       newText = "",
       nextTextChunk,
-      reader = createTextChunkReader(text, hyphenChar),
+      reader = createTextChunkReader(text, hyphenChar, skipHTML),
       readNextTextChunk = reader[0],
       shouldNextHyphenate = reader[1],
       states = { hyphenateWord: 1, concatenate: 2 },

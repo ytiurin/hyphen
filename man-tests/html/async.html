@@ -157,11 +157,12 @@
       var hyphenate = createHyphenator(hyphenationPatternsEnUs, {
         async: true,
         debug: true,
+        html: true,
         hyphenChar: "-"
       });
 
       var el = document.getElementsByTagName("main")[0];
-      hyphenate(el.innerHTML).then(function(html) {
+      hyphenate(el.innerHTML).then(function (html) {
         el.innerHTML = html;
         clearTimeout(rollTO);
       });
@@ -169,7 +170,14 @@
 
     <div
       id="roll"
-      style="position:fixed;right:10px;top:10px;width:40px;height:40px;background:red;"
+      style="
+        position: fixed;
+        right: 10px;
+        top: 10px;
+        width: 40px;
+        height: 40px;
+        background: red;
+      "
     ></div>
     <script type="text/javascript">
       var ang = 0,

@@ -1,4 +1,4 @@
-function start(text, patterns, cache, debug, hyphenChar, isAsync) {
+function start(text, patterns, cache, debug, hyphenChar, skipHTML, isAsync) {
   function done() {
     allTime = new Date() - allTime;
     resolveNewText(newText);
@@ -20,7 +20,7 @@ function start(text, patterns, cache, debug, hyphenChar, isAsync) {
   var //
     newText = "",
     nextTextChunk,
-    reader = createTextChunkReader(text, hyphenChar),
+    reader = createTextChunkReader(text, hyphenChar, skipHTML),
     readNextTextChunk = reader[0],
     shouldNextHyphenate = reader[1],
     states = { hyphenateWord: 1, concatenate: 2 },

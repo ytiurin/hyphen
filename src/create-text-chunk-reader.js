@@ -1,4 +1,4 @@
-function createTextChunkReader(text, hyphenChar) {
+function createTextChunkReader(text, hyphenChar, skipHTML) {
   function readNextTextChunk() {
     var nextTextChunk = "";
 
@@ -11,12 +11,13 @@ function createTextChunkReader(text, hyphenChar) {
           !!nextChar && !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar),
         charIsAngleOpen = nextChar === "<",
         charIsAngleClose = nextChar === ">",
-        charIsHyphen = nextChar === hyphenChar;
+        charIsHyphen = nextChar === hyphenChar,
+        charIsSpacelike = /\s/.test(nextChar);
 
       do {
         if (state === STATE_READ_TAG) {
-          if (charIsAngleClose) {
-            state = STATE_RETURN_TAG;
+          if (charIsAngleClose || charIsSpacelike) {
+            state = STATE_RETURN_UNTOUCHED;
           }
           break;
         }
@@ -40,10 +41,10 @@ function createTextChunkReader(text, hyphenChar) {
         }
 
         shouldHyphenate = SHOULD_SKIP;
-        state = STATE_RETURN_CHAR;
+        state = STATE_RETURN_UNTOUCHED;
       } while (0);
 
-      if (charIsAngleOpen && state !== STATE_RETURN_WORD) {
+      if (charIsAngleOpen && state !== STATE_RETURN_WORD && skipHTML) {
         shouldHyphenate = SHOULD_SKIP;
         state = STATE_READ_TAG;
       }
@@ -57,11 +58,7 @@ function createTextChunkReader(text, hyphenChar) {
           nextTextChunk += nextChar;
           break;
 
-        case STATE_RETURN_CHAR:
-          nextTextChunk = nextChar;
-          break chunkReader;
-
-        case STATE_RETURN_TAG:
+        case STATE_RETURN_UNTOUCHED:
           nextTextChunk += nextChar;
           break chunkReader;
 
@@ -84,9 +81,8 @@ function createTextChunkReader(text, hyphenChar) {
     shouldHyphenate,
     STATE_READ_TAG = 1,
     STATE_READ_WORD = 2,
-    STATE_RETURN_CHAR = 3,
-    STATE_RETURN_TAG = 4,
-    STATE_RETURN_WORD = 5,
+    STATE_RETURN_UNTOUCHED = 3,
+    STATE_RETURN_WORD = 4,
     state;
 
   return [readNextTextChunk, shouldNextHyphenate];
