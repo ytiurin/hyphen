@@ -1,1 +1,3 @@
-module.exports = require("../../hyphen.js")(require("../../patterns/sh-latn.js"));
+module.exports = require("../../export-interface.js")(
+  require("../../patterns/sh-latn.js")
+);

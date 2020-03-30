@@ -1,1 +1,3 @@
-module.exports = require("../../hyphen.js")(require("../../patterns/gl.js"));
+module.exports = require("../../export-interface.js")(
+  require("../../patterns/gl.js")
+);

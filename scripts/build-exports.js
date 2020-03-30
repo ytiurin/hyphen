@@ -6,7 +6,6 @@ const aliases = [
   ["en", "en-us"],
   ["el", "el-monoton"],
   ["ethi", "mul-ethi"],
-  ["la", "la-classic"],
   ["mn", "mn-cyrl"],
   ["sh", "sh-cyrl"],
   ["sr", "sr-cyrl"],
@@ -16,9 +15,11 @@ const aliases = [
 const makeAlias = locale => `module.exports = require("../${locale}/index.js");
 `;
 const makeExport = locale =>
-  `module.exports = require("../../hyphen.js")(require("../../patterns/${locale}.js"));
+  `module.exports = require("../../export-interface.js")(
+  require("../../patterns/${locale}.js")
+);
 `;
-const makeIndex = () => `module.exports = require("../hyphen.js");
+const makeIndex = () => `module.exports = "This export will be added in future versions";
 `;
 
 console.log(`Building exports`);

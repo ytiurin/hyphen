@@ -1,1 +1,3 @@
-module.exports = require("../../hyphen.js")(require("../../patterns/fi.js"));
+module.exports = require("../../export-interface.js")(
+  require("../../patterns/fi.js")
+);

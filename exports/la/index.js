@@ -1,1 +1,3 @@
-module.exports = require("../la-classic/index.js");
+module.exports = require("../../export-interface.js")(
+  require("../../patterns/la.js")
+);
