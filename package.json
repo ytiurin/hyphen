@@ -29,6 +29,7 @@
   "files": [
     "exports",
     "patterns",
+    "export-interface.js",
     "hyphen.js"
   ],
   "devDependencies": {
