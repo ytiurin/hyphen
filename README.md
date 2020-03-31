@@ -66,4 +66,4 @@ Check other great hyphenation libraries:
 
 License
 -------
-MIT
+ISC

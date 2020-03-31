@@ -21,7 +21,7 @@
     "hyphenator"
   ],
   "author": "Eugene Tiurin <yevhentiurin@gmail.com> (https://github.com/ytiurin)",
-  "license": "MIT",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/ytiurin/hyphen/issues"
   },

@@ -1,8 +1,8 @@
-/** Franklin M. Liang's hyphenation algorithm, implemented in Javascript.
- *  Copyright (C) 2016 Yevhen Tiurin (yevhentiurin@gmail.com)
+/** Hyphenation in Javascript.
+ *  Copyright (C) 2020 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *
- *  Released under the MIT license
+ *  Released under the ISC license
  *  https://github.com/ytiurin/hyphen/blob/master/LICENSE
  */
 (function(root, factory) {

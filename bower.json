@@ -1,16 +1,16 @@
 {
   "name": "hyphe",
-  "description": "Franklin M. Liang's hyphenation algorithm, implemented in Javascript.",
+  "description": "Hyphenation in Javascript.",
   "main": "hyphen.js",
   "authors": [
     "Eugene Tiurin <yevhentiurin@gmail.com> (https://github.com/ytiurin)"
   ],
-  "license": "MIT",
+  "license": "ISC",
   "keywords": [
     "hyphen",
+    "hyphenate",
     "hyphenation",
-    "hyphenator",
-    "soft"
+    "hyphenator"
   ],
   "homepage": "https://github.com/ytiurin/hyphen",
   "ignore": [
