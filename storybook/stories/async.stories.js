@@ -1,4 +1,4 @@
-import { hyphenateHTML } from "../../exports/en";
+import { hyphenateHTML } from "../../package/en";
 
 import html from "./sample-book.html";
 

@@ -1,4 +1,4 @@
-/** Franklin M. Liang's hyphenation algorithm, implemented in Javascript.
+/** Hyphenation in Javascript.
  *  Copyright (C) 2020 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *

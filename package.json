@@ -1,37 +1,20 @@
 {
-  "name": "hyphen",
-  "version": "1.3.1",
-  "description": "Franklin M. Liang's hyphenation algorithm, implemented in Javascript.",
-  "main": "exports",
+  "private": true,
+  "description": "Development environment for the lib.",
   "scripts": {
-    "build": "node ./scripts/build.js && node ./scripts/build-exports.js",
+    "build:package": "node ./scripts/build-package.js",
+    "build": "node ./scripts/build-src.js",
     "lint": "npx eslint hyphen.js",
     "start": "npm run watch",
     "test": "jest",
-    "watch": "npx nodemon -w ./src ./scripts/build.js"
+    "watch:package": "npx nodemon -w ./patterns -w ./hyphen.js ./scripts/build-package.js",
+    "watch": "npx nodemon -w ./src ./scripts/build-src.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ytiurin/hyphen"
   },
-  "keywords": [
-    "hyphen",
-    "hyphenate",
-    "hyphenation",
-    "hyphenator"
-  ],
-  "author": "Eugene Tiurin <yevhentiurin@gmail.com> (https://github.com/ytiurin)",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ytiurin/hyphen/issues"
-  },
-  "homepage": "https://github.com/ytiurin/hyphen",
-  "files": [
-    "exports",
-    "patterns",
-    "export-interface.js",
-    "hyphen.js"
-  ],
   "devDependencies": {
     "eslint": "^6.8.0",
     "jest": "^25.2.3",

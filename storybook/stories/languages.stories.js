@@ -1,9 +1,9 @@
-import { hyphenateHTMLSync as hyphenateDe } from "../../exports/de";
-import { hyphenateHTMLSync as hyphenateEl } from "../../exports/el";
-import { hyphenateHTMLSync as hyphenateEn } from "../../exports/en";
-import { hyphenateHTMLSync as hyphenateFr } from "../../exports/fr";
-import { hyphenateHTMLSync as hyphenateIt } from "../../exports/it";
-import { hyphenateHTMLSync as hyphenateTr } from "../../exports/tr";
+import { hyphenateHTMLSync as hyphenateDe } from "../../package/de";
+import { hyphenateHTMLSync as hyphenateEl } from "../../package/el";
+import { hyphenateHTMLSync as hyphenateEn } from "../../package/en";
+import { hyphenateHTMLSync as hyphenateFr } from "../../package/fr";
+import { hyphenateHTMLSync as hyphenateIt } from "../../package/it";
+import { hyphenateHTMLSync as hyphenateTr } from "../../package/tr";
 
 import english from "./languages/english.html";
 import french from "./languages/french.html";
