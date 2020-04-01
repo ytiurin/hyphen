@@ -7,7 +7,7 @@
     "lint": "npx eslint hyphen.js",
     "start": "npm run watch",
     "test": "jest",
-    "watch:package": "npx nodemon -w ./patterns -w ./hyphen.js ./scripts/build-package.js",
+    "watch:package": "npx nodemon -w ./export-contract.js -w ./hyphen.js ./scripts/build-package.js",
     "watch": "npx nodemon -w ./src ./scripts/build-src.js"
   },
   "repository": {
