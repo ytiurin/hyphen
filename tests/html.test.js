@@ -1,26 +1,23 @@
 const createHyphenator = require("../hyphen.js");
 const patterns = require("../patterns/en-us.js");
 
-let hyphenate;
+let hyphenate, hyphenateHTML;
 
 beforeAll(() => {
-  hyphenate = createHyphenator(patterns);
+  hyphenate = createHyphenator(patterns, { hyphenChar: "-" });
+  hyphenateHTML = createHyphenator(patterns, { html: true, hyphenChar: "-" });
 });
 
 describe("HTML syntax hyphenation", () => {
   test("Should hyphenate HTML syntax by default", () => {
-    expect(hyphenate("<beautiful>", { hyphenChar: "-" })).toBe("<beau-ti-ful>");
+    expect(hyphenate("<beautiful>")).toBe("<beau-ti-ful>");
   });
 
   test("Should NOT hyphenate HTML syntax, if `html` option set to true", () => {
-    expect(hyphenate("<beautiful>", { html: true, hyphenChar: "-" })).toBe(
-      "<beautiful>"
-    );
+    expect(hyphenateHTML("<beautiful>")).toBe("<beautiful>");
   });
 
   test("Should NOT recognize text as HTML, if `<` char is followed by space", () => {
-    expect(hyphenate("< beautiful >", { html: true, hyphenChar: "-" })).toBe(
-      "< beau-ti-ful >"
-    );
+    expect(hyphenateHTML("< beautiful >")).toBe("< beau-ti-ful >");
   });
 });

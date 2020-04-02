@@ -66,10 +66,8 @@ function createHyphenator(patternsDefinition, options) {
   return function (text, options) {
     options = options || {};
     var //
-      localAsyncMode = keyOrDefault(options, "async", asyncMode),
       localDebug = keyOrDefault(options, "debug", debug),
-      localHyphenChar = keyOrDefault(options, "hyphenChar", hyphenChar),
-      localSkipHTML = keyOrDefault(options, "html", skipHTML);
+      localHyphenChar = keyOrDefault(options, "hyphenChar", hyphenChar);
 
     exceptions[localHyphenChar] =
       exceptions[localHyphenChar] ||
@@ -84,8 +82,8 @@ function createHyphenator(patternsDefinition, options) {
       caches[localHyphenChar],
       localDebug,
       localHyphenChar,
-      localSkipHTML,
-      localAsyncMode
+      skipHTML,
+      asyncMode
     );
   };
 }
