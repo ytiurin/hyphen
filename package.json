@@ -8,7 +8,8 @@
     "start": "npm run watch",
     "test": "jest",
     "watch:package": "npx nodemon -w ./export-contract.js -w ./hyphen.js ./scripts/build-package.js",
-    "watch": "npx nodemon -w ./src ./scripts/build-src.js"
+    "watch:src": "npx nodemon -w ./src ./scripts/build-src.js",
+    "watch": "npm run watch:src & npm run watch:package"
   },
   "repository": {
     "type": "git",
