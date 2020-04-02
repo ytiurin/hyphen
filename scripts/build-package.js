@@ -3,8 +3,9 @@ const DIR_PATTERNS = "patterns";
 const DIR_SCRIPTS = "scripts";
 
 const aliases = [
-  ["en", "en-us"],
+  ["de", "de-1996"],
   ["el", "el-monoton"],
+  ["en", "en-us"],
   ["ethi", "mul-ethi"],
   ["mn", "mn-cyrl"],
   ["sh", "sh-cyrl"],
