@@ -51,13 +51,14 @@ function copyFiles(paths, dest) {
   }
 }
 
-function buildFiles(arr, destPathFactory, contentFactory) {
+function buildFiles(arr, destPathFactory, contentFactory, done) {
   for (var item of arr) {
     const pathDest = destPathFactory(item);
 
     existsSync(dirname(pathDest)) ||
       mkdirSync(dirname(pathDest), { recursive: true });
     writeFileSync(pathDest, contentFactory(item));
+    done && done(item, pathDest);
   }
 }
 
