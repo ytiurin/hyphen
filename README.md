@@ -69,9 +69,108 @@ hyphenate("Options", { debug: true, hyphenChar: "%" });
 
   A `String` sets a value of the soft hyphen character. Default value is `\u00AD`.
 
-## Patterns available for these languages
+## Import available languages
 
-Afrikaans, Ancient Greek, Armenian, Assamese, Bahasa Indonesia, Basque, Bengali, Bulgarian, Catalan, Chinese, Slavonic, Latin, Coptic, Croatian, Czech, Danish, Dutch, English, Estonian, Ethiopic, Finnish, French, Friulan, Galician, Georgian, German, Greek, Gujarati, Hindi, Hungarian, Icelandic, Interlingua, Irish, Italian, Kannada, Kurmanji, Latin, Latvian, Lithuanian, Malayalam, Marathi, Mongolian, Norwegian, Occitan, Oriy, Pāli, Panjabi, Piedmontese, Polish, Portuguese, Romanian, Romansh, Russian, Sanskrit and Prakrit, Serbian, Serbocroatian, Slovak, Slovenian, Spanish, Swedish, Swiss-German, Tamil, Telugu, Thai, Turkish, Turkmen, Ukrainian, Upper Sorbian, Welsh
+- `hyphen/af` - Afrikaans
+- `hyphen/as` - Assamese
+- `hyphen/be` - Belarusian
+- `hyphen/bg` - Bulgarian
+- `hyphen/bn` - Bengali
+- `hyphen/ca` - Catalan
+- `hyphen/cop` - Coptic
+- `hyphen/cs` - Czech
+- `hyphen/cu` - Church Slavonic
+- `hyphen/cy` - Welsh
+- `hyphen/da` - Danish
+- `hyphen/de-1901` - German, traditional spelling
+- `hyphen/de-1996` - German, reformed spelling
+- `hyphen/de-CH-1901` - German, traditional Swiss spelling
+- `hyphen/de` - Alias for de-1996
+- `hyphen/el-monoton` - Modern Greek, monotonic spelling
+- `hyphen/el-polyton` - Modern Greek, polytonic spelling
+- `hyphen/el` - Alias for el-monoton
+- `hyphen/en-gb` - English, British spelling
+- `hyphen/en-us` - English, American spelling
+- `hyphen/en` - Alias for en-us
+- `hyphen/es` - Spanish
+- `hyphen/et` - Estonian
+- `hyphen/ethi` - Alias for mul-ethi
+- `hyphen/eu` - Basque
+- `hyphen/fi` - Finnish
+- `hyphen/fr` - French
+- `hyphen/fur` - Friulan
+- `hyphen/ga` - Irish
+- `hyphen/gl` - Galician
+- `hyphen/grc` - Ancient Greek
+- `hyphen/gu` - Gujarati
+- `hyphen/hi` - Hindi
+- `hyphen/hr` - Croatian
+- `hyphen/hsb` - Upper Sorbian
+- `hyphen/hu` - Hungarian
+- `hyphen/hy` - Armenian
+- `hyphen/ia` - Interlingua
+- `hyphen/id` - Bahasa Indonesia, Indonesian
+- `hyphen/is` - Icelandic
+- `hyphen/it` - Italian
+- `hyphen/ka` - Georgian
+- `hyphen/kmr` - Kurmanji, Northern Kurdish
+- `hyphen/kn` - Kannada
+- `hyphen/la-x-classic` - Classical Latin
+- `hyphen/la-x-liturgic` - Liturgical Latin
+- `hyphen/la` - Latin
+- `hyphen/lt` - Lithuanian
+- `hyphen/lv` - Latvian
+- `hyphen/ml` - Malayalam
+- `hyphen/mn-cyrl-x-lmc` - Mongolian, Cyrillic script, alternative patterns
+- `hyphen/mn-cyrl` - Mongolian, Cyrillic script
+- `hyphen/mn` - Alias for mn-cyrl
+- `hyphen/mr` - Marathi
+- `hyphen/mul-ethi` - Multiple languages using the Ethiopic scripts
+- `hyphen/nb` - Norwegian Bokmål, bokmål, norsk bokmål
+- `hyphen/nl` - Dutch
+- `hyphen/nn` - Norwegian Nynorsk, nynorsk
+- `hyphen/no` - Norwegian, norsk
+- `hyphen/oc` - Occitan
+- `hyphen/or` - Odia, Oriya
+- `hyphen/pa` - Panjabi, Punjabi
+- `hyphen/pi` - Pāli
+- `hyphen/pl` - Polish
+- `hyphen/pms` - Piedmontese
+- `hyphen/pt` - Portuguese
+- `hyphen/rm` - Romansh
+- `hyphen/ro` - Romanian
+- `hyphen/ru` - Russian
+- `hyphen/sa` - Sanskrit
+- `hyphen/sh-cyrl` - Serbocroatian, Cyrillic script
+- `hyphen/sh-latn` - Serbocroatian, Latin script
+- `hyphen/sh` - Alias for sh-cyrl
+- `hyphen/sk` - Slovak
+- `hyphen/sl` - Slovenian
+- `hyphen/sr-cyrl` - Serbian, Cyrillic script
+- `hyphen/sr` - Alias for sr-cyrl
+- `hyphen/sv` - Swedish
+- `hyphen/ta` - Tamil
+- `hyphen/te` - Telugu
+- `hyphen/th` - Thai
+- `hyphen/tk` - Turkmen
+- `hyphen/tr` - Turkish
+- `hyphen/uk` - Ukrainian
+- `hyphen/zh-latn-pinyin` - Mandarin Chinese, pinyin transliteration
+- `hyphen/zh` - Alias for zh-latn-pinyin
+
+## Factory function
+
+```javascript
+import createHyphenator from "hyphen";
+import patterns from "hyphen/patterns/en-us";
+
+const hyphenate = createHyphenator(patterns, { async: true });
+const hyphenateHTML = createHyphenator(patterns, { async: true, html: true });
+const hyphenateHTMLSync = createHyphenator(patterns, { html: true });
+const hyphenateSync = createHyphenator(patterns);
+```
+
+> Note: This original factory function surves mostly for the compatibility with dependers code base
 
 ## Hyphenation in CSS
 
