@@ -115,4 +115,4 @@ dist
 .pnp.*
 
 # project
-package
+/package
