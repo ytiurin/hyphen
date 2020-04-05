@@ -2,7 +2,7 @@
 
 # hyphen
 
-This is a hyphenation library, based on Franklin M. Liang's [hyphenation algorithm](https://tug.org/docs/liang/ "Frank Liang wrote his Stanford Ph.D. thesis on a hyphenation algorithm that is standard in TeX, and has been adapted to numerous languages."). In core of the algorithm lies a set of hyphenation patterns. They are extracted from hand-hyphenated dictionaries. Patterns for this library were taken from [ctan.org](https://ctan.org/ "The Comprehensive TEX Archive Network (CTAN) is the central place for all kinds of material around TEX.") and ported to Javascript.
+This is a text hyphenation library, based on Franklin M. Liang's [hyphenation algorithm](https://tug.org/docs/liang/ "Frank Liang wrote his Stanford Ph.D. thesis on a hyphenation algorithm that is standard in TeX, and has been adapted to numerous languages."). In core of the algorithm lies a set of hyphenation patterns. They are extracted from hand-hyphenated dictionaries. Patterns for this library were taken from [ctan.org](https://ctan.org/ "The Comprehensive TEX Archive Network (CTAN) is the central place for all kinds of material around TEX.") and ported to Javascript.
 
 ```javascript
 import { hyphenate } from "hyphen/en";
@@ -172,7 +172,7 @@ const hyphenateSync = createHyphenator(patterns);
 
 > Note: This original factory function surves mostly for the backwards compatibility reasons.
 
-## Hyphenation in CSS
+## Text hyphenation in CSS
 
 The CSS `hyphens` property is intended to add hyphenation support to modern browsers without Javascript:
 

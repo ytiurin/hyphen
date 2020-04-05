@@ -1,4 +1,4 @@
-/** Hyphenation in Javascript.
+/** Text hyphenation in Javascript.
  *  Copyright (C) 2020 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *
@@ -406,5 +406,6 @@
       return newText;
     }
   }
+
   return createHyphenator;
 });

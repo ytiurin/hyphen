@@ -1,6 +1,6 @@
 {
   "name": "hyphe",
-  "description": "Hyphenation in Javascript.",
+  "description": "Text hyphenation in Javascript.",
   "main": "hyphen.js",
   "authors": [
     "Eugene Tiurin <yevhentiurin@gmail.com> (https://github.com/ytiurin)"

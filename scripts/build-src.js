@@ -1,30 +1,54 @@
-const DIR_SELF = "scripts";
 const DIR_SRC = "src";
 const DIR_UMD = "umd";
 
 const FILENAME_BUNDLE = "hyphen.js";
 const FILENAME_PRETTIER_CONFIG = ".prettierrc.json";
-const FILENAME_UMD_CAP = "cap";
-const FILENAME_UMD_UNDER = "under";
 
-console.log(`Building to ${FILENAME_BUNDLE}`);
+const makeUMD = code => `/** Text hyphenation in Javascript.
+ *  Copyright (C) 2020 Yevhen Tiurin (yevhentiurin@gmail.com)
+ *  https://github.com/ytiurin/hyphen
+ *
+ *  Released under the ISC license
+ *  https://github.com/ytiurin/hyphen/blob/master/LICENSE
+ */
+(function (root, factory) {
+  if (typeof define === "function" && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  } else if (typeof module === "object" && module.exports) {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+    root.createHyphenator = factory();
+  }
+})(this, function () {
+
+  ${code}
+
+  return createHyphenator;
+});
+`;
 
 const { exec } = require("child_process");
-const { join } = require("path");
+
+const { join, resolve } = require("path");
 const { readFileSync, readdirSync, writeFileSync } = require("fs");
 const prettier = require("prettier");
 
-const pathRoot = __dirname.replace(DIR_SELF,'');
-const pathSrc = join(pathRoot, DIR_SRC);
-const pathUMD = join(__dirname, DIR_UMD);
-
-const filepaths = [].concat(
-  `${pathUMD}/${FILENAME_UMD_CAP}`,
-  readdirSync(pathSrc).map((filename) => `${pathSrc}/${filename}`),
-  `${pathUMD}/${FILENAME_UMD_UNDER}`
+const pathTo = (pathRoot => (...args) => join(pathRoot, ...args))(
+  resolve(__dirname, "..")
 );
 
-let source = filepaths.map((filepath) => readFileSync(filepath)).join("");
+console.log(`Building to ${FILENAME_BUNDLE}`);
+
+let source = makeUMD(
+  readdirSync(pathTo(DIR_SRC))
+    .map(filename => readFileSync(pathTo(DIR_SRC, filename)))
+    .join("")
+);
 
 const prettierConfig = Object.assign(
   JSON.parse(readFileSync(FILENAME_PRETTIER_CONFIG)),
