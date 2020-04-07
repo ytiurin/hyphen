@@ -29,8 +29,7 @@
     typeof global === "object"
       ? global
       : typeof window === "object"
-      ? /* eslint-disable-next-line no-undef */
-        window
+      ? window
       : typeof this === "object"
       ? this
       : {};
@@ -397,7 +396,6 @@
 
     if (isAsync) {
       setTimeout(nextTick);
-      /* eslint-disable-next-line no-undef */
       return new Promise(function (resolve) {
         resolveNewText = resolve;
       });

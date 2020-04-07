@@ -8,8 +8,7 @@ var _global =
   typeof global === "object"
     ? global
     : typeof window === "object"
-    ? /* eslint-disable-next-line no-undef */
-      window
+    ? window
     : typeof this === "object"
     ? this
     : {};

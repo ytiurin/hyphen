@@ -75,7 +75,6 @@ function start(text, patterns, cache, debug, hyphenChar, skipHTML, isAsync) {
 
   if (isAsync) {
     setTimeout(nextTick);
-    /* eslint-disable-next-line no-undef */
     return new Promise(function (resolve) {
       resolveNewText = resolve;
     });

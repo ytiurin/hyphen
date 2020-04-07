@@ -1,13 +1,12 @@
 {
   "env": {
     "amd": true,
-    "commonjs": true,
-    "shared-node-browser": true
+    "browser": true,
+    "commonjs": true
   },
   "extends": "eslint:recommended",
   "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
+    "Promise": "readonly"
   },
   "parserOptions": {
     "ecmaVersion": 3
