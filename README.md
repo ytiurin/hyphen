@@ -190,7 +190,3 @@ Check other great hyphenation libraries:
 
 - [Hyphenator.js](http://mnater.github.io/Hyphenator/) does client-side hyphenation of HTML-Documents.
 - [Hypher](https://github.com/bramstein/hypher) A fast and small hyphenation engine.
-
-## License
-
-ISC
