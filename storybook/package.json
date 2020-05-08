@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "build-storybook -c .storybook -o ../docs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ../scripts/build-package.js && npm run storybook",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "start-storybook -p 6006"
   },
   "author": "",
   "license": "ISC",

@@ -15,7 +15,7 @@ import turkish from "./languages/turkish.html";
 import makeLanguageStory from "./make-language-story";
 
 export default {
-  title: "Languages"
+  title: "hyphen/Languages"
 };
 
 export const English = () => makeLanguageStory(hyphenateEn, english);

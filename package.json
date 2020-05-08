@@ -2,6 +2,7 @@
   "private": true,
   "description": "Development environment for the lib.",
   "scripts": {
+    "build:docs": "cd ./storybook && npm run build && cd ..",
     "build:package": "node ./scripts/build-package.js",
     "build": "node ./scripts/build-src.js",
     "lint": "npx eslint hyphen.js",

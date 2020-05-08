@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{0:function(n,t,e){e(402),e(544),n.exports=e(1229)},1:function(n,t){},1229:function(n,t,e){"use strict";e.r(t);var i=e(245),o=e(1228),s=Object(o.create)({base:"light",brandTitle:"hyphen on GitHub",brandUrl:"https://github.com/ytiurin/hyphen"});i.addons.setConfig({theme:s})}},[[0,1,2]]]);

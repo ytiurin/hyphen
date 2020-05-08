@@ -3,7 +3,7 @@ import { hyphenateHTML } from "../../package/en";
 import html from "./sample-book.html";
 
 export default {
-  title: "Async mode"
+  title: "hyphen/Async mode"
 };
 
 export const PreventUIBlock = () => {
