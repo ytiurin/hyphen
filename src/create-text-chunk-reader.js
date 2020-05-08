@@ -1,4 +1,4 @@
-function createTextChunkReader(text, hyphenChar, skipHTML) {
+function createTextChunkReader(text, hyphenChar, skipHTML, minWordLength) {
   function readNextTextChunk() {
     var nextTextChunk = "";
 
@@ -36,7 +36,8 @@ function createTextChunkReader(text, hyphenChar, skipHTML) {
         if (state === STATE_READ_WORD) {
           state = STATE_RETURN_WORD;
           shouldHyphenate =
-            shouldHyphenate || (nextTextChunk.length > 4 && SHOULD_HYPHENATE);
+            shouldHyphenate ||
+            (nextTextChunk.length >= minWordLength && SHOULD_HYPHENATE);
           break;
         }
 

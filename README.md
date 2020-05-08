@@ -57,7 +57,7 @@ hyphenateSync("Sync version of `hyphenate`");
 ## Options
 
 ```javascript
-hyphenate("Options", { debug: true, hyphenChar: "%" });
+hyphenate("Options", { debug: true, hyphenChar: "%", minWordLength: 5 });
 // Op%tions
 ```
 
@@ -68,6 +68,10 @@ hyphenate("Options", { debug: true, hyphenChar: "%" });
 - **hyphenChar**
 
   A `String` sets a value of the soft hyphen character. Default value is `\u00AD`.
+
+- **minWordLength**
+
+  A `Number` sets the minimum length of the word, intended for hyphenation. This value can't be less than `5` (for the performance consideration). Default value is `5`.
 
 ## Import available languages
 

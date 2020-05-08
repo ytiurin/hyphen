@@ -1,8 +1,14 @@
-var //
-  SETTING_ASYNC_MODE = false,
-  SETTING_DEBUG = false,
-  SETTING_HYPHEN_CHAR = "\u00AD",
-  SETTING_SKIP_HTML = false;
+var MIN_WORD_LENGTH_BOUNDRY = 5;
+
+var SETTING_DEFAULT_ASYNC = false,
+  SETTING_DEFAULT_DEBUG = false,
+  SETTING_DEFAULT_HTML = false,
+  SETTING_DEFAULT_HYPH_CHAR = "\u00AD",
+  SETTING_NAME_ASYNC = "async",
+  SETTING_NAME_DEBUG = "debug",
+  SETTING_NAME_HTML = "html",
+  SETTING_NAME_HYPH_CHAR = "hyphenChar",
+  SETTING_NAME_MIN_WORD_LENGTH = "minWordLength";
 
 var _global =
   typeof global === "object"
@@ -41,20 +47,33 @@ function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
 function createHyphenator(patternsDefinition, options) {
   options = options || {};
   var //
-    asyncMode = keyOrDefault(options, "async", SETTING_ASYNC_MODE),
+    asyncMode = keyOrDefault(
+      options,
+      SETTING_NAME_ASYNC,
+      SETTING_DEFAULT_ASYNC
+    ),
     caches = {},
-    debug = keyOrDefault(options, "debug", SETTING_DEBUG),
+    debug = keyOrDefault(options, SETTING_NAME_DEBUG, SETTING_DEFAULT_DEBUG),
     exceptions = {},
-    hyphenChar = keyOrDefault(options, "hyphenChar", SETTING_HYPHEN_CHAR),
+    hyphenChar = keyOrDefault(
+      options,
+      SETTING_NAME_HYPH_CHAR,
+      SETTING_DEFAULT_HYPH_CHAR
+    ),
     patterns = patternsDefinition.patterns.map(preprocessPattern),
-    skipHTML = keyOrDefault(options, "html", SETTING_SKIP_HTML);
+    minWordLength = Math.max(
+      options[SETTING_NAME_MIN_WORD_LENGTH] >> 0,
+      MIN_WORD_LENGTH_BOUNDRY
+    ),
+    skipHTML = keyOrDefault(options, SETTING_NAME_HTML, SETTING_DEFAULT_HTML);
 
   // Prepare cache
-  exceptions[hyphenChar] = exceptionsFromDefinition(
+  var cacheKey = hyphenChar + minWordLength;
+  exceptions[cacheKey] = exceptionsFromDefinition(
     patternsDefinition,
     hyphenChar
   );
-  caches[hyphenChar] = cloneObj(exceptions[hyphenChar]);
+  caches[cacheKey] = cloneObj(exceptions[cacheKey]);
 
   if (asyncMode && !("Promise" in _global)) {
     throw new Error(
@@ -64,24 +83,38 @@ function createHyphenator(patternsDefinition, options) {
 
   return function (text, options) {
     options = options || {};
-    var //
-      localDebug = keyOrDefault(options, "debug", debug),
-      localHyphenChar = keyOrDefault(options, "hyphenChar", hyphenChar);
 
-    exceptions[localHyphenChar] =
-      exceptions[localHyphenChar] ||
-      exceptionsFromDefinition(patternsDefinition, localHyphenChar);
+    var localDebug = keyOrDefault(options, SETTING_NAME_DEBUG, debug),
+      localHyphenChar = keyOrDefault(
+        options,
+        SETTING_NAME_HYPH_CHAR,
+        hyphenChar
+      ),
+      localMinWordLength = Math.max(
+        options[SETTING_NAME_MIN_WORD_LENGTH] >> 0,
+        minWordLength
+      ),
+      cacheKey = localHyphenChar + localMinWordLength;
 
-    caches[localHyphenChar] =
-      caches[localHyphenChar] || cloneObj(exceptions[localHyphenChar]);
+    if (!exceptions[cacheKey]) {
+      exceptions[cacheKey] = exceptionsFromDefinition(
+        patternsDefinition,
+        localHyphenChar
+      );
+    }
+
+    if (!caches[cacheKey]) {
+      caches[cacheKey] = cloneObj(exceptions[cacheKey]);
+    }
 
     return start(
       text,
       patterns,
-      caches[localHyphenChar],
+      caches[cacheKey],
       localDebug,
       localHyphenChar,
       skipHTML,
+      localMinWordLength,
       asyncMode
     );
   };
