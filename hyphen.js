@@ -157,12 +157,11 @@
             !!nextChar && !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar),
           charIsAngleOpen = nextChar === "<",
           charIsAngleClose = nextChar === ">",
-          charIsHyphen = nextChar === hyphenChar,
-          charIsSpacelike = /\s/.test(nextChar);
+          charIsHyphen = nextChar === hyphenChar;
 
         do {
           if (state === STATE_READ_TAG) {
-            if (charIsAngleClose || charIsSpacelike) {
+            if (charIsAngleClose) {
               state = STATE_RETURN_UNTOUCHED;
             }
             break;
@@ -191,7 +190,12 @@
           state = STATE_RETURN_UNTOUCHED;
         } while (0);
 
-        if (charIsAngleOpen && state !== STATE_RETURN_WORD && skipHTML) {
+        if (
+          charIsAngleOpen &&
+          state !== STATE_RETURN_WORD &&
+          skipHTML &&
+          !isSpacelike(text.charAt(nextCharIndex))
+        ) {
           shouldHyphenate = SHOULD_SKIP;
           state = STATE_READ_TAG;
         }
@@ -220,6 +224,8 @@
     function shouldNextHyphenate() {
       return shouldHyphenate === SHOULD_HYPHENATE;
     }
+
+    var isSpacelike = RegExp.prototype.test.bind(/\s/);
 
     var //
       nextCharIndex = 0,

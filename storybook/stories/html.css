@@ -1,0 +1,17 @@
+.decorated {
+  margin: 0;
+  width: 380px;
+}
+
+.decorated p {
+  border-left: 4px solid #53caff;
+  padding-left: 24px;
+}
+
+.decorated p::before {
+  content: "\201C";
+}
+
+.decorated p::after {
+  content: "\201D";
+}
