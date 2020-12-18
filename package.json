@@ -3,7 +3,8 @@
   "description": "Development environment for the lib.",
   "scripts": {
     "lint": "eslint src",
-    "test": "jest"
+    "test": "jest",
+    "build-patterns": "ts-node scripts/buildPatterns.ts"
   },
   "repository": {
     "type": "git",

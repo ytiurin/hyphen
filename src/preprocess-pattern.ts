@@ -1,12 +1,12 @@
-import { PatternData } from './types';
+import { PatternData } from "./types";
 
 export function preprocessPattern(pattern: string): PatternData {
   let patternCharIndex = 0;
-  let patternChar = '';
+  let patternChar = "";
   let prevCharIsNumber = false;
   const patternData: PatternData = {
     pattern: pattern,
-    text: '',
+    text: "",
     levels: [],
     stickToLeft: false,
     stickToRight: false,
@@ -14,7 +14,7 @@ export function preprocessPattern(pattern: string): PatternData {
   const states = { alphabet: 1, level: 2, stickToLeft: 3, stickToRight: 4 };
 
   while ((patternChar = pattern.charAt(patternCharIndex++))) {
-    const charIsDot = patternChar === '.';
+    const charIsDot = patternChar === ".";
     const charIsNumber = !charIsDot && /\d/.test(patternChar);
     const state = charIsDot
       ? patternCharIndex - 1 === 0

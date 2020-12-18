@@ -16,7 +16,7 @@ export function createTextChunkReader(
   const STATE_RETURN_WORD = 4;
   let state;
   function readNextTextChunk() {
-    let nextTextChunk = '';
+    let nextTextChunk = "";
 
     shouldHyphenate = void 0;
 
@@ -24,8 +24,8 @@ export function createTextChunkReader(
       const nextChar = text.charAt(nextCharIndex++);
       const charIsLetter =
         !!nextChar && !/\s|[!-@[-`{-~\u2013-\u203C]/.test(nextChar);
-      const charIsAngleOpen = nextChar === '<';
-      const charIsAngleClose = nextChar === '>';
+      const charIsAngleOpen = nextChar === "<";
+      const charIsAngleClose = nextChar === ">";
       const charIsHyphen = nextChar === hyphenChar;
 
       do {

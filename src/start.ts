@@ -1,6 +1,6 @@
-import { createTextChunkReader } from './create-text-chunk-reader';
-import { hyphenateWord } from './hyphenate-word';
-import { PatternData } from './types';
+import { createTextChunkReader } from "./create-text-chunk-reader";
+import { hyphenateWord } from "./hyphenate-word";
+import { PatternData } from "./types";
 
 export function start(
   text: string,
@@ -12,7 +12,7 @@ export function start(
   minWordLength: number,
   isAsync: boolean,
 ) {
-  let newText = '';
+  let newText = "";
   let nextTextChunk: string | undefined;
   const { readNextTextChunk, shouldNextHyphenate } = createTextChunkReader(
     text,

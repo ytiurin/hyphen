@@ -1,4 +1,4 @@
-import { PatternData } from './types';
+import { PatternData } from "./types";
 
 export function hyphenateWord(
   text: string,
@@ -27,7 +27,7 @@ export function hyphenateWord(
           : true);
 
       if (patternFits) {
-        p.push(patternData.pattern + '>' + patternData.levels.join(''));
+        p.push(patternData.pattern + ">" + patternData.levels.join(""));
 
         for (let i = 0; i < patternData.levels.length; i++)
           levels[patternEntityIndex + i] = Math.max(
@@ -47,14 +47,14 @@ export function hyphenateWord(
     levels.length - 2
   ] = 0;
 
-  let hyphenatedText = '';
-  let leveledText = '';
-  let debugHyphenatedText = '';
+  let hyphenatedText = "";
+  let leveledText = "";
+  let debugHyphenatedText = "";
 
   for (let i = 0; i < levels.length; i++) {
-    hyphenatedText += (levels[i] % 2 === 1 ? hyphenChar : '') + text.charAt(i);
-    debugHyphenatedText += (levels[i] % 2 === 1 ? '-' : '') + text.charAt(i);
-    leveledText += (levels[i] > 0 ? levels[i] : '') + text.charAt(i);
+    hyphenatedText += (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
+    debugHyphenatedText += (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
+    leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
   }
 
   if (debug)

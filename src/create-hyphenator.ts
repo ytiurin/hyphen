@@ -1,16 +1,16 @@
-import { preprocessPattern } from './preprocess-pattern';
-import { start } from './start';
+import { preprocessPattern } from "./preprocess-pattern";
+import { start } from "./start";
 
 const MIN_WORD_LENGTH_BOUNDRY = 5;
 const SETTING_DEFAULT_ASYNC = false;
 const SETTING_DEFAULT_DEBUG = false;
 const SETTING_DEFAULT_HTML = false;
-const SETTING_DEFAULT_HYPH_CHAR = '\u00AD';
-const SETTING_NAME_ASYNC = 'async';
-const SETTING_NAME_DEBUG = 'debug';
-const SETTING_NAME_HTML = 'html';
-const SETTING_NAME_HYPH_CHAR = 'hyphenChar';
-const SETTING_NAME_MIN_WORD_LENGTH = 'minWordLength';
+const SETTING_DEFAULT_HYPH_CHAR = "\u00AD";
+const SETTING_NAME_ASYNC = "async";
+const SETTING_NAME_DEBUG = "debug";
+const SETTING_NAME_HTML = "html";
+const SETTING_NAME_HYPH_CHAR = "hyphenChar";
+const SETTING_NAME_MIN_WORD_LENGTH = "minWordLength";
 
 function cloneObj(source) {
   const target = {};
@@ -29,7 +29,7 @@ function keyOrDefault(object, key, defaultValue) {
 
 function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
   return patternsDefinition.exceptions.reduce(function (exceptions, exception) {
-    exceptions[exception.replace(/-/g, '')] = exception.replace(
+    exceptions[exception.replace(/-/g, "")] = exception.replace(
       /-/g,
       hyphenChar,
     );
