@@ -14,7 +14,7 @@
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.9.0",
-    "@storybook/html": "^5.3.17",
+    "@storybook/html": "^6.2.1",
     "babel-loader": "^8.1.0"
   },
   "dependencies": {}
