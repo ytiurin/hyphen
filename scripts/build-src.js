@@ -5,7 +5,7 @@ const FILENAME_BUNDLE = "hyphen.js";
 const FILENAME_PRETTIER_CONFIG = ".prettierrc.json";
 
 const makeUMD = code => `/** Text hyphenation in Javascript.
- *  Copyright (C) 2020 Yevhen Tiurin (yevhentiurin@gmail.com)
+ *  Copyright (C) 2021 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *
  *  Released under the ISC license
