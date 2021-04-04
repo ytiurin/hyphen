@@ -11,4 +11,8 @@ describe("Reserved words hyphenation", () => {
   test("Should hyphenate constructor word correctly", () => {
     expect(hyphenate("constructor")).toBe("con-struc-tor");
   });
+
+  test("Should hyphenate `toString` correctly", () => {
+    expect(hyphenate("toString")).toBe("toString");
+  });
 });
