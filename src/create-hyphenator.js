@@ -60,11 +60,12 @@ function createHyphenator(patternsDefinition, options) {
       SETTING_DEFAULT_HYPH_CHAR
     ),
     patterns = patternsDefinition.patterns.map(preprocessPattern),
-    minWordLength = keyOrDefault(
-      options,
-      SETTING_NAME_MIN_WORD_LENGTH,
-      SETTING_DEFAULT_MIN_WORD_LENGTH
-    ),
+    minWordLength =
+      keyOrDefault(
+        options,
+        SETTING_NAME_MIN_WORD_LENGTH,
+        SETTING_DEFAULT_MIN_WORD_LENGTH
+      ) >> 0,
     skipHTML = keyOrDefault(options, SETTING_NAME_HTML, SETTING_DEFAULT_HTML);
 
   // Prepare cache
@@ -90,10 +91,8 @@ function createHyphenator(patternsDefinition, options) {
         SETTING_NAME_HYPH_CHAR,
         hyphenChar
       ),
-      localMinWordLength = Math.max(
-        options[SETTING_NAME_MIN_WORD_LENGTH] >> 0,
-        minWordLength
-      ),
+      localMinWordLength =
+        keyOrDefault(options, SETTING_NAME_MIN_WORD_LENGTH, minWordLength) >> 0,
       cacheKey = localHyphenChar + localMinWordLength;
 
     if (!exceptions[cacheKey]) {
