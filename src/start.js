@@ -27,12 +27,12 @@ function start(
   }
 
   var //
+    cacheKey,
     newText = "",
-    nextTextChunk,
+    textChunk,
     reader = createTextChunkReader(text, hyphenChar, skipHTML, minWordLength),
     readNextTextChunk = reader[0],
     shouldNextHyphenate = reader[1],
-    states = { hyphenateWord: 1, concatenate: 2 },
     processedN = 0,
     hyphenatedN = 0;
 
@@ -47,35 +47,34 @@ function start(
 
     while (
       (!isAsync || new Date() - loopStart < 10) &&
-      (nextTextChunk = readNextTextChunk())
+      (textChunk = readNextTextChunk())
     ) {
-      var state = shouldNextHyphenate()
-        ? states.hyphenateWord
-        : states.concatenate;
+      cacheKey = textChunk.length ? "$" + textChunk : "";
 
-      switch (state) {
-        case states.hyphenateWord:
-          if (!Object.prototype.hasOwnProperty.call(cache, nextTextChunk))
-            cache[nextTextChunk] = hyphenateWord(
-              nextTextChunk,
-              patterns,
-              debug,
-              hyphenChar
-            );
+      if (shouldNextHyphenate()) {
+        if (cache[cacheKey] === undefined) {
+          cache[cacheKey] = hyphenateWord(
+            textChunk,
+            patterns,
+            debug,
+            hyphenChar
+          );
+        }
 
-          if (nextTextChunk !== cache[nextTextChunk]) hyphenatedN++;
+        if (textChunk !== cache[cacheKey]) {
+          hyphenatedN++;
+        }
 
-          nextTextChunk = cache[nextTextChunk];
-
-        case states.concatenate:
-          newText += nextTextChunk;
+        textChunk = cache[cacheKey];
       }
 
+      newText += textChunk;
       processedN++;
     }
+
     workTime += new Date() - loopStart;
 
-    if (!nextTextChunk) {
+    if (!textChunk) {
       done();
     } else {
       setTimeout(nextTick);
