@@ -71,7 +71,7 @@ hyphenate("Options", { debug: true, hyphenChar: "%", minWordLength: 5 });
 
 - **minWordLength**
 
-  A `Number` sets the minimum length of the word, intended for hyphenation. This value can't be less than `5` (for the performance consideration). Default value is `5`.
+  A `Number` sets the minimum length of the word, intended for hyphenation. Default value is `5`.
 
 ## Import available languages
 
