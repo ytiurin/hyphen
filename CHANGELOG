@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.4] - 2021-04-04
+### Fixed
+- Handle the edge case of a word “constructor” being interpreted as a JavaScript keyword. - by [@arseni-mourzenko](https://github.com/arseni-mourzenko)
+
 ## [1.6.3] - 2021-04-04
 ### Fixed
 - Change undesired behavior of option `minWordLength`: value now can be set to less than 5 - by [@kamilmielnik](https://github.com/kamilmielnik)

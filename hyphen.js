@@ -416,7 +416,7 @@
 
         switch (state) {
           case states.hyphenateWord:
-            if (!cache[nextTextChunk])
+            if (!Object.prototype.hasOwnProperty.call(cache, nextTextChunk))
               cache[nextTextChunk] = hyphenateWord(
                 nextTextChunk,
                 patterns,
