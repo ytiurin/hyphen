@@ -1,5 +1,5 @@
 /** Text hyphenation in Javascript.
- *  Copyright (C) 2020 Yevhen Tiurin (yevhentiurin@gmail.com)
+ *  Copyright (C) 2021 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *
  *  Released under the ISC license
@@ -19,12 +19,11 @@
     root.createHyphenator = factory();
   }
 })(this, function () {
-  var MIN_WORD_LENGTH_BOUNDRY = 5;
-
   var SETTING_DEFAULT_ASYNC = false,
     SETTING_DEFAULT_DEBUG = false,
     SETTING_DEFAULT_HTML = false,
     SETTING_DEFAULT_HYPH_CHAR = "\u00AD",
+    SETTING_DEFAULT_MIN_WORD_LENGTH = 5,
     SETTING_NAME_ASYNC = "async",
     SETTING_NAME_DEBUG = "debug",
     SETTING_NAME_HTML = "html",
@@ -86,10 +85,12 @@
         SETTING_DEFAULT_HYPH_CHAR
       ),
       patterns = patternsDefinition.patterns.map(preprocessPattern),
-      minWordLength = Math.max(
-        options[SETTING_NAME_MIN_WORD_LENGTH] >> 0,
-        MIN_WORD_LENGTH_BOUNDRY
-      ),
+      minWordLength =
+        keyOrDefault(
+          options,
+          SETTING_NAME_MIN_WORD_LENGTH,
+          SETTING_DEFAULT_MIN_WORD_LENGTH
+        ) >> 0,
       skipHTML = keyOrDefault(options, SETTING_NAME_HTML, SETTING_DEFAULT_HTML);
 
     // Prepare cache
@@ -115,10 +116,9 @@
           SETTING_NAME_HYPH_CHAR,
           hyphenChar
         ),
-        localMinWordLength = Math.max(
-          options[SETTING_NAME_MIN_WORD_LENGTH] >> 0,
-          minWordLength
-        ),
+        localMinWordLength =
+          keyOrDefault(options, SETTING_NAME_MIN_WORD_LENGTH, minWordLength) >>
+          0,
         cacheKey = localHyphenChar + localMinWordLength;
 
       if (!exceptions[cacheKey]) {
