@@ -14,6 +14,8 @@ var _global =
     ? global
     : typeof window === "object"
     ? window
+    : typeof self === "object"
+    ? self
     : typeof this === "object"
     ? this
     : {};
