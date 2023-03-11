@@ -35,6 +35,8 @@
       ? global
       : typeof window === "object"
       ? window
+      : typeof self === "object"
+      ? self
       : typeof this === "object"
       ? this
       : {};
@@ -281,9 +283,11 @@
       }
     }
 
-    levels[0] = levels[1] = levels[levels.length - 1] = levels[
-      levels.length - 2
-    ] = 0;
+    levels[0] =
+      levels[1] =
+      levels[levels.length - 1] =
+      levels[levels.length - 2] =
+        0;
 
     var //
       hyphenatedText = "",
