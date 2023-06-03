@@ -283,11 +283,9 @@
       }
     }
 
-    levels[0] =
-      levels[1] =
-      levels[levels.length - 1] =
-      levels[levels.length - 2] =
-        0;
+    levels[0] = levels[1] = levels[levels.length - 1] = levels[
+      levels.length - 2
+    ] = 0;
 
     var //
       hyphenatedText = "",
@@ -297,8 +295,12 @@
     for (var i = 0; i < levels.length; i++) {
       hyphenatedText +=
         (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
-      debugHyphenatedText += (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
-      leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
+
+      if (debug) {
+        debugHyphenatedText +=
+          (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
+        leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
+      }
     }
 
     if (debug)

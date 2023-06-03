@@ -50,8 +50,11 @@ function hyphenateWord(text, patterns, debug, hyphenChar) {
 
   for (var i = 0; i < levels.length; i++) {
     hyphenatedText += (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
-    debugHyphenatedText += (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
-    leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
+
+    if (debug) {
+      debugHyphenatedText += (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
+      leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
+    }
   }
 
   if (debug)
