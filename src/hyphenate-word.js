@@ -1,41 +1,97 @@
-function hyphenateWord(text, patterns, debug, hyphenChar) {
+function createCharIterator(str) {
+  var i = 0;
+
+  function nextChar() {
+    return str[i++];
+  }
+
+  function isLastLetter() {
+    return str.length === i + 1;
+  }
+
+  return [nextChar, isLastLetter];
+}
+
+function createStringSlicer(str) {
+  var i = 0,
+    slice = str;
+
+  function next() {
+    slice = str.slice(i++);
+
+    if (slice.length < 3) {
+      return;
+    }
+
+    return slice;
+  }
+
+  function isFirstCharacter() {
+    return i === 2;
+  }
+
+  return [next, isFirstCharacter];
+}
+
+function hyphenateWord(text, patternTree, debug, hyphenChar) {
   var //
     levels = new Array(text.length + 1),
-    loweredText = text.toLocaleLowerCase(),
+    loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
     p = [],
-    patternData,
-    patternIndex = 0;
+    wordSlice,
+    letter,
+    treePtr,
+    nextPtr,
+    patternLevels,
+    patternEntityIndex = -1,
+    slicer,
+    nextSlice,
+    isFirstCharacter,
+    charIterator,
+    nextLetter,
+    isLastLetter;
 
   for (var i = levels.length; i--; ) levels[i] = 0;
 
-  while ((patternData = patterns[patternIndex++])) {
-    var //
-      fromChar = 0,
-      endPattern = false;
-    while (!endPattern) {
-      var //
-        patternEntityIndex = loweredText.indexOf(patternData.text, fromChar),
-        patternFits =
-          patternEntityIndex > -1 &&
-          (patternData.stickToLeft ? patternEntityIndex === 0 : true) &&
-          (patternData.stickToRight
-            ? patternEntityIndex + patternData.text.length === text.length
-            : true);
+  slicer = createStringSlicer(loweredText);
+  nextSlice = slicer[0];
+  isFirstCharacter = slicer[1];
 
-      if (patternFits) {
-        p.push(patternData.pattern + ">" + patternData.levels.join(""));
+  while ((wordSlice = nextSlice())) {
+    patternEntityIndex++;
+    if (isFirstCharacter()) {
+      patternEntityIndex--;
+    }
 
-        for (var i = 0; i < patternData.levels.length; i++)
-          levels[patternEntityIndex + i] = Math.max(
-            patternData.levels[i],
-            levels[patternEntityIndex + i]
-          );
+    treePtr = patternTree;
+
+    charIterator = createCharIterator(wordSlice);
+    nextLetter = charIterator[0];
+    isLastLetter = charIterator[1];
+
+    while ((letter = nextLetter())) {
+      if (treePtr[letter] === undefined) {
+        break;
       }
-      if (patternEntityIndex > -1 && patternData.text.length > 0) {
-        fromChar = patternEntityIndex + patternData.text.length + 1;
-      } else {
-        endPattern = true;
+
+      nextPtr = treePtr[letter];
+      treePtr = nextPtr[0];
+      patternLevels = nextPtr[1];
+
+      if (isLastLetter()) {
+        // ignore patterns for last letter
+        continue;
       }
+
+      if (patternLevels === undefined) {
+        continue;
+      }
+
+      for (var k = 0; k < patternLevels.length; k++)
+        levels[patternEntityIndex + k] = Math.max(
+          patternLevels[k],
+          levels[patternEntityIndex + k]
+        );
     }
   }
 

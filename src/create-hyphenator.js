@@ -61,7 +61,11 @@ function createHyphenator(patternsDefinition, options) {
       SETTING_NAME_HYPH_CHAR,
       SETTING_DEFAULT_HYPH_CHAR
     ),
-    patterns = patternsDefinition.patterns.map(preprocessPattern),
+    patterns = createPatternTree(
+      patternsDefinition.patterns.filter(function (p) {
+        return p !== " " && p !== "";
+      })
+    )[0],
     minWordLength =
       keyOrDefault(
         options,
