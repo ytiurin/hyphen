@@ -17,10 +17,10 @@ describe("Minimum word length hyphenation", () => {
   });
 
   test("Should NOT hyphenate word of length < 5 by default", () => {
-    expect(hyphenate("lady")).toBe("lady");
+    expect(hyphenate("into")).toBe("into");
   });
 
   test("Should hyphenate word of length 4, when option minWordLength = 4", () => {
-    expect(hyphenate("lady", { minWordLength: 4 })).toBe("la-dy");
+    expect(hyphenate("into", { minWordLength: 4 })).toBe("in-to");
   });
 });

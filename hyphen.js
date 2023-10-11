@@ -86,7 +86,11 @@
         SETTING_NAME_HYPH_CHAR,
         SETTING_DEFAULT_HYPH_CHAR
       ),
-      patterns = patternsDefinition.patterns.map(preprocessPattern),
+      patterns = createPatternTree(
+        patternsDefinition.patterns.filter(function (p) {
+          return p !== " " && p !== "";
+        })
+      )[0],
       minWordLength =
         keyOrDefault(
           options,
@@ -145,6 +149,68 @@
         asyncMode
       );
     };
+  }
+  var NUMS = ["1", "2", "3", "4", "5", "6"];
+
+  function createIterator(str) {
+    var i = 0;
+
+    function next() {
+      return str[i++];
+    }
+
+    return next;
+  }
+
+  function createPatternTree(patterns) {
+    var pattern,
+      symb,
+      maxPatternLength = 0,
+      patternTree = [{}],
+      nextPattern = createIterator(patterns);
+
+    while ((pattern = nextPattern())) {
+      var ptr = patternTree,
+        symb,
+        weights = [],
+        patternLength = 0,
+        prevSymbIsNumber = false,
+        nextSymbol = createIterator(pattern.split(""));
+
+      while ((symb = nextSymbol())) {
+        if (NUMS.indexOf(symb) > -1) {
+          weights.push(parseInt(symb));
+
+          prevSymbIsNumber = true;
+        } else {
+          if (!prevSymbIsNumber && symb !== ".") {
+            weights.push(0);
+          }
+
+          if (symb !== ".") {
+            patternLength++;
+          }
+
+          ptr[0][symb] = ptr[0][symb] || [{}];
+          ptr = ptr[0][symb];
+
+          prevSymbIsNumber = false;
+        }
+      }
+
+      while (weights[weights.length - 1] === 0) {
+        weights.pop();
+      }
+
+      ptr[1] = weights;
+      ptr[2] = pattern;
+
+      if (maxPatternLength < patternLength) {
+        maxPatternLength = patternLength;
+      }
+    }
+
+    return [patternTree[0], maxPatternLength];
   }
   function createTextChunkReader(text, hyphenChar, skipHTML, minWordLength) {
     function readNextTextChunk() {
@@ -242,44 +308,100 @@
 
     return [readNextTextChunk, shouldNextHyphenate];
   }
-  function hyphenateWord(text, patterns, debug, hyphenChar) {
+  function createCharIterator(str) {
+    var i = 0;
+
+    function nextChar() {
+      return str[i++];
+    }
+
+    function isLastLetter() {
+      return str.length === i + 1;
+    }
+
+    return [nextChar, isLastLetter];
+  }
+
+  function createStringSlicer(str) {
+    var i = 0,
+      slice = str;
+
+    function next() {
+      slice = str.slice(i++);
+
+      if (slice.length < 3) {
+        return;
+      }
+
+      return slice;
+    }
+
+    function isFirstCharacter() {
+      return i === 2;
+    }
+
+    return [next, isFirstCharacter];
+  }
+
+  function hyphenateWord(text, patternTree, debug, hyphenChar) {
     var //
       levels = new Array(text.length + 1),
-      loweredText = text.toLocaleLowerCase(),
+      loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
       p = [],
-      patternData,
-      patternIndex = 0;
+      wordSlice,
+      letter,
+      treePtr,
+      nextPtr,
+      patternLevels,
+      patternEntityIndex = -1,
+      slicer,
+      nextSlice,
+      isFirstCharacter,
+      charIterator,
+      nextLetter,
+      isLastLetter;
 
     for (var i = levels.length; i--; ) levels[i] = 0;
 
-    while ((patternData = patterns[patternIndex++])) {
-      var //
-        fromChar = 0,
-        endPattern = false;
-      while (!endPattern) {
-        var //
-          patternEntityIndex = loweredText.indexOf(patternData.text, fromChar),
-          patternFits =
-            patternEntityIndex > -1 &&
-            (patternData.stickToLeft ? patternEntityIndex === 0 : true) &&
-            (patternData.stickToRight
-              ? patternEntityIndex + patternData.text.length === text.length
-              : true);
+    slicer = createStringSlicer(loweredText);
+    nextSlice = slicer[0];
+    isFirstCharacter = slicer[1];
 
-        if (patternFits) {
-          p.push(patternData.pattern + ">" + patternData.levels.join(""));
+    while ((wordSlice = nextSlice())) {
+      patternEntityIndex++;
+      if (isFirstCharacter()) {
+        patternEntityIndex--;
+      }
 
-          for (var i = 0; i < patternData.levels.length; i++)
-            levels[patternEntityIndex + i] = Math.max(
-              patternData.levels[i],
-              levels[patternEntityIndex + i]
-            );
+      treePtr = patternTree;
+
+      charIterator = createCharIterator(wordSlice);
+      nextLetter = charIterator[0];
+      isLastLetter = charIterator[1];
+
+      while ((letter = nextLetter())) {
+        if (treePtr[letter] === undefined) {
+          break;
         }
-        if (patternEntityIndex > -1 && patternData.text.length > 0) {
-          fromChar = patternEntityIndex + patternData.text.length + 1;
-        } else {
-          endPattern = true;
+
+        nextPtr = treePtr[letter];
+        treePtr = nextPtr[0];
+        patternLevels = nextPtr[1];
+
+        if (isLastLetter()) {
+          // ignore patterns for last letter
+          continue;
         }
+
+        if (patternLevels === undefined) {
+          continue;
+        }
+
+        for (var k = 0; k < patternLevels.length; k++)
+          levels[patternEntityIndex + k] = Math.max(
+            patternLevels[k],
+            levels[patternEntityIndex + k]
+          );
       }
     }
 
@@ -315,55 +437,6 @@
       );
 
     return hyphenatedText;
-  }
-  function preprocessPattern(pattern) {
-    var //
-      patternCharIndex = 0,
-      patternChar,
-      patternData = {
-        pattern: pattern,
-        text: "",
-        levels: [],
-        stickToLeft: 0,
-        stickToRight: 0
-      },
-      states = { alphabet: 1, level: 2, stickToLeft: 3, stickToRight: 4 };
-
-    while ((patternChar = pattern.charAt(patternCharIndex++))) {
-      var //
-        charIsDot = patternChar === ".",
-        charIsNumber = !charIsDot && /\d/.test(patternChar),
-        state = charIsDot
-          ? patternCharIndex - 1 === 0
-            ? states.stickToLeft
-            : states.stickToRight
-          : charIsNumber
-          ? states.level
-          : states.alphabet;
-
-      switch (state) {
-        case states.alphabet:
-          !prevCharIsNumber && patternData.levels.push(0);
-          patternData.text += patternChar;
-          break;
-
-        case states.level:
-          patternData.levels.push(parseInt(patternChar));
-          break;
-
-        case states.stickToLeft:
-          patternData.stickToLeft = true;
-          break;
-
-        case states.stickToRight:
-          patternData.stickToRight = true;
-          break;
-      }
-
-      var prevCharIsNumber = charIsNumber;
-    }
-
-    return patternData;
   }
   function start(
     text,
