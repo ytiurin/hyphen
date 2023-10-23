@@ -9,10 +9,74 @@ This is a text hyphenation library, based on Franklin M. Liang's [hyphenation al
 ```javascript
 import { hyphenate } from "hyphen/en";
 
-hyphenate("A certain king had a beautiful garden").then(result => {
-  // A cer[-]tain king had a beau[-]ti[-]ful garden
-  // [-] is soft hyphen
-});
+(async () => {
+  const text = "A certain king had a beautiful garden";
+
+  const result = await hyphenate(text);
+  // result is "A cer\u00ADtain king had a beau\u00ADti\u00ADful garden"
+})();
+```
+
+## Hyphenate HTML
+
+HTML tags will automaticly skip hyphenation.
+
+```javascript
+import { hyphenateHTML as hyphenate } from "hyphen/en";
+
+(async () => {
+  const text = "<blockquote>A certain king had a beautiful garden</blockquote>";
+
+  const result = await hyphenate(text);
+  // result is "<blockquote>A cer\u00ADtain king had a beau\u00ADti\u00ADful garden</blockquote>"
+})();
+```
+
+## Multilingual hyphenation
+
+To hypehante text in any other supported language, just change the `import` source. For example for German language, import a hyphenation function from a `"hyphen/de"` source.
+
+```javascript
+import { hyphenate } from "hyphen/de";
+
+(async () => {
+  const text = "Ein gewisser König hatte einen wunderschönen Garten";
+
+  const result = await hyphenate(text);
+  // result is "Ein ge\u00ADwis\u00ADser Kö\u00ADnig hat\u00ADte einen wun\u00ADder\u00ADschö\u00ADnen Gar\u00ADten"
+})();
+```
+
+It is possible to use many langauges on the same page.
+
+```javascript
+import { hyphenate as hyphenateEn } from "hyphen/en";
+import { hyphenate as hyphenateDe } from "hyphen/de";
+
+(async () => {
+  const english = "A certain king had a beautiful garden";
+
+  const englishResult = await hyphenateEn(english);
+  // result is "A cer\u00ADtain king had a beau\u00ADti\u00ADful garden"
+
+  const deutch = "Ein gewisser König hatte einen wunderschönen Garten";
+
+  const deutchResult = await hyphenateDe(deutch);
+  // result is "Ein ge\u00ADwis\u00ADser Kö\u00ADnig hat\u00ADte einen wun\u00ADder\u00ADschö\u00ADnen Gar\u00ADten"
+})();
+```
+
+## Sync version
+
+The `hyphenate` function returns a `Promise`, however a sync version of it returns a `string`.
+
+```javascript
+import { hyphenateSync as hyphenate } from "hyphen/en";
+
+const text = "A certain king had a beautiful garden";
+
+const result = hyphenate(text);
+// result is "A cer\u00ADtain king had a beau\u00ADti\u00ADful garden"
 ```
 
 ## Install
@@ -21,45 +85,7 @@ hyphenate("A certain king had a beautiful garden").then(result => {
 npm install hyphen
 ```
 
-or
-
-```
-yarn add hyphen
-```
-
-## Usage
-
-```javascript
-import {
-  hyphenate,
-  hyphenateHTML,
-  hyphenateHTMLSync,
-  hyphenateSync
-} from "hyphen/en";
-
-hyphenate("Plain text - hyphenate everything").then(result => {
-  // Plain text - hy[-]phen[-]ate every[-]thing
-});
-
-hyphenateHTML("<blockquote>HTML tags are NOT hyphenated</blockquote>").then(
-  result => {
-    // <blockquote>HTML tags are NOT hy[-]phen[-]at[-]ed</blockquote>
-  }
-);
-
-hyphenateHTMLSync("<blockquote>Sync version of `hyphenateHTML`</blockquote>");
-// <blockquote>Sync ver[-]sion of `hy[-]phen[-]ate[-]HTML`</blockquote>
-
-hyphenateSync("Sync version of `hyphenate`");
-// Sync ver[-]sion of `hy[-]phen[-]ate`
-```
-
 ## Options
-
-```javascript
-hyphenate("Options", { debug: true, hyphenChar: "%", minWordLength: 5 });
-// Op%tions
-```
 
 - **debug**
 
@@ -73,96 +99,563 @@ hyphenate("Options", { debug: true, hyphenChar: "%", minWordLength: 5 });
 
   A `Number` sets the minimum length of the word, intended for hyphenation. Default value is `5`.
 
-## Import available languages
+### Example of using options
 
-- `hyphen/af` Afrikaans
-- `hyphen/as` Assamese
-- `hyphen/be` Belarusian
-- `hyphen/bg` Bulgarian
-- `hyphen/bn` Bengali
-- `hyphen/ca` Catalan
-- `hyphen/cop` Coptic
-- `hyphen/cs` Czech
-- `hyphen/cu` Church Slavonic
-- `hyphen/cy` Welsh
-- `hyphen/da` Danish
-- `hyphen/de-1901` German, traditional spelling
-- `hyphen/de-1996` German, reformed spelling
-- `hyphen/de-CH-1901` German, traditional Swiss spelling
-- `hyphen/de` aliases `hyphen/de-1996`
-- `hyphen/el-monoton` Modern Greek, monotonic spelling
-- `hyphen/el-polyton` Modern Greek, polytonic spelling
-- `hyphen/el` aliases `hyphen/el-monoton`
-- `hyphen/en-gb` English, British spelling
-- `hyphen/en-us` English, American spelling
-- `hyphen/en` aliases `hyphen/en-us`
-- `hyphen/es` Spanish
-- `hyphen/et` Estonian
-- `hyphen/ethi` aliases `hyphen/mul-ethi`
-- `hyphen/eu` Basque
-- `hyphen/fi` Finnish
-- `hyphen/fr` French
-- `hyphen/fur` Friulan
-- `hyphen/ga` Irish
-- `hyphen/gl` Galician
-- `hyphen/grc` Ancient Greek
-- `hyphen/gu` Gujarati
-- `hyphen/hi` Hindi
-- `hyphen/hr` Croatian
-- `hyphen/hsb` Upper Sorbian
-- `hyphen/hu` Hungarian
-- `hyphen/hy` Armenian
-- `hyphen/ia` Interlingua
-- `hyphen/id` Bahasa Indonesia, Indonesian
-- `hyphen/is` Icelandic
-- `hyphen/it` Italian
-- `hyphen/ka` Georgian
-- `hyphen/kmr` Kurmanji, Northern Kurdish
-- `hyphen/kn` Kannada
-- `hyphen/la-x-classic` Classical Latin
-- `hyphen/la-x-liturgic` Liturgical Latin
-- `hyphen/la` Latin
-- `hyphen/lt` Lithuanian
-- `hyphen/lv` Latvian
-- `hyphen/ml` Malayalam
-- `hyphen/mn-cyrl-x-lmc` Mongolian, Cyrillic script, alternative patterns
-- `hyphen/mn-cyrl` Mongolian, Cyrillic script
-- `hyphen/mn` aliases `hyphen/mn-cyrl`
-- `hyphen/mr` Marathi
-- `hyphen/mul-ethi` Multiple languages using the Ethiopic scripts
-- `hyphen/nb` Norwegian Bokmål, bokmål, norsk bokmål
-- `hyphen/nl` Dutch
-- `hyphen/nn` Norwegian Nynorsk, nynorsk
-- `hyphen/no` Norwegian, norsk
-- `hyphen/oc` Occitan
-- `hyphen/or` Odia, Oriya
-- `hyphen/pa` Panjabi, Punjabi
-- `hyphen/pi` Pāli
-- `hyphen/pl` Polish
-- `hyphen/pms` Piedmontese
-- `hyphen/pt` Portuguese
-- `hyphen/rm` Romansh
-- `hyphen/ro` Romanian
-- `hyphen/ru` Russian
-- `hyphen/sa` Sanskrit
-- `hyphen/sh-cyrl` Serbocroatian, Cyrillic script
-- `hyphen/sh-latn` Serbocroatian, Latin script
-- `hyphen/sh` aliases `hyphen/sh-cyrl`
-- `hyphen/sk` Slovak
-- `hyphen/sl` Slovenian
-- `hyphen/sr-cyrl` Serbian, Cyrillic script
-- `hyphen/sr` aliases `hyphen/sr-cyrl`
-- `hyphen/sv` Swedish
-- `hyphen/ta` Tamil
-- `hyphen/te` Telugu
-- `hyphen/th` Thai
-- `hyphen/tk` Turkmen
-- `hyphen/tr` Turkish
-- `hyphen/uk` Ukrainian
-- `hyphen/zh-latn-pinyin` Mandarin Chinese, pinyin transliteration
-- `hyphen/zh` aliases `hyphen/zh-latn-pinyin`
+```javascript
+import { hyphenate } from "hyphen/en";
+
+(async () => {
+  const text = "A certain king had a beautiful garden";
+
+  const result = await hyphenate(text, { hyphenChar: "-" });
+  // result is "A cer-tain king had a beau-ti-ful garden"
+})();
+```
+
+## List of available languages
+
+<details>
+  <summary>Check the list</summary>
+
+- Afrikaans language
+
+```javascript
+import { hyphenate } from "hyphen/af";
+```
+
+- Assamese language
+
+```javascript
+import { hyphenate } from "hyphen/as";
+```
+
+- Belarusian language
+
+```javascript
+import { hyphenate } from "hyphen/be";
+```
+
+- Bulgarian language
+
+```javascript
+import { hyphenate } from "hyphen/bg";
+```
+
+- Bengali language
+
+```javascript
+import { hyphenate } from "hyphen/bn";
+```
+
+- Catalan language
+
+```javascript
+import { hyphenate } from "hyphen/ca";
+```
+
+- Coptic language
+
+```javascript
+import { hyphenate } from "hyphen/cop";
+```
+
+- Czech language
+
+```javascript
+import { hyphenate } from "hyphen/cs";
+```
+
+- Welsh language
+
+```javascript
+import { hyphenate } from "hyphen/cy";
+```
+
+- Church Slavonic language
+
+```javascript
+import { hyphenate } from "hyphen/cu";
+```
+
+- Danish language
+
+```javascript
+import { hyphenate } from "hyphen/da";
+```
+
+- German, traditional spelling
+
+```javascript
+import { hyphenate } from "hyphen/de-1901";
+```
+
+- German, reformed spelling
+
+```javascript
+import { hyphenate } from "hyphen/de-1996";
+```
+
+- German, traditional Swiss spelling
+
+```javascript
+import { hyphenate } from "hyphen/de-CH-1901";
+```
+
+- Modern Greek, monotonic spelling
+
+```javascript
+import { hyphenate } from "hyphen/el-monoton";
+```
+
+- Modern Greek, polytonic spelling
+
+```javascript
+import { hyphenate } from "hyphen/el-polyton";
+```
+
+- English, British spelling language
+
+```javascript
+import { hyphenate } from "hyphen/en-gb";
+```
+
+- English, American spelling language
+
+```javascript
+import { hyphenate } from "hyphen/en-us";
+```
+
+- Spanish language
+
+```javascript
+import { hyphenate } from "hyphen/es";
+```
+
+- Estonian language
+
+```javascript
+import { hyphenate } from "hyphen/et";
+```
+
+- Basque language
+
+```javascript
+import { hyphenate } from "hyphen/eu";
+```
+
+- Finnish language
+
+```javascript
+import { hyphenate } from "hyphen/fi";
+```
+
+- French language
+
+```javascript
+import { hyphenate } from "hyphen/fr";
+```
+
+- Friulan language
+
+```javascript
+import { hyphenate } from "hyphen/fur";
+```
+
+- Irish language
+
+```javascript
+import { hyphenate } from "hyphen/ga";
+```
+
+- Galician language
+
+```javascript
+import { hyphenate } from "hyphen/gl";
+```
+
+- Ancient Greek language
+
+```javascript
+import { hyphenate } from "hyphen/grc";
+```
+
+- Gujarati language
+
+```javascript
+import { hyphenate } from "hyphen/gu";
+```
+
+- Hindi language
+
+```javascript
+import { hyphenate } from "hyphen/hi";
+```
+
+- Croatian language
+
+```javascript
+import { hyphenate } from "hyphen/hr";
+```
+
+- Upper Sorbian language
+
+```javascript
+import { hyphenate } from "hyphen/hsb";
+```
+
+- Hungarian language
+
+```javascript
+import { hyphenate } from "hyphen/hu";
+```
+
+- Armenian language
+
+```javascript
+import { hyphenate } from "hyphen/hy";
+```
+
+- Interlingua language
+
+```javascript
+import { hyphenate } from "hyphen/ia";
+```
+
+- Bahasa Indonesia, Indonesian language
+
+```javascript
+import { hyphenate } from "hyphen/id";
+```
+
+- Icelandic language
+
+```javascript
+import { hyphenate } from "hyphen/is";
+```
+
+- Italian language
+
+```javascript
+import { hyphenate } from "hyphen/it";
+```
+
+- Georgian language
+
+```javascript
+import { hyphenate } from "hyphen/ka";
+```
+
+- Kurmanji, Northern Kurdish language
+
+```javascript
+import { hyphenate } from "hyphen/kmr";
+```
+
+- Kannada language
+
+```javascript
+import { hyphenate } from "hyphen/kn";
+```
+
+- Classical Latin language
+
+```javascript
+import { hyphenate } from "hyphen/la-x-classic";
+```
+
+- Liturgical Latin language
+
+```javascript
+import { hyphenate } from "hyphen/la-x-liturgic";
+```
+
+- Latin language
+
+```javascript
+import { hyphenate } from "hyphen/la";
+```
+
+- Lithuanian language
+
+```javascript
+import { hyphenate } from "hyphen/lt";
+```
+
+- Latvian language
+
+```javascript
+import { hyphenate } from "hyphen/lv";
+```
+
+- Malayalam language
+
+```javascript
+import { hyphenate } from "hyphen/ml";
+```
+
+- Mongolian, Cyrillic script, alternative patterns language
+
+```javascript
+import { hyphenate } from "hyphen/mn-cyrl-x-lmc";
+```
+
+- Mongolian, Cyrillic script language
+
+```javascript
+import { hyphenate } from "hyphen/mn-cyrl";
+```
+
+- Marathi language
+
+```javascript
+import { hyphenate } from "hyphen/mr";
+```
+
+- Multiple languages using the Ethiopic scripts language
+
+```javascript
+import { hyphenate } from "hyphen/mul-ethi";
+```
+
+- Norwegian Bokmål, bokmål, norsk bokmål language
+
+```javascript
+import { hyphenate } from "hyphen/nb";
+```
+
+- Dutch language
+
+```javascript
+import { hyphenate } from "hyphen/nl";
+```
+
+- Norwegian Nynorsk, nynorsk language
+
+```javascript
+import { hyphenate } from "hyphen/nn";
+```
+
+- Norwegian, norsk language
+
+```javascript
+import { hyphenate } from "hyphen/no";
+```
+
+- Occitan language
+
+```javascript
+import { hyphenate } from "hyphen/oc";
+```
+
+- Odia, Oriya language
+
+```javascript
+import { hyphenate } from "hyphen/or";
+```
+
+- Panjabi, Punjabi language
+
+```javascript
+import { hyphenate } from "hyphen/pa";
+```
+
+- Pāli language
+
+```javascript
+import { hyphenate } from "hyphen/pi";
+```
+
+- Polish language
+
+```javascript
+import { hyphenate } from "hyphen/pl";
+```
+
+- Piedmontese language
+
+```javascript
+import { hyphenate } from "hyphen/pms";
+```
+
+- Portuguese language
+
+```javascript
+import { hyphenate } from "hyphen/pt";
+```
+
+- Romansh language
+
+```javascript
+import { hyphenate } from "hyphen/rm";
+```
+
+- Romanian language
+
+```javascript
+import { hyphenate } from "hyphen/ro";
+```
+
+- Russian language
+
+```javascript
+import { hyphenate } from "hyphen/ru";
+```
+
+- Sanskrit language
+
+```javascript
+import { hyphenate } from "hyphen/sa";
+```
+
+- Serbocroatian, Cyrillic script language
+
+```javascript
+import { hyphenate } from "hyphen/sh-cyrl";
+```
+
+- Serbocroatian, Latin script
+
+```javascript
+import { hyphenate } from "hyphen/sh-latn";
+```
+
+- Slovak language
+
+```javascript
+import { hyphenate } from "hyphen/sk";
+```
+
+- Slovenian language
+
+```javascript
+import { hyphenate } from "hyphen/sl";
+```
+
+- Serbian, Cyrillic script language
+
+```javascript
+import { hyphenate } from "hyphen/sr-cyrl";
+```
+
+- Swedish language
+
+```javascript
+import { hyphenate } from "hyphen/sv";
+```
+
+- Tamil language
+
+```javascript
+import { hyphenate } from "hyphen/ta";
+```
+
+- Telugu language
+
+```javascript
+import { hyphenate } from "hyphen/te";
+```
+
+- Thai language
+
+```javascript
+import { hyphenate } from "hyphen/th";
+```
+
+- Turkmen language
+
+```javascript
+import { hyphenate } from "hyphen/tk";
+```
+
+- Turkish language
+
+```javascript
+import { hyphenate } from "hyphen/tr";
+```
+
+- Ukrainian language
+
+```javascript
+import { hyphenate } from "hyphen/uk";
+```
+
+- Mandarin Chinese, pinyin transliteration
+
+```javascript
+import { hyphenate } from "hyphen/zh-latn-pinyin";
+```
+
+### Aliases for specific languages
+
+- Alias for `hyphen/de-1996`
+
+```javascript
+import { hyphenate } from "hyphen/de";
+```
+
+- Alias for `hyphen/el-monoton`
+
+```javascript
+import { hyphenate } from "hyphen/el";
+```
+
+- Alias for `hyphen/en-us` language
+
+```javascript
+import { hyphenate } from "hyphen/en";
+```
+
+- Alias for `hyphen/mul-ethi`
+
+```javascript
+import { hyphenate } from "hyphen/ethi";
+```
+
+- Alias for `hyphen/mn-cyrl`
+
+```javascript
+import { hyphenate } from "hyphen/mn";
+```
+
+- Alias for `hyphen/sh-cyrl` language
+
+```javascript
+import { hyphenate } from "hyphen/sh";
+```
+
+- Alias for `hyphen/sr-cyrl` language
+
+```javascript
+import { hyphenate } from "hyphen/sr";
+```
+
+- Alias for `hyphen/zh-latn-pinyin`
+
+```javascript
+import { hyphenate } from "hyphen/zh";
+```
+
+</details>
 
 ## Factory function
+
+Factory function can be used to create `hyphenate` function with changed default options.
+
+```javascript
+import createHyphenator from "hyphen";
+import patterns from "hyphen/patterns/en-us";
+
+const hyphenate = createHyphenator(patterns, {
+  // result in Promise
+  async: true,
+  // prevent HTML tags from hyphenation
+  html: true,
+  // minimum word length is 7
+  minWordLength: 7
+});
+```
+
+The following are predefined `hyphenate` functions.
 
 ```javascript
 import createHyphenator from "hyphen";
@@ -174,7 +667,29 @@ const hyphenateHTMLSync = createHyphenator(patterns, { html: true });
 const hyphenateSync = createHyphenator(patterns);
 ```
 
-> Note: This original factory function surves mostly for the backwards compatibility reasons.
+Predefined `hyphenate` functions are set in every language pack.
+
+## jsDelivr CDN for older websites
+
+It is possible to use `hyphen` on older websites with [jsDelivr](https://www.jsdelivr.com/) network. Check the [package page](https://www.jsdelivr.com/package/npm/hyphen) on their website.
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/hyphen/hyphen.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hyphen/patterns/en-us.min.js"></script>
+```
+
+After the script is added on your page, use `createHyphenator` to create a `hyphenate` function.
+
+```javascript
+var hyphenate = createHyphenator(hyphenationPatternsEnUs);
+```
+
+## Alternatives
+
+Check other great hyphenation libraries:
+
+- [Hyphenopoly](https://mnater.github.io/Hyphenopoly/) does client-side hyphenation of HTML-Documents.
+- [Hypher](https://github.com/bramstein/hypher) A fast and small hyphenation engine.
 
 ## Text hyphenation in CSS
 
@@ -187,10 +702,3 @@ p {
 ```
 
 It is part of the [CSS Text Level 3](https://drafts.csswg.org/css-text-3/#hyphens-property) specification. The browser compatibility list can be found on the [related MDN page](https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens).
-
-## Alternatives
-
-Check other great hyphenation libraries:
-
-- [Hyphenator.js](http://mnater.github.io/Hyphenator/) does client-side hyphenation of HTML-Documents.
-- [Hypher](https://github.com/bramstein/hypher) A fast and small hyphenation engine.
