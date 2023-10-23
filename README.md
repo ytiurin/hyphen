@@ -393,13 +393,21 @@ import { hyphenate } from "hyphen/lv";
 import { hyphenate } from "hyphen/ml";
 ```
 
+<<<<<<< Updated upstream
 - Mongolian, Cyrillic script, alternative patterns language
+=======
+- Mongolian, Cyrillic script, alternative patterns
+>>>>>>> Stashed changes
 
 ```javascript
 import { hyphenate } from "hyphen/mn-cyrl-x-lmc";
 ```
 
+<<<<<<< Updated upstream
 - Mongolian, Cyrillic script language
+=======
+- Mongolian, Cyrillic script
+>>>>>>> Stashed changes
 
 ```javascript
 import { hyphenate } from "hyphen/mn-cyrl";
@@ -411,7 +419,11 @@ import { hyphenate } from "hyphen/mn-cyrl";
 import { hyphenate } from "hyphen/mr";
 ```
 
+<<<<<<< Updated upstream
 - Multiple languages using the Ethiopic scripts language
+=======
+- Multiple languages using the Ethiopic scripts
+>>>>>>> Stashed changes
 
 ```javascript
 import { hyphenate } from "hyphen/mul-ethi";
@@ -507,7 +519,11 @@ import { hyphenate } from "hyphen/ru";
 import { hyphenate } from "hyphen/sa";
 ```
 
+<<<<<<< Updated upstream
 - Serbocroatian, Cyrillic script language
+=======
+- Serbocroatian, Cyrillic script
+>>>>>>> Stashed changes
 
 ```javascript
 import { hyphenate } from "hyphen/sh-cyrl";
@@ -531,7 +547,11 @@ import { hyphenate } from "hyphen/sk";
 import { hyphenate } from "hyphen/sl";
 ```
 
+<<<<<<< Updated upstream
 - Serbian, Cyrillic script language
+=======
+- Serbian, Cyrillic script
+>>>>>>> Stashed changes
 
 ```javascript
 import { hyphenate } from "hyphen/sr-cyrl";
@@ -599,7 +619,11 @@ import { hyphenate } from "hyphen/de";
 import { hyphenate } from "hyphen/el";
 ```
 
+<<<<<<< Updated upstream
 - Alias for `hyphen/en-us` language
+=======
+- Alias for `hyphen/en-us`
+>>>>>>> Stashed changes
 
 ```javascript
 import { hyphenate } from "hyphen/en";
@@ -617,13 +641,21 @@ import { hyphenate } from "hyphen/ethi";
 import { hyphenate } from "hyphen/mn";
 ```
 
+<<<<<<< Updated upstream
 - Alias for `hyphen/sh-cyrl` language
+=======
+- Alias for `hyphen/sh-cyrl`
+>>>>>>> Stashed changes
 
 ```javascript
 import { hyphenate } from "hyphen/sh";
 ```
 
+<<<<<<< Updated upstream
 - Alias for `hyphen/sr-cyrl` language
+=======
+- Alias for `hyphen/sr-cyrl`
+>>>>>>> Stashed changes
 
 ```javascript
 import { hyphenate } from "hyphen/sr";
@@ -643,7 +675,11 @@ Factory function can be used to create `hyphenate` function with changed default
 
 ```javascript
 import createHyphenator from "hyphen";
+<<<<<<< Updated upstream
 import patterns from "hyphen/patterns/en-us";
+=======
+import `patterns `from "hyphen/patterns/en-us";
+>>>>>>> Stashed changes
 
 const hyphenate = createHyphenator(patterns, {
   // result in Promise
