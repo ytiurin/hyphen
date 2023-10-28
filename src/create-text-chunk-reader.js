@@ -1,4 +1,9 @@
-function createTextChunkReader(text, hyphenChar, skipHTML, minWordLength) {
+export function createTextChunkReader(
+  text,
+  hyphenChar,
+  skipHTML,
+  minWordLength
+) {
   function readNextTextChunk() {
     var nextTextChunk = "";
 
