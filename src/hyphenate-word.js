@@ -33,7 +33,7 @@ function createStringSlicer(str) {
   return [next, isFirstCharacter];
 }
 
-function hyphenateWord(text, patternTree, debug, hyphenChar) {
+export function hyphenateWord(text, patternTree, debug, hyphenChar) {
   var //
     levels = new Array(text.length + 1),
     loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),

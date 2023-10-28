@@ -1,4 +1,7 @@
-function start(
+import { createTextChunkReader } from "./create-text-chunk-reader.js";
+import { hyphenateWord } from "./hyphenate-word.js";
+
+export function start(
   text,
   patterns,
   cache,

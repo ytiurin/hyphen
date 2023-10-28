@@ -1,3 +1,6 @@
+import { createPatternTree } from "./create-pattern-tree.js";
+import { start } from "./start.js";
+
 var SETTING_DEFAULT_ASYNC = false,
   SETTING_DEFAULT_DEBUG = false,
   SETTING_DEFAULT_HTML = false,
@@ -45,7 +48,7 @@ function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
   }, {});
 }
 
-function createHyphenator(patternsDefinition, options) {
+export function createHyphenator(patternsDefinition, options) {
   options = options || {};
   var //
     asyncMode = keyOrDefault(

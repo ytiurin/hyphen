@@ -10,7 +10,7 @@ function createIterator(str) {
   return next;
 }
 
-function createPatternTree(patterns) {
+export function createPatternTree(patterns) {
   var pattern,
     symb,
     maxPatternLength = 0,
