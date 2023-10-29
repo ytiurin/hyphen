@@ -10,13 +10,12 @@ beforeAll(() => {
 test("Hyphenate should let setTimeout callback execute before produce the result", () => {
   expect.assertions(1);
 
-  let ticks = 0;
-  setTimeout(function nextTick() {
-    ticks++;
-    setTimeout(nextTick);
+  let isNextTick = false;
+  setTimeout(() => {
+    isNextTick = true;
   });
 
   return hyphenate("beautiful").then(function () {
-    expect(ticks).toBeGreaterThan(0);
+    expect(isNextTick).toBe(true);
   });
 });
