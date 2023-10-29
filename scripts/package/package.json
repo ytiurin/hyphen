@@ -1,6 +1,6 @@
 {
   "name": "hyphen",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Text hyphenation in Javascript.",
   "repository": {
     "type": "git",
