@@ -13,7 +13,8 @@ export function createTextChunkReader(
       var //
         nextChar = text.charAt(nextCharIndex++),
         charIsLetter =
-          !!nextChar && !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar),
+          (!!nextChar && !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar)) ||
+          nextChar === "'",
         charIsAngleOpen = nextChar === "<",
         charIsAngleClose = nextChar === ">",
         charIsHyphen = nextChar === hyphenChar;
