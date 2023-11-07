@@ -68,85 +68,80 @@
     return [patternTree[0], maxPatternLength];
   }
 
-  function createTextChunkReader(text, hyphenChar, skipHTML, minWordLength) {
-    function readNextTextChunk() {
-      var nextTextChunk = "";
-      shouldHyphenate = void 0;
-      chunkReader: while (nextCharIndex <= text.length) {
-        var nextChar = text.charAt(nextCharIndex++),
-          charIsLetter =
-            (!!nextChar &&
-              !/\s|[\!-\@\[-\`\{-\~\u2013-\u203C]/.test(nextChar)) ||
-            nextChar === "'",
-          charIsAngleOpen = nextChar === "<",
-          charIsAngleClose = nextChar === ">",
-          charIsHyphen = nextChar === hyphenChar;
-        do {
-          if (state === STATE_READ_TAG) {
-            if (charIsAngleClose) {
-              state = STATE_RETURN_UNTOUCHED;
-            }
-            break;
-          }
-          if (charIsHyphen) {
-            shouldHyphenate = SHOULD_SKIP;
-            state = STATE_READ_WORD;
-            break;
-          }
-          if (charIsLetter) {
-            state = STATE_READ_WORD;
-            break;
-          }
-          if (state === STATE_READ_WORD) {
-            state = STATE_RETURN_WORD;
-            shouldHyphenate =
-              shouldHyphenate ||
-              (nextTextChunk.length >= minWordLength && SHOULD_HYPHENATE);
-            break;
-          }
-          shouldHyphenate = SHOULD_SKIP;
-          state = STATE_RETURN_UNTOUCHED;
-        } while (0);
-        if (
-          charIsAngleOpen &&
-          state !== STATE_RETURN_WORD &&
-          skipHTML &&
-          !isSpacelike(text.charAt(nextCharIndex))
-        ) {
-          shouldHyphenate = SHOULD_SKIP;
-          state = STATE_READ_TAG;
-        }
-        switch (state) {
-          case STATE_READ_TAG:
-            nextTextChunk += nextChar;
-            break;
-          case STATE_READ_WORD:
-            nextTextChunk += nextChar;
-            break;
-          case STATE_RETURN_UNTOUCHED:
-            nextTextChunk += nextChar;
-            break chunkReader;
-          case STATE_RETURN_WORD:
-            nextCharIndex--;
-            break chunkReader;
+  function createTextReader(setup) {
+    var char1 = "";
+    var char2 = "";
+    var i = 0;
+    var verifier = setup();
+    return function (text) {
+      while (i < text.length) {
+        char1 = text.charAt(i++);
+        char2 = text.charAt(i);
+        var verified = verifier(char1, char2);
+        if (verified !== void 0) {
+          return verified;
         }
       }
-      return nextTextChunk || void 0;
-    }
-    function shouldNextHyphenate() {
-      return shouldHyphenate === SHOULD_HYPHENATE;
-    }
-    var isSpacelike = RegExp.prototype.test.bind(/\s/);
-    var nextCharIndex = 0,
-      SHOULD_HYPHENATE = 1,
-      SHOULD_SKIP = 2,
-      shouldHyphenate,
-      STATE_READ_TAG = 1,
-      STATE_READ_WORD = 2,
-      STATE_RETURN_UNTOUCHED = 3,
-      STATE_RETURN_WORD = 4,
-      state;
-    return [readNextTextChunk, shouldNextHyphenate];
+    };
+  }
+
+  var isNotLetter = RegExp.prototype.test.bind(
+    /\s|(?![\'])[\!-\@\[-\`\{-\~\u2013-\u203C]/
+  );
+  function createHyphenationVerifier(hyphenChar, skipHTML, minWordLength) {
+    return function () {
+      var accum0 = "";
+      var accum = "";
+      var isHTMLTag = false;
+      var skipCurrent = false;
+      function resolveWith(value) {
+        accum0 = "";
+        accum = "";
+        isHTMLTag = false;
+        skipCurrent = false;
+        return value;
+      }
+      return function (char1, char2) {
+        accum += char1;
+        if (isHTMLTag) {
+          if (char1 === ">") {
+            accum0 += accum;
+            accum = "";
+            isHTMLTag = false;
+          }
+        } else {
+          if (char1 === hyphenChar) {
+            skipCurrent = true;
+          }
+          if (
+            char1 === "<" &&
+            (!isNotLetter(char2) || char2 === "/") &&
+            skipHTML
+          ) {
+            isHTMLTag = true;
+          }
+          if (isNotLetter(char1) && !isNotLetter(char2)) {
+            accum0 += accum;
+            accum = "";
+          }
+          if (!isNotLetter(char1) && isNotLetter(char2)) {
+            if (accum.length >= minWordLength && !skipCurrent) {
+              return resolveWith([accum0, accum]);
+            } else {
+              accum0 += accum;
+              accum = "";
+            }
+          }
+        }
+        if (char2 === "") {
+          if (accum.length < minWordLength || skipCurrent) {
+            accum0 += accum;
+            accum = "";
+          }
+          return resolveWith([accum0, accum]);
+        }
+      };
+    };
   }
 
   function createCharIterator(str) {
@@ -277,43 +272,42 @@
         console.log("All time: " + allTime / 1e3);
       }
     }
-    var cacheKey,
-      newText = "",
-      textChunk,
-      reader = createTextChunkReader(text, hyphenChar, skipHTML, minWordLength),
-      readNextTextChunk = reader[0],
-      shouldNextHyphenate = reader[1],
+    var newText = "",
+      fragments,
+      readText = createTextReader(
+        createHyphenationVerifier(hyphenChar, skipHTML, minWordLength)
+      ),
       processedN = 0,
-      hyphenatedN = 0;
-    var allTime = /* @__PURE__ */ new Date(),
-      workTime = 0;
-    var resolveNewText = function () {};
+      hyphenatedN = 0,
+      allTime = /* @__PURE__ */ new Date(),
+      workTime = 0,
+      resolveNewText = function () {};
     function nextTick() {
       var loopStart = /* @__PURE__ */ new Date();
       while (
         (!isAsync || /* @__PURE__ */ new Date() - loopStart < 10) &&
-        (textChunk = readNextTextChunk())
+        (fragments = readText(text))
       ) {
-        cacheKey = textChunk.length ? "$" + textChunk : "";
-        if (shouldNextHyphenate()) {
+        if (fragments[1]) {
+          var cacheKey = fragments[1].length ? "$" + fragments[1] : "";
           if (cache[cacheKey] === void 0) {
             cache[cacheKey] = hyphenateWord(
-              textChunk,
+              fragments[1],
               patterns,
               debug,
               hyphenChar
             );
           }
-          if (textChunk !== cache[cacheKey]) {
+          if (fragments[1] !== cache[cacheKey]) {
             hyphenatedN++;
           }
-          textChunk = cache[cacheKey];
+          fragments[1] = cache[cacheKey];
         }
-        newText += textChunk;
+        newText += fragments[0] + fragments[1];
         processedN++;
       }
       workTime += /* @__PURE__ */ new Date() - loopStart;
-      if (!textChunk) {
+      if (!fragments) {
         done();
       } else {
         setTimeout(nextTick);

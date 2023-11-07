@@ -1,4 +1,5 @@
-import { createTextChunkReader } from "./create-text-chunk-reader.js";
+import { createTextReader } from "./textReader.js";
+import { createHyphenationVerifier } from "./hyphenationVerifier.js";
 import { hyphenateWord } from "./hyphenate-word.js";
 
 export function start(
@@ -29,55 +30,50 @@ export function start(
     }
   }
 
-  var //
-    cacheKey,
-    newText = "",
-    textChunk,
-    reader = createTextChunkReader(text, hyphenChar, skipHTML, minWordLength),
-    readNextTextChunk = reader[0],
-    shouldNextHyphenate = reader[1],
+  var newText = "",
+    fragments,
+    readText = createTextReader(
+      createHyphenationVerifier(hyphenChar, skipHTML, minWordLength)
+    ),
     processedN = 0,
-    hyphenatedN = 0;
-
-  var //
+    hyphenatedN = 0,
     allTime = new Date(),
-    workTime = 0;
-
-  var resolveNewText = function () {};
+    workTime = 0,
+    resolveNewText = function () {};
 
   function nextTick() {
     var loopStart = new Date();
 
     while (
       (!isAsync || new Date() - loopStart < 10) &&
-      (textChunk = readNextTextChunk())
+      (fragments = readText(text))
     ) {
-      cacheKey = textChunk.length ? "$" + textChunk : "";
+      if (fragments[1]) {
+        var cacheKey = fragments[1].length ? "$" + fragments[1] : "";
 
-      if (shouldNextHyphenate()) {
         if (cache[cacheKey] === undefined) {
           cache[cacheKey] = hyphenateWord(
-            textChunk,
+            fragments[1],
             patterns,
             debug,
             hyphenChar
           );
         }
 
-        if (textChunk !== cache[cacheKey]) {
+        if (fragments[1] !== cache[cacheKey]) {
           hyphenatedN++;
         }
 
-        textChunk = cache[cacheKey];
+        fragments[1] = cache[cacheKey];
       }
 
-      newText += textChunk;
+      newText += fragments[0] + fragments[1];
       processedN++;
     }
 
     workTime += new Date() - loopStart;
 
-    if (!textChunk) {
+    if (!fragments) {
       done();
     } else {
       setTimeout(nextTick);
