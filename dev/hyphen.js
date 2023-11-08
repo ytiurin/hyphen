@@ -8,6 +8,9 @@ let text =
 const require = createRequire(import.meta.url);
 const enUS = require("../patterns/en-us.cjs");
 
-const hy = createHyphenator(enUS, { hyphenChar: "-" });
+const hy = createHyphenator(enUS, {
+  hyphenChar: "-",
+  exceptions: ["e-f-f-o-r-t"]
+});
 
-console.log(hy(text));
+console.log(hy(text, { exceptions: ["e-ffort"] }));

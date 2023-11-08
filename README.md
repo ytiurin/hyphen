@@ -87,6 +87,10 @@ npm install hyphen
 
 ## Options
 
+- **exceptions**
+
+  An `Array` of values with exceptions of hyphenation in words. Hard hyphen symbol `-` should be used to mark the position of further configured hyphenation symbol. Default value is `[]`.
+
 - **hyphenChar**
 
   A `String` sets a value of the soft hyphen character. Default value is `\u00AD`.
@@ -637,6 +641,8 @@ import { hyphenate } from "hyphen/zh";
 
 Factory function can be used to create `hyphenate` function with changed default options.
 
+### Create hyphenation function with predefined exception list
+
 ```javascript
 import createHyphenator from "hyphen";
 import patterns from "hyphen/patterns/en-us";
@@ -646,10 +652,12 @@ const hyphenate = createHyphenator(patterns, {
   async: true,
   // prevent HTML tags from hyphenation
   html: true,
-  // minimum word length is 7
-  minWordLength: 7
+  // exceptions of hyphenation
+  exceptions: ["present", "ta-ble"]
 });
 ```
+
+### Predefined functions
 
 The following are predefined `hyphenate` functions.
 

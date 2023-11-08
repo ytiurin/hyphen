@@ -3,11 +3,13 @@ import { start } from "./start.js";
 
 var SETTING_DEFAULT_ASYNC = false,
   SETTING_DEFAULT_DEBUG = false,
+  SETTING_DEFAULT_EXCEPTIONS = [],
   SETTING_DEFAULT_HTML = false,
   SETTING_DEFAULT_HYPH_CHAR = "\u00AD",
   SETTING_DEFAULT_MIN_WORD_LENGTH = 5,
   SETTING_NAME_ASYNC = "async",
   SETTING_NAME_DEBUG = "debug",
+  SETTING_NAME_EXCEPTIONS = "exceptions",
   SETTING_NAME_HTML = "html",
   SETTING_NAME_HYPH_CHAR = "hyphenChar",
   SETTING_NAME_MIN_WORD_LENGTH = "minWordLength";
@@ -23,23 +25,27 @@ var _global =
     ? this
     : {};
 
-function cloneObj(source) {
-  var target = {};
+function extend(target, source) {
+  target = target || {};
   for (var key in source) {
     target[key] = source[key];
   }
   return target;
 }
 
-function keyOrDefault(object, key, defaultValue) {
-  if (key in object) {
+function validateArray(value) {
+  return value instanceof Array;
+}
+
+function keyOrDefault(object, key, defaultValue, test) {
+  if (key in object && (test ? test(object[key]) : true)) {
     return object[key];
   }
   return defaultValue;
 }
 
-function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
-  return patternsDefinition.exceptions.reduce(function (exceptions, exception) {
+function exceptionsFromDefinition(excetionsList, hyphenChar) {
+  return excetionsList.reduce(function (exceptions, exception) {
     exceptions["~" + exception.replace(/\-/g, "")] = exception.replace(
       /\-/g,
       hyphenChar
@@ -50,8 +56,7 @@ function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
 
 export function createHyphenator(patternsDefinition, options) {
   options = options || {};
-  var //
-    asyncMode = keyOrDefault(
+  var asyncMode = keyOrDefault(
       options,
       SETTING_NAME_ASYNC,
       SETTING_DEFAULT_ASYNC
@@ -75,15 +80,33 @@ export function createHyphenator(patternsDefinition, options) {
         SETTING_NAME_MIN_WORD_LENGTH,
         SETTING_DEFAULT_MIN_WORD_LENGTH
       ) >> 0,
-    skipHTML = keyOrDefault(options, SETTING_NAME_HTML, SETTING_DEFAULT_HTML);
+    skipHTML = keyOrDefault(options, SETTING_NAME_HTML, SETTING_DEFAULT_HTML),
+    userExceptions = keyOrDefault(
+      options,
+      SETTING_NAME_EXCEPTIONS,
+      SETTING_DEFAULT_EXCEPTIONS,
+      validateArray
+    );
 
   // Prepare cache
   var cacheKey = hyphenChar + minWordLength;
-  exceptions[cacheKey] = exceptionsFromDefinition(
-    patternsDefinition,
-    hyphenChar
-  );
-  caches[cacheKey] = cloneObj(exceptions[cacheKey]);
+  exceptions[cacheKey] = {};
+
+  if (patternsDefinition.exceptions) {
+    exceptions[cacheKey] = exceptionsFromDefinition(
+      patternsDefinition.exceptions,
+      hyphenChar
+    );
+  }
+
+  if (userExceptions && userExceptions.length) {
+    exceptions[cacheKey] = extend(
+      exceptions[cacheKey],
+      exceptionsFromDefinition(userExceptions, hyphenChar)
+    );
+  }
+
+  caches[cacheKey] = extend({}, exceptions[cacheKey]);
 
   if (asyncMode && !("Promise" in _global)) {
     throw new Error(
@@ -102,17 +125,30 @@ export function createHyphenator(patternsDefinition, options) {
       ),
       localMinWordLength =
         keyOrDefault(options, SETTING_NAME_MIN_WORD_LENGTH, minWordLength) >> 0,
+      localUserExceptions = keyOrDefault(
+        options,
+        SETTING_NAME_EXCEPTIONS,
+        SETTING_DEFAULT_EXCEPTIONS,
+        validateArray
+      ),
       cacheKey = localHyphenChar + localMinWordLength;
 
-    if (!exceptions[cacheKey]) {
+    if (!exceptions[cacheKey] && patternsDefinition.exceptions) {
       exceptions[cacheKey] = exceptionsFromDefinition(
-        patternsDefinition,
+        patternsDefinition.exceptions,
         localHyphenChar
       );
+
+      caches[cacheKey] = extend(caches[cacheKey], exceptions[cacheKey]);
     }
 
-    if (!caches[cacheKey]) {
-      caches[cacheKey] = cloneObj(exceptions[cacheKey]);
+    if (localUserExceptions && localUserExceptions.length) {
+      exceptions[cacheKey] = extend(
+        exceptions[cacheKey],
+        exceptionsFromDefinition(localUserExceptions, localHyphenChar)
+      );
+
+      caches[cacheKey] = extend(caches[cacheKey], exceptions[cacheKey]);
     }
 
     return start(
