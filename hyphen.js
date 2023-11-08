@@ -286,11 +286,13 @@
 
   var SETTING_DEFAULT_ASYNC = false;
   var SETTING_DEFAULT_DEBUG = false;
+  var SETTING_DEFAULT_EXCEPTIONS = [];
   var SETTING_DEFAULT_HTML = false;
   var SETTING_DEFAULT_HYPH_CHAR = "\xAD";
   var SETTING_DEFAULT_MIN_WORD_LENGTH = 5;
   var SETTING_NAME_ASYNC = "async";
   var SETTING_NAME_DEBUG = "debug";
+  var SETTING_NAME_EXCEPTIONS = "exceptions";
   var SETTING_NAME_HTML = "html";
   var SETTING_NAME_HYPH_CHAR = "hyphenChar";
   var SETTING_NAME_MIN_WORD_LENGTH = "minWordLength";
@@ -304,31 +306,30 @@
       : false
       ? void 0
       : {};
-  function cloneObj(source) {
-    var target = {};
+  function extend(target, source) {
+    target = target || {};
     for (var key in source) {
       target[key] = source[key];
     }
     return target;
   }
-  function keyOrDefault(object, key, defaultValue) {
-    if (key in object) {
+  function validateArray(value) {
+    return value instanceof Array;
+  }
+  function keyOrDefault(object, key, defaultValue, test) {
+    if (key in object && (test ? test(object[key]) : true)) {
       return object[key];
     }
     return defaultValue;
   }
-  function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
-    return patternsDefinition.exceptions.reduce(function (
-      exceptions,
-      exception
-    ) {
+  function exceptionsFromDefinition(excetionsList, hyphenChar) {
+    return excetionsList.reduce(function (exceptions, exception) {
       exceptions["~" + exception.replace(/\-/g, "")] = exception.replace(
         /\-/g,
         hyphenChar
       );
       return exceptions;
-    },
-    {});
+    }, {});
   }
   function createHyphenator(patternsDefinition, options) {
     options = options || {};
@@ -356,13 +357,28 @@
           SETTING_NAME_MIN_WORD_LENGTH,
           SETTING_DEFAULT_MIN_WORD_LENGTH
         ) >> 0,
-      skipHTML = keyOrDefault(options, SETTING_NAME_HTML, SETTING_DEFAULT_HTML);
+      skipHTML = keyOrDefault(options, SETTING_NAME_HTML, SETTING_DEFAULT_HTML),
+      userExceptions = keyOrDefault(
+        options,
+        SETTING_NAME_EXCEPTIONS,
+        SETTING_DEFAULT_EXCEPTIONS,
+        validateArray
+      );
     var cacheKey = hyphenChar + minWordLength;
-    exceptions[cacheKey] = exceptionsFromDefinition(
-      patternsDefinition,
-      hyphenChar
-    );
-    caches[cacheKey] = cloneObj(exceptions[cacheKey]);
+    exceptions[cacheKey] = {};
+    if (patternsDefinition.exceptions) {
+      exceptions[cacheKey] = exceptionsFromDefinition(
+        patternsDefinition.exceptions,
+        hyphenChar
+      );
+    }
+    if (userExceptions && userExceptions.length) {
+      exceptions[cacheKey] = extend(
+        exceptions[cacheKey],
+        exceptionsFromDefinition(userExceptions, hyphenChar)
+      );
+    }
+    caches[cacheKey] = extend({}, exceptions[cacheKey]);
     if (asyncMode && !("Promise" in _global)) {
       throw new Error(
         "Failed to create hyphenator: Could not find global Promise object, needed for hyphenator to work in async mode"
@@ -379,15 +395,26 @@
         localMinWordLength =
           keyOrDefault(options2, SETTING_NAME_MIN_WORD_LENGTH, minWordLength) >>
           0,
+        localUserExceptions = keyOrDefault(
+          options2,
+          SETTING_NAME_EXCEPTIONS,
+          SETTING_DEFAULT_EXCEPTIONS,
+          validateArray
+        ),
         cacheKey2 = localHyphenChar + localMinWordLength;
-      if (!exceptions[cacheKey2]) {
+      if (!exceptions[cacheKey2] && patternsDefinition.exceptions) {
         exceptions[cacheKey2] = exceptionsFromDefinition(
-          patternsDefinition,
+          patternsDefinition.exceptions,
           localHyphenChar
         );
+        caches[cacheKey2] = extend(caches[cacheKey2], exceptions[cacheKey2]);
       }
-      if (!caches[cacheKey2]) {
-        caches[cacheKey2] = cloneObj(exceptions[cacheKey2]);
+      if (localUserExceptions && localUserExceptions.length) {
+        exceptions[cacheKey2] = extend(
+          exceptions[cacheKey2],
+          exceptionsFromDefinition(localUserExceptions, localHyphenChar)
+        );
+        caches[cacheKey2] = extend(caches[cacheKey2], exceptions[cacheKey2]);
       }
       return start(
         text,
