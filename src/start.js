@@ -52,7 +52,7 @@ export function start(
       (fragments = readText(text))
     ) {
       if (fragments[1]) {
-        var cacheKey = fragments[1].length ? "$" + fragments[1] : "";
+        var cacheKey = fragments[1].length ? "~" + fragments[1] : "";
 
         if (cache[cacheKey] === undefined) {
           cache[cacheKey] = hyphenateWord(

@@ -40,7 +40,7 @@ function keyOrDefault(object, key, defaultValue) {
 
 function exceptionsFromDefinition(patternsDefinition, hyphenChar) {
   return patternsDefinition.exceptions.reduce(function (exceptions, exception) {
-    exceptions[exception.replace(/\-/g, "")] = exception.replace(
+    exceptions["~" + exception.replace(/\-/g, "")] = exception.replace(
       /\-/g,
       hyphenChar
     );

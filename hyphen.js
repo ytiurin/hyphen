@@ -254,7 +254,7 @@
         (fragments = readText(text))
       ) {
         if (fragments[1]) {
-          var cacheKey = fragments[1].length ? "$" + fragments[1] : "";
+          var cacheKey = fragments[1].length ? "~" + fragments[1] : "";
           if (cache[cacheKey] === void 0) {
             cache[cacheKey] = hyphenateWord(
               fragments[1],
@@ -322,7 +322,7 @@
       exceptions,
       exception
     ) {
-      exceptions[exception.replace(/\-/g, "")] = exception.replace(
+      exceptions["~" + exception.replace(/\-/g, "")] = exception.replace(
         /\-/g,
         hyphenChar
       );
