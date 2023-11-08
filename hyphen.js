@@ -172,7 +172,6 @@
   function hyphenateWord(text, patternTree, debug, hyphenChar) {
     var levels = new Array(text.length + 1),
       loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
-      p = [],
       wordSlice,
       letter,
       treePtr,
@@ -221,28 +220,11 @@
     levels[0] = levels[1] = levels[levels.length - 1] = levels[
       levels.length - 2
     ] = 0;
-    var hyphenatedText = "",
-      leveledText = "",
-      debugHyphenatedText = "";
+    var hyphenatedText = "";
     for (var i = 0; i < levels.length; i++) {
       hyphenatedText +=
         (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
-      if (debug) {
-        debugHyphenatedText +=
-          (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
-        leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
-      }
     }
-    if (debug)
-      console.log.apply(
-        console,
-        [text, "->"]
-          .concat(p)
-          .concat(["->"])
-          .concat(levels)
-          .concat(["->", leveledText])
-          .concat(["->", debugHyphenatedText])
-      );
     return hyphenatedText;
   }
 
@@ -257,30 +239,13 @@
     isAsync
   ) {
     function done() {
-      allTime = /* @__PURE__ */ new Date() - allTime;
       resolveNewText(newText);
-      if (debug) {
-        console.log(
-          "----------------\nHyphenation stats: " +
-            processedN +
-            " text chunks processed, " +
-            hyphenatedN +
-            " words hyphenated"
-        );
-        console.log("Work time: " + workTime / 1e3);
-        console.log("Wait time: " + (allTime - workTime) / 1e3);
-        console.log("All time: " + allTime / 1e3);
-      }
     }
     var newText = "",
       fragments,
       readText = createTextReader(
         createHyphenationVerifier(hyphenChar, skipHTML, minWordLength)
       ),
-      processedN = 0,
-      hyphenatedN = 0,
-      allTime = /* @__PURE__ */ new Date(),
-      workTime = 0,
       resolveNewText = function () {};
     function nextTick() {
       var loopStart = /* @__PURE__ */ new Date();
@@ -298,15 +263,10 @@
               hyphenChar
             );
           }
-          if (fragments[1] !== cache[cacheKey]) {
-            hyphenatedN++;
-          }
           fragments[1] = cache[cacheKey];
         }
         newText += fragments[0] + fragments[1];
-        processedN++;
       }
-      workTime += /* @__PURE__ */ new Date() - loopStart;
       if (!fragments) {
         done();
       } else {

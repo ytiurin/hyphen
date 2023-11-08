@@ -13,10 +13,10 @@ export function start(
   isAsync
 ) {
   function done() {
-    allTime = new Date() - allTime;
+    DEV: allTime = new Date() - allTime;
     resolveNewText(newText);
 
-    if (debug) {
+    DEV: if (debug) {
       console.log(
         "----------------\nHyphenation stats: " +
           processedN +
@@ -35,11 +35,14 @@ export function start(
     readText = createTextReader(
       createHyphenationVerifier(hyphenChar, skipHTML, minWordLength)
     ),
-    processedN = 0,
-    hyphenatedN = 0,
-    allTime = new Date(),
-    workTime = 0,
     resolveNewText = function () {};
+
+  DEV: {
+    var processedN = 0,
+      hyphenatedN = 0,
+      allTime = new Date(),
+      workTime = 0;
+  }
 
   function nextTick() {
     var loopStart = new Date();
@@ -60,7 +63,7 @@ export function start(
           );
         }
 
-        if (fragments[1] !== cache[cacheKey]) {
+        DEV: if (fragments[1] !== cache[cacheKey]) {
           hyphenatedN++;
         }
 
@@ -68,10 +71,10 @@ export function start(
       }
 
       newText += fragments[0] + fragments[1];
-      processedN++;
+      DEV: processedN++;
     }
 
-    workTime += new Date() - loopStart;
+    DEV: workTime += new Date() - loopStart;
 
     if (!fragments) {
       done();

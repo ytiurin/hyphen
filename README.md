@@ -87,10 +87,6 @@ npm install hyphen
 
 ## Options
 
-- **debug**
-
-  A `Boolean` indicating, if script should output debug info to console. Default is `false`.
-
 - **hyphenChar**
 
   A `String` sets a value of the soft hyphen character. Default value is `\u00AD`.
@@ -702,3 +698,7 @@ p {
 ```
 
 It is part of the [CSS Text Level 3](https://drafts.csswg.org/css-text-3/#hyphens-property) specification. The browser compatibility list can be found on the [related MDN page](https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens).
+
+## DEPRECATED
+
+- Option `debug` will be deprecated in further versions
