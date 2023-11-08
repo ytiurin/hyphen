@@ -40,6 +40,7 @@ console.log(`Building to ${FILENAME_BUNDLE}`);
 const result = buildSync({
   entryPoints: ["./src/create-hyphenator.js"],
   bundle: true,
+  dropLabels: ["DEV"],
   write: false
 });
 

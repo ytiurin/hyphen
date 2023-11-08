@@ -34,10 +34,8 @@ function createStringSlicer(str) {
 }
 
 export function hyphenateWord(text, patternTree, debug, hyphenChar) {
-  var //
-    levels = new Array(text.length + 1),
+  var levels = new Array(text.length + 1),
     loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
-    p = [],
     wordSlice,
     letter,
     treePtr,
@@ -99,26 +97,26 @@ export function hyphenateWord(text, patternTree, debug, hyphenChar) {
     levels.length - 2
   ] = 0;
 
-  var //
-    hyphenatedText = "",
-    leveledText = "",
-    debugHyphenatedText = "";
+  var hyphenatedText = "";
+
+  DEV: {
+    var leveledText = "",
+      debugHyphenatedText = "";
+  }
 
   for (var i = 0; i < levels.length; i++) {
     hyphenatedText += (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
 
-    if (debug) {
+    DEV: if (debug) {
       debugHyphenatedText += (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
       leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
     }
   }
 
-  if (debug)
+  DEV: if (debug)
     console.log.apply(
       console,
       [text, "->"]
-        .concat(p)
-        .concat(["->"])
         .concat(levels)
         .concat(["->", leveledText])
         .concat(["->", debugHyphenatedText])
