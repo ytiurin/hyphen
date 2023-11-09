@@ -85,6 +85,12 @@ const result = hyphenate(text);
 npm install hyphen
 ```
 
+Install types definitions for Typescript usage.
+
+```
+npm install --save @types/hyphen
+```
+
 ## Options
 
 - **exceptions**
