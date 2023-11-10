@@ -88,8 +88,9 @@ npm install hyphen
 Install types definitions for Typescript usage.
 
 ```
-npm install --save @types/hyphen
+npm install --save-dev @types/hyphen
 ```
+Types definitions are created and maintained by [Krisztián Balla](https://github.com/krisztianb).
 
 ## Options
 
