@@ -18,4 +18,4 @@ export const PreventHTML = () => `
     )}
   </main>`;
 
-PreventHTML.story = { name: "Prevent HTML-related code from hyphenation" };
+PreventHTML.storyName = "Prevent HTML-related code from hyphenation";

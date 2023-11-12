@@ -25,9 +25,9 @@ export const Greek = () => makeLanguageStory(hyphenateEl, greek);
 export const Italian = () => makeLanguageStory(hyphenateIt, italian);
 export const Turkish = () => makeLanguageStory(hyphenateTr, turkish);
 
-English.story = { name: "English" };
-French.story = { name: "Français" };
-German.story = { name: "Deutsch" };
-Greek.story = { name: "Ελληνικά" };
-Italian.story = { name: "Italiano" };
-Turkish.story = { name: "Türkçe" };
+English.storyName = "English";
+French.storyName = "Français";
+German.storyName = "Deutsch";
+Greek.storyName = "Ελληνικά";
+Italian.storyName = "Italiano";
+Turkish.storyName = "Türkçe";
