@@ -31,4 +31,4 @@ export const PreventUIBlock = () => {
   return main;
 };
 
-PreventUIBlock.story = { name: "Prevent UI blocking" };
+PreventUIBlock.storyName = "Prevent UI blocking";
