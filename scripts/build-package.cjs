@@ -34,7 +34,6 @@ const {
   copyFileSync,
   existsSync,
   mkdirSync,
-  readFileSync,
   readdirSync,
   writeFileSync
 } = require("fs");

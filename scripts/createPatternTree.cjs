@@ -1,4 +1,4 @@
-var NUMS = ["1", "2", "3", "4", "5", "6"];
+var NUMS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 function createIterator(str) {
   var i = 0;
@@ -10,10 +10,9 @@ function createIterator(str) {
   return next;
 }
 
-export function createPatternTree(patterns) {
+function createPatternTree(patterns) {
   var pattern,
     symb,
-    maxPatternLength = 0,
     patternTree = [{}],
     nextPattern = createIterator(patterns);
 
@@ -21,7 +20,6 @@ export function createPatternTree(patterns) {
     var ptr = patternTree,
       symb,
       weights = [],
-      patternLength = 0,
       prevSymbIsNumber = false,
       nextSymbol = createIterator(pattern.split(""));
 
@@ -33,10 +31,6 @@ export function createPatternTree(patterns) {
       } else {
         if (!prevSymbIsNumber && symb !== ".") {
           weights.push(0);
-        }
-
-        if (symb !== ".") {
-          patternLength++;
         }
 
         ptr[0][symb] = ptr[0][symb] || [{}];
@@ -51,12 +45,9 @@ export function createPatternTree(patterns) {
     }
 
     ptr[1] = weights;
-    ptr[2] = pattern;
-
-    if (maxPatternLength < patternLength) {
-      maxPatternLength = patternLength;
-    }
   }
 
-  return [patternTree[0], maxPatternLength];
+  return patternTree[0];
 }
+
+module.exports = { createPatternTree };
