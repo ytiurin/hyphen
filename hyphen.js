@@ -1,5 +1,5 @@
 /** Text hyphenation in Javascript.
- *  Copyright (C) 2021 Yevhen Tiurin (yevhentiurin@gmail.com)
+ *  Copyright (C) 2023 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *
  *  Released under the ISC license
