@@ -34,6 +34,6 @@
 
   return {
     patterns: patterns,
-    exceptions: hyphenation
+    exceptions: hyphenation || []
   };
 });

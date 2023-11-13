@@ -1,4 +1,3 @@
-import { createPatternTree } from "./create-pattern-tree.js";
 import { start } from "./start.js";
 
 var SETTING_DEFAULT_ASYNC = false,
@@ -69,11 +68,7 @@ export function createHyphenator(patternsDefinition, options) {
       SETTING_NAME_HYPH_CHAR,
       SETTING_DEFAULT_HYPH_CHAR
     ),
-    patterns = createPatternTree(
-      patternsDefinition.patterns.filter(function (p) {
-        return p !== " " && p !== "";
-      })
-    )[0],
+    patterns = JSON.parse(patternsDefinition.patterns),
     minWordLength =
       keyOrDefault(
         options,
