@@ -72,7 +72,18 @@ buildFiles(
       hyphenation;
 
     (function () {
+      var input;
+
       eval(code);
+
+      if (input !== undefined) {
+        code = tex2js(readFileSync(pathTo(DIR_TEX, input), "utf8"));
+        patterns = (function () {
+          eval(code);
+
+          return patterns;
+        })();
+      }
 
       code =
         "var patterns = '" +
