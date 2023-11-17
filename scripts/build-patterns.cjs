@@ -18,10 +18,6 @@ const makeUMD = (code, globalName) => `(function (root, factory) {
 
   ${code}
 
-  return {
-    patterns: patterns,
-    exceptions: hyphenation
-  };
 });
 `;
 
@@ -68,11 +64,11 @@ buildFiles(
   filename => pathTo(DIR_PATTERNS, tagFromFilename(filename) + ".js"),
   filename => {
     var code = tex2js(readFileSync(pathTo(DIR_TEX, filename), "utf8"));
-    var patterns = "",
-      hyphenation;
 
     (function () {
-      var input;
+      var patterns = "",
+        hyphenation,
+        input;
 
       eval(code);
 
@@ -86,14 +82,11 @@ buildFiles(
       }
 
       code =
-        "var patterns = '" +
+        "return ['" +
         JSON.stringify(createPatternTree(patterns)).replace(/'/g, "\\'") +
-        "';";
-
-      code +=
-        "var hyphenation=" +
+        "', " +
         (hyphenation ? JSON.stringify(hyphenation) : "[]") +
-        ";";
+        "];";
     })();
 
     return prettier.format(

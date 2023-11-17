@@ -297,7 +297,7 @@
         SETTING_NAME_HYPH_CHAR,
         SETTING_DEFAULT_HYPH_CHAR
       ),
-      patterns = JSON.parse(patternsDefinition.patterns),
+      patterns = JSON.parse(patternsDefinition[0]),
       minWordLength =
         keyOrDefault(
           options,
@@ -313,9 +313,9 @@
       );
     var cacheKey = hyphenChar + minWordLength;
     exceptions[cacheKey] = {};
-    if (patternsDefinition.exceptions) {
+    if (patternsDefinition[1]) {
       exceptions[cacheKey] = exceptionsFromDefinition(
-        patternsDefinition.exceptions,
+        patternsDefinition[1],
         hyphenChar
       );
     }
@@ -349,9 +349,9 @@
           validateArray
         ),
         cacheKey2 = localHyphenChar + localMinWordLength;
-      if (!exceptions[cacheKey2] && patternsDefinition.exceptions) {
+      if (!exceptions[cacheKey2] && patternsDefinition[1]) {
         exceptions[cacheKey2] = exceptionsFromDefinition(
-          patternsDefinition.exceptions,
+          patternsDefinition[1],
           localHyphenChar
         );
         caches[cacheKey2] = extend(caches[cacheKey2], exceptions[cacheKey2]);
