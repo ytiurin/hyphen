@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/hyphen.svg)](https://badge.fury.io/js/hyphen)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # hyphen
@@ -94,6 +95,7 @@ Install types definitions for Typescript usage.
 ```
 npm install --save-dev @types/hyphen
 ```
+
 Types definitions are created and maintained by [Krisztián Balla](https://github.com/krisztianb).
 
 ## Options
@@ -689,8 +691,8 @@ Predefined `hyphenate` functions are set in every language pack.
 It is possible to use `hyphen` on older websites with [jsDelivr](https://www.jsdelivr.com/) network. Check the [package page](https://www.jsdelivr.com/package/npm/hyphen) on their website.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/hyphen@1.7.2/hyphen.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hyphen@1.7.2/patterns/en-us.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hyphen@1.9.1/patterns/en-us.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hyphen@1.9.1/hyphen.min.js"></script>
 ```
 
 After the script is added on your page, use `createHyphenator` to create a `hyphenate` function.
