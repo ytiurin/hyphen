@@ -24,10 +24,10 @@ import { hyphenate } from "hyphen/en";
 
 ## Hyphenate HTML
 
-HTML tags will automaticly skip hyphenation.
+Processor will automaticly skip HTML tags hyphenation.
 
 ```javascript
-import { hyphenateHTML as hyphenate } from "hyphen/en";
+import { hyphenate } from "hyphen/en";
 
 (async () => {
   const text = "<blockquote>A certain king had a beautiful garden</blockquote>";
@@ -663,8 +663,6 @@ import patterns from "hyphen/patterns/en-us";
 const hyphenate = createHyphenator(patterns, {
   // result in Promise
   async: true,
-  // prevent HTML tags from hyphenation
-  html: true,
   // exceptions of hyphenation
   exceptions: ["present", "ta-ble"]
 });
@@ -679,8 +677,6 @@ import createHyphenator from "hyphen";
 import patterns from "hyphen/patterns/en-us";
 
 const hyphenate = createHyphenator(patterns, { async: true });
-const hyphenateHTML = createHyphenator(patterns, { async: true, html: true });
-const hyphenateHTMLSync = createHyphenator(patterns, { html: true });
 const hyphenateSync = createHyphenator(patterns);
 ```
 
@@ -722,7 +718,8 @@ It is part of the [CSS Text Level 3](https://drafts.csswg.org/css-text-3/#hyphen
 
 ## DEPRECATED
 
-- Option `debug` will be deprecated in further versions
+- Option `debug` will be deprecated in further versions;
+- Option `html` will be deprecated in further versions.
 
 ## Contributors ✨
 
