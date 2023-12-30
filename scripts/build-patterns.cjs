@@ -96,9 +96,13 @@ buildFiles(
 
     [patterns, hyphenation] = purify(patterns, hyphenation);
 
+    var [weightsTable, patternTree] = createPatternTree(patterns);
+
     const resultCode =
       "return ['" +
-      JSON.stringify(createPatternTree(patterns)).replace(/'/g, "\\'") +
+      weightsTable.join() +
+      "','" +
+      JSON.stringify(patternTree).replace(/'/g, "\\'") +
       "', " +
       JSON.stringify(hyphenation) +
       "];";

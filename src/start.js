@@ -4,6 +4,7 @@ import { hyphenateWord } from "./hyphenate-word.js";
 
 export function start(
   text,
+  levelsTable,
   patterns,
   cache,
   debug,
@@ -57,6 +58,7 @@ export function start(
         if (cache[cacheKey] === undefined) {
           cache[cacheKey] = hyphenateWord(
             fragments[1],
+            levelsTable,
             patterns,
             debug,
             hyphenChar

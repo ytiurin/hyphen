@@ -120,13 +120,14 @@
     }
     return [next, isFirstCharacter];
   }
-  function hyphenateWord(text, patternTree, debug, hyphenChar) {
+  function hyphenateWord(text, levelsTable, patternTree, debug, hyphenChar) {
     var levels = new Array(text.length + 1),
       loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
       wordSlice,
       letter,
       treePtr,
       nextPtr,
+      patternLevelsIndex,
       patternLevels,
       patternEntityIndex = -1,
       slicer,
@@ -154,13 +155,19 @@
         }
         nextPtr = treePtr[letter];
         treePtr = nextPtr[0];
-        patternLevels = nextPtr[1];
+        patternLevelsIndex = nextPtr[1];
         if (isLastLetter()) {
           continue;
         }
-        if (patternLevels === void 0) {
+        if (patternLevelsIndex === void 0) {
           continue;
         }
+        if (!levelsTable[patternLevelsIndex].splice) {
+          levelsTable[patternLevelsIndex] = levelsTable[
+            patternLevelsIndex
+          ].slice("");
+        }
+        patternLevels = levelsTable[patternLevelsIndex];
         for (var k = 0; k < patternLevels.length; k++)
           levels[patternEntityIndex + k] = Math.max(
             patternLevels[k],
@@ -181,6 +188,7 @@
 
   function start(
     text,
+    levelsTable,
     patterns,
     cache,
     debug,
@@ -209,6 +217,7 @@
           if (cache[cacheKey] === void 0) {
             cache[cacheKey] = hyphenateWord(
               fragments[1],
+              levelsTable,
               patterns,
               debug,
               hyphenChar
@@ -297,7 +306,8 @@
         SETTING_NAME_HYPH_CHAR,
         SETTING_DEFAULT_HYPH_CHAR
       ),
-      patterns = JSON.parse(patternsDefinition[0]),
+      levelsTable = patternsDefinition[0].split(","),
+      patterns = JSON.parse(patternsDefinition[1]),
       minWordLength =
         keyOrDefault(
           options,
@@ -313,9 +323,9 @@
       );
     var cacheKey = hyphenChar + minWordLength;
     exceptions[cacheKey] = {};
-    if (patternsDefinition[1]) {
+    if (patternsDefinition[2]) {
       exceptions[cacheKey] = exceptionsFromDefinition(
-        patternsDefinition[1],
+        patternsDefinition[2],
         hyphenChar
       );
     }
@@ -349,9 +359,9 @@
           validateArray
         ),
         cacheKey2 = localHyphenChar + localMinWordLength;
-      if (!exceptions[cacheKey2] && patternsDefinition[1]) {
+      if (!exceptions[cacheKey2] && patternsDefinition[2]) {
         exceptions[cacheKey2] = exceptionsFromDefinition(
-          patternsDefinition[1],
+          patternsDefinition[2],
           localHyphenChar
         );
         caches[cacheKey2] = extend(caches[cacheKey2], exceptions[cacheKey2]);
@@ -365,6 +375,7 @@
       }
       return start(
         text,
+        levelsTable,
         patterns,
         caches[cacheKey2],
         localDebug,

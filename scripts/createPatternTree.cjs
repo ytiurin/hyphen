@@ -14,7 +14,8 @@ function createPatternTree(patterns) {
   var pattern,
     symb,
     patternTree = [{}],
-    nextPattern = createIterator(patterns);
+    nextPattern = createIterator(patterns),
+    weightsTable = [];
 
   while ((pattern = nextPattern())) {
     var ptr = patternTree,
@@ -44,10 +45,19 @@ function createPatternTree(patterns) {
       weights.pop();
     }
 
-    ptr[1] = weights;
+    weights = weights.join("");
+
+    let weightsIndex = weightsTable.indexOf(weights);
+
+    if (weightsIndex === -1) {
+      weightsTable.push(weights);
+      weightsIndex = weightsTable.length - 1;
+    }
+
+    ptr[1] = weightsIndex;
   }
 
-  return patternTree[0];
+  return [weightsTable, patternTree[0]];
 }
 
 module.exports = { createPatternTree };
