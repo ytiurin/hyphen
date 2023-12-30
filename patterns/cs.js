@@ -19,8 +19,7 @@
       "koe-fi-ci-en-ty",
       "pro-jek-ční",
       "úhlo-příč-ka",
-      "úhlo-příč-ky",
-      ""
+      "úhlo-příč-ky"
     ]
   ];
 });

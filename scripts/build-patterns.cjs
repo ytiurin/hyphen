@@ -53,6 +53,21 @@ const makeGlobalName = tag =>
   tag.substr(0, 1).toUpperCase() +
   tag.substr(1).replace(/-\w/g, a => a.substr(1).toUpperCase());
 
+const evalTex = texCode => {
+  var patterns, hyphenation, input;
+
+  return (() => {
+    eval(tex2js(texCode));
+
+    return [patterns, hyphenation, input];
+  })();
+};
+
+const purify = (patterns, hyphenation) => [
+  patterns.filter ? patterns.filter(a => a !== " ") : patterns,
+  (hyphenation || []).filter(a => a !== "")
+];
+
 /******************************************************************************/
 console.log(`Porting patterns`);
 
@@ -63,34 +78,33 @@ buildFiles(
   readdirSync(pathTo(DIR_TEX)).filter(a => ~a.indexOf(".tex")),
   filename => pathTo(DIR_PATTERNS, tagFromFilename(filename) + ".js"),
   filename => {
-    var code = tex2js(readFileSync(pathTo(DIR_TEX, filename), "utf8"));
+    let [patterns, hyphenation, input] = evalTex(
+      readFileSync(pathTo(DIR_TEX, filename), "utf8")
+    );
 
-    (function () {
-      var patterns = "",
-        hyphenation,
-        input;
+    if (input !== undefined) {
+      let hyphenation2;
 
-      eval(code);
+      [patterns, hyphenation2] = evalTex(
+        readFileSync(pathTo(DIR_TEX, input), "utf8")
+      );
 
-      if (input !== undefined) {
-        code = tex2js(readFileSync(pathTo(DIR_TEX, input), "utf8"));
-        patterns = (function () {
-          eval(code);
-
-          return patterns;
-        })();
+      if (hyphenation2) {
+        hyphenation = (hyphenation || []).concat(hyphenation2);
       }
+    }
 
-      code =
-        "return ['" +
-        JSON.stringify(createPatternTree(patterns)).replace(/'/g, "\\'") +
-        "', " +
-        (hyphenation ? JSON.stringify(hyphenation) : "[]") +
-        "];";
-    })();
+    [patterns, hyphenation] = purify(patterns, hyphenation);
+
+    const resultCode =
+      "return ['" +
+      JSON.stringify(createPatternTree(patterns)).replace(/'/g, "\\'") +
+      "', " +
+      JSON.stringify(hyphenation) +
+      "];";
 
     return prettier.format(
-      makeUMD(code, makeGlobalName(tagFromFilename(filename))),
+      makeUMD(resultCode, makeGlobalName(tagFromFilename(filename))),
       Object.assign(JSON.parse(readFileSync(".prettierrc.json")), {
         parser: "babel"
       })

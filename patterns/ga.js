@@ -60,8 +60,7 @@
       "sháfaí",
       "spealta",
       "dtiom-áintí",
-      "thiom-áintí",
-      ""
+      "thiom-áintí"
     ]
   ];
 });

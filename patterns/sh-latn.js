@@ -130,8 +130,7 @@
       "in-te-res",
       "tran-su",
       "tran-sa",
-      "tran-som",
-      ""
+      "tran-som"
     ]
   ];
 });

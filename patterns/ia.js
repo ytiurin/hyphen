@@ -24,8 +24,7 @@
       "mos-lem",
       "qualc-un",
       "qualc-u-nis-si-me",
-      "qualc-un-men-te",
-      ""
+      "qualc-un-men-te"
     ]
   ];
 });
