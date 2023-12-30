@@ -122,8 +122,7 @@
       "ut-ørk",
       "ut-ørken",
       "velan",
-      "velet",
-      ""
+      "velet"
     ]
   ];
 });

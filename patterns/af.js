@@ -199,8 +199,7 @@
       "wel-oor-wo-ë",
       "werp-lood",
       "wes-oe-wer",
-      "xho-sa-tjie",
-      ""
+      "xho-sa-tjie"
     ]
   ];
 });

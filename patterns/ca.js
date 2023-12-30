@@ -40,8 +40,7 @@
       "ro-yal-ty",
       "vos-al-tres",
       "whis-ky",
-      "whis-kies",
-      ""
+      "whis-kies"
     ]
   ];
 });

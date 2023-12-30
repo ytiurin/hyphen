@@ -34,8 +34,7 @@
       "skąd-inąd",
       "tró-jach",
       "tró-jami",
-      "tró-jek",
-      ""
+      "tró-jek"
     ]
   ];
 });
