@@ -68,7 +68,8 @@ export function createHyphenator(patternsDefinition, options) {
       SETTING_NAME_HYPH_CHAR,
       SETTING_DEFAULT_HYPH_CHAR
     ),
-    patterns = JSON.parse(patternsDefinition[0]),
+    levelsTable = patternsDefinition[0].split(","),
+    patterns = JSON.parse(patternsDefinition[1]),
     minWordLength =
       keyOrDefault(
         options,
@@ -87,9 +88,9 @@ export function createHyphenator(patternsDefinition, options) {
   var cacheKey = hyphenChar + minWordLength;
   exceptions[cacheKey] = {};
 
-  if (patternsDefinition[1]) {
+  if (patternsDefinition[2]) {
     exceptions[cacheKey] = exceptionsFromDefinition(
-      patternsDefinition[1],
+      patternsDefinition[2],
       hyphenChar
     );
   }
@@ -128,9 +129,9 @@ export function createHyphenator(patternsDefinition, options) {
       ),
       cacheKey = localHyphenChar + localMinWordLength;
 
-    if (!exceptions[cacheKey] && patternsDefinition[1]) {
+    if (!exceptions[cacheKey] && patternsDefinition[2]) {
       exceptions[cacheKey] = exceptionsFromDefinition(
-        patternsDefinition[1],
+        patternsDefinition[2],
         localHyphenChar
       );
 
@@ -148,6 +149,7 @@ export function createHyphenator(patternsDefinition, options) {
 
     return start(
       text,
+      levelsTable,
       patterns,
       caches[cacheKey],
       localDebug,

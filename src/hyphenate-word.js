@@ -33,13 +33,20 @@ function createStringSlicer(str) {
   return [next, isFirstCharacter];
 }
 
-export function hyphenateWord(text, patternTree, debug, hyphenChar) {
+export function hyphenateWord(
+  text,
+  levelsTable,
+  patternTree,
+  debug,
+  hyphenChar
+) {
   var levels = new Array(text.length + 1),
     loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
     wordSlice,
     letter,
     treePtr,
     nextPtr,
+    patternLevelsIndex,
     patternLevels,
     patternEntityIndex = -1,
     slicer,
@@ -74,16 +81,24 @@ export function hyphenateWord(text, patternTree, debug, hyphenChar) {
 
       nextPtr = treePtr[letter];
       treePtr = nextPtr[0];
-      patternLevels = nextPtr[1];
+      patternLevelsIndex = nextPtr[1];
 
       if (isLastLetter()) {
         // ignore patterns for last letter
         continue;
       }
 
-      if (patternLevels === undefined) {
+      if (patternLevelsIndex === undefined) {
         continue;
       }
+
+      if (!levelsTable[patternLevelsIndex].splice) {
+        levelsTable[patternLevelsIndex] = levelsTable[patternLevelsIndex].slice(
+          ""
+        );
+      }
+
+      patternLevels = levelsTable[patternLevelsIndex];
 
       for (var k = 0; k < patternLevels.length; k++)
         levels[patternEntityIndex + k] = Math.max(
