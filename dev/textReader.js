@@ -1,5 +1,9 @@
 import { createTextReader } from "../src/textReader.js";
-import { createHyphenationVerifier } from "../src/hyphenationVerifier.js";
+import {
+  createHTMLVerifier,
+  createHyphenCharVerifier,
+  createHyphenationVerifier
+} from "../src/hyphenationVerifier.js";
 
 let text = `Dans des temps très anciens, alors qu'il pouvait encore être utile de faire
 des voeux, vivait un roi dont toutes les filles étaient belles. La plus
@@ -11,16 +15,21 @@ le bois, et s'assit au bord de la source fraîche. Et comme elle s'ennuyait,
 elle prit sa balle en or, la jeta en l'air et la rattrapa; <blockquote id="hi">c'était</blockquote> son jeu
 favo\u00ADri.`;
 
-// text = `Dans des temps très anciens`;
-// text = "Hyphenation hyphenatioN";
-// text = "<beautiful class=\"beautiful\">";
-// text = "beautiful";
+// let text = `Dans des temps très anciens`;
+// let text = "Hyphenation hyphenatioN";
+// let text = '<beautiful class="beautiful">';
+// let text = "beautiful";
+// let text = "beauti-ful";
 
 var minWordLength = 5;
-var hyphenChar = "\u00AD";
+// var hyphenChar = "\u00AD";
+var hyphenChar = "-";
 
 const readText = createTextReader(
-  createHyphenationVerifier(hyphenChar, true, minWordLength)
+  createHyphenationVerifier(
+    [createHTMLVerifier(true), createHyphenCharVerifier(hyphenChar)],
+    minWordLength
+  )
 );
 
 var a,

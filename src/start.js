@@ -1,5 +1,9 @@
 import { createTextReader } from "./textReader.js";
-import { createHyphenationVerifier } from "./hyphenationVerifier.js";
+import {
+  createHTMLVerifier,
+  createHyphenCharVerifier,
+  createHyphenationVerifier
+} from "./hyphenationVerifier.js";
 import { hyphenateWord } from "./hyphenate-word.js";
 
 export function start(
@@ -34,7 +38,10 @@ export function start(
   var newText = "",
     fragments,
     readText = createTextReader(
-      createHyphenationVerifier(hyphenChar, skipHTML, minWordLength)
+      createHyphenationVerifier(
+        [createHTMLVerifier(skipHTML), createHyphenCharVerifier(hyphenChar)],
+        minWordLength
+      )
     ),
     resolveNewText = function () {};
 

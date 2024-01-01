@@ -1,5 +1,5 @@
 /** Text hyphenation in Javascript.
- *  Copyright (C) 2023 Yevhen Tiurin (yevhentiurin@gmail.com)
+ *  Copyright (C) 2024 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *
  *  Released under the ISC license
@@ -39,55 +39,71 @@
   var isNotLetter = RegExp.prototype.test.bind(
     /\s|(?![\'])[\!-\@\[-\`\{-\~\u2013-\u203C]/
   );
-  function createHyphenationVerifier(hyphenChar, skipHTML, minWordLength) {
+  function createHTMLVerifier(skipHTML) {
+    var skip = false;
+    return function (accumulate, chars) {
+      if (skip) {
+        if (chars[0] === ">") {
+          accumulate();
+          skip = false;
+        }
+      } else if (
+        chars[0] === "<" &&
+        (!isNotLetter(chars[1]) || chars[1] === "/") &&
+        skipHTML
+      ) {
+        skip = true;
+      }
+      return skip;
+    };
+  }
+  function createHyphenCharVerifier(hyphenChar) {
+    var skip = false;
+    return function (accumulate, chars) {
+      if (skip) {
+        if (!isNotLetter(chars[0]) && isNotLetter(chars[1])) {
+          accumulate();
+          skip = false;
+        }
+      } else if (!isNotLetter(chars[0]) && chars[1] === hyphenChar) {
+        skip = true;
+      }
+      return skip;
+    };
+  }
+  function createHyphenationVerifier(verifiers, minWordLength) {
     return function () {
       var accum0 = "";
       var accum = "";
-      var isHTMLTag = false;
-      var skipCurrent = false;
+      function accumulate() {
+        accum0 += accum;
+        accum = "";
+      }
       function resolveWith(value) {
         accum0 = "";
         accum = "";
-        isHTMLTag = false;
-        skipCurrent = false;
         return value;
       }
       return function (char1, char2) {
         accum += char1;
-        if (isHTMLTag) {
-          if (char1 === ">") {
-            accum0 += accum;
-            accum = "";
-            isHTMLTag = false;
-          }
-        } else {
-          if (char1 === hyphenChar) {
-            skipCurrent = true;
-          }
-          if (
-            char1 === "<" &&
-            (!isNotLetter(char2) || char2 === "/") &&
-            skipHTML
-          ) {
-            isHTMLTag = true;
-          }
+        var skip = verifiers.reduce(function (skip2, verify) {
+          return skip2 || verify(accumulate, [char1, char2]);
+        }, false);
+        if (!skip) {
           if (isNotLetter(char1) && !isNotLetter(char2)) {
-            accum0 += accum;
-            accum = "";
+            accumulate();
           }
           if (!isNotLetter(char1) && isNotLetter(char2)) {
-            if (accum.length >= minWordLength && !skipCurrent) {
+            if (accum.length >= minWordLength) {
               return resolveWith([accum0, accum]);
             } else {
-              accum0 += accum;
-              accum = "";
+              accumulate();
             }
           }
         }
         if (char2 === "") {
-          if (accum.length < minWordLength || skipCurrent) {
-            accum0 += accum;
-            accum = "";
+          if (accum.length < minWordLength || skip) {
+            accumulate();
           }
           return resolveWith([accum0, accum]);
         }
@@ -203,7 +219,10 @@
     var newText = "",
       fragments,
       readText = createTextReader(
-        createHyphenationVerifier(hyphenChar, skipHTML, minWordLength)
+        createHyphenationVerifier(
+          [createHTMLVerifier(skipHTML), createHyphenCharVerifier(hyphenChar)],
+          minWordLength
+        )
       ),
       resolveNewText = function () {};
     function nextTick() {
