@@ -83,6 +83,11 @@ export function hyphenateWord(
       treePtr = nextPtr[0];
       patternLevelsIndex = nextPtr[1];
 
+      if (treePtr === undefined) {
+        treePtr = {};
+        patternLevelsIndex = nextPtr;
+      }
+
       if (isLastLetter()) {
         // ignore patterns for last letter
         continue;

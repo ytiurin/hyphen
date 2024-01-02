@@ -10,6 +10,16 @@ function createIterator(str) {
   return next;
 }
 
+function normalizeEmptyNodes(tree) {
+  for (let key in tree) {
+    if (Object.keys(tree[key][0]).length === 0) {
+      tree[key] = tree[key][1];
+    } else {
+      normalizeEmptyNodes(tree[key][0]);
+    }
+  }
+}
+
 function createPatternTree(patterns) {
   var pattern,
     symb,
@@ -57,7 +67,9 @@ function createPatternTree(patterns) {
     ptr[1] = weightsIndex;
   }
 
+  normalizeEmptyNodes(patternTree[0]);
+
   return [weightsTable, patternTree[0]];
 }
 
-module.exports = { createPatternTree };
+module.exports = { createPatternTree, normalizeEmptyNodes };
