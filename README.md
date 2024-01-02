@@ -120,7 +120,9 @@ import { hyphenate } from "hyphen/en";
 (async () => {
   const text = "A certain king had a beautiful garden";
 
-  const result = await hyphenate(text, { hyphenChar: "-" });
+  const result = await hyphenate(text, {
+    hyphenChar: "-"
+  });
   // result is "A cer-tain king had a beau-ti-ful garden"
 })();
 ```
@@ -676,7 +678,10 @@ The following are predefined `hyphenate` functions.
 import createHyphenator from "hyphen";
 import patterns from "hyphen/patterns/en-us";
 
-const hyphenate = createHyphenator(patterns, { async: true });
+const hyphenate = createHyphenator(patterns, {
+  async: true
+});
+
 const hyphenateSync = createHyphenator(patterns);
 ```
 
@@ -691,10 +696,12 @@ It is possible to use `hyphen` on older websites with [jsDelivr](https://www.jsd
 <script src="https://cdn.jsdelivr.net/npm/hyphen@1.10.1/hyphen.min.js"></script>
 ```
 
-After the script is added on your page, use `createHyphenator` to create a `hyphenate` function.
+After the script is added on your page, use еру `createHyphenator` to create a `hyphenate` function.
 
 ```javascript
-var hyphenate = createHyphenator(hyphenationPatternsEnUs);
+var hyphenate = createHyphenator(hyphenationPatternsEnUs, {
+  async: true
+});
 ```
 
 ## Alternatives
@@ -719,7 +726,51 @@ It is part of the [CSS Text Level 3](https://drafts.csswg.org/css-text-3/#hyphen
 ## DEPRECATED
 
 - Option `debug` will be deprecated in further versions;
-- Option `html` will be deprecated in further versions.
+
+## Migration
+
+<details>
+  <summary>from <strong>1.9.1</strong> to <strong>1.10.0</strong></summary>
+
+Option `html` default value changed from `false` to `true`
+
+Default exported `hyphenateHTML` function
+
+```javascript
+// Code before 1.10.0
+hyphenateHTML(text);
+```
+
+```javascript
+// Code after 1.10.0
+hyphenate(text);
+```
+
+Default exported `hyphenate` function
+
+```javascript
+// Code before 1.10.0
+hyphenate(text);
+```
+
+```javascript
+// Code after 1.10.0
+hyphenate(text, { html: false });
+```
+
+Create `hyphenate` function with pre **1.10.0** behavior using a factory function:
+
+```javascript
+// Code after 1.10.0
+const hyphenate = createHyphenator(patterns, {
+  async: true,
+  html: false
+});
+
+hyphenate(text);
+```
+
+</details>
 
 ## Contributors ✨
 
