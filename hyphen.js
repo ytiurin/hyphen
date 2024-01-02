@@ -172,6 +172,10 @@
         nextPtr = treePtr[letter];
         treePtr = nextPtr[0];
         patternLevelsIndex = nextPtr[1];
+        if (treePtr === void 0) {
+          treePtr = {};
+          patternLevelsIndex = nextPtr;
+        }
         if (isLastLetter()) {
           continue;
         }

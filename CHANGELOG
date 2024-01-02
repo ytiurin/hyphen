@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Destructured text reader into composable verifiers
 
+- Optimized patterns storage to reduce patterns file size
+
 ## [1.10.1]
 
 ### Changed
