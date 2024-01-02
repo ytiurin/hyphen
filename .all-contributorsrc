@@ -3,76 +3,114 @@
   "projectOwner": "ytiurin",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "files": ["README.md"],
+  "files": [
+    "README.md"
+  ],
   "imageSize": 160,
   "commit": false,
   "commitConvention": "none",
   "contributors": [
     {
+      "login": "ytiurin",
+      "name": "Eugene Tiurin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1114034?v=4",
+      "profile": "https://github.com/ytiurin",
+      "contributions": [
+        "ideas",
+        "code",
+        "maintenance"
+      ]
+    },
+    {
       "login": "krisztianb",
       "name": "Krisztián Balla",
       "avatar_url": "https://avatars.githubusercontent.com/u/4902918?v=4",
       "profile": "https://stackoverflow.com/users/434742/krisztian-balla",
-      "contributions": ["bug", "mentoring", "promotion"]
+      "contributions": [
+        "bug",
+        "mentoring",
+        "promotion"
+      ]
     },
     {
       "login": "millette",
       "name": "Robin Millette",
       "avatar_url": "https://avatars.githubusercontent.com/u/50741?v=4",
       "profile": "https://robin.millette.info/",
-      "contributions": ["code", "bug"]
+      "contributions": [
+        "code",
+        "bug"
+      ]
     },
     {
       "login": "datakurre",
       "name": "Asko Soukka",
       "avatar_url": "https://avatars.githubusercontent.com/u/160447?v=4",
       "profile": "http://datakurre.pandala.org/",
-      "contributions": ["code", "bug"]
+      "contributions": [
+        "code",
+        "bug"
+      ]
     },
     {
       "login": "nicosierra",
       "name": "Nicolas Sierra",
       "avatar_url": "https://avatars.githubusercontent.com/u/1434298?v=4",
       "profile": "https://github.com/nicosierra",
-      "contributions": ["code", "bug"]
+      "contributions": [
+        "code",
+        "bug"
+      ]
     },
     {
       "login": "jaumeortola",
       "name": "Jaume Ortolà",
       "avatar_url": "https://avatars.githubusercontent.com/u/4289501?v=4",
       "profile": "https://github.com/jaumeortola",
-      "contributions": ["code", "bug"]
+      "contributions": [
+        "code",
+        "bug"
+      ]
     },
     {
       "login": "Simolation",
       "name": "Simon Osterlehner",
       "avatar_url": "https://avatars.githubusercontent.com/u/4338202?v=4",
       "profile": "https://simons.page/",
-      "contributions": ["code"]
+      "contributions": [
+        "code"
+      ]
     },
     {
       "login": "jhwohlgemuth",
       "name": "Jason Wohlgemuth",
       "avatar_url": "https://avatars.githubusercontent.com/u/6383605?v=4",
       "profile": "https://github.com/jhwohlgemuth",
-      "contributions": ["doc"]
+      "contributions": [
+        "doc"
+      ]
     },
     {
       "login": "kamilmielnik",
       "name": "Kamil Mielnik",
       "avatar_url": "https://avatars.githubusercontent.com/u/6830683?v=4",
       "profile": "https://kamilmielnik.com/",
-      "contributions": ["code", "bug"]
+      "contributions": [
+        "code",
+        "bug"
+      ]
     },
     {
       "login": "oskarkook",
       "name": "Oskar Köök",
       "avatar_url": "https://avatars.githubusercontent.com/u/9250552?v=4",
       "profile": "https://github.com/oskarkook",
-      "contributions": ["code", "bug"]
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 5,
   "linkToUsage": true
 }
-
