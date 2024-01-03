@@ -39,7 +39,9 @@ export function start(
     fragments,
     readText = createTextReader(
       createHyphenationVerifier(
-        [createHTMLVerifier(skipHTML), createHyphenCharVerifier(hyphenChar)],
+        (skipHTML ? [createHTMLVerifier()] : []).concat(
+          createHyphenCharVerifier(hyphenChar)
+        ),
         minWordLength
       )
     ),

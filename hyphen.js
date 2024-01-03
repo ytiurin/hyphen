@@ -39,7 +39,7 @@
   var isNotLetter = RegExp.prototype.test.bind(
     /\s|(?![\'])[\!-\@\[-\`\{-\~\u2013-\u203C]/
   );
-  function createHTMLVerifier(skipHTML) {
+  function createHTMLVerifier() {
     var skip = false;
     return function (accumulate, chars) {
       if (skip) {
@@ -49,8 +49,7 @@
         }
       } else if (
         chars[0] === "<" &&
-        (!isNotLetter(chars[1]) || chars[1] === "/") &&
-        skipHTML
+        (!isNotLetter(chars[1]) || chars[1] === "/")
       ) {
         skip = true;
       }
@@ -224,7 +223,9 @@
       fragments,
       readText = createTextReader(
         createHyphenationVerifier(
-          [createHTMLVerifier(skipHTML), createHyphenCharVerifier(hyphenChar)],
+          (skipHTML ? [createHTMLVerifier()] : []).concat(
+            createHyphenCharVerifier(hyphenChar)
+          ),
           minWordLength
         )
       ),
