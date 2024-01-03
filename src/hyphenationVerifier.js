@@ -2,7 +2,7 @@ var isNotLetter = RegExp.prototype.test.bind(
   /\s|(?![\'])[\!-\@\[-\`\{-\~\u2013-\u203C]/
 );
 
-export function createHTMLVerifier(skipHTML) {
+export function createHTMLVerifier() {
   var skip = false;
 
   return function (accumulate, chars) {
@@ -13,8 +13,7 @@ export function createHTMLVerifier(skipHTML) {
       }
     } else if (
       chars[0] === "<" &&
-      (!isNotLetter(chars[1]) || chars[1] === "/") &&
-      skipHTML
+      (!isNotLetter(chars[1]) || chars[1] === "/")
     ) {
       skip = true;
     }

@@ -21,13 +21,16 @@ favo\u00ADri.`;
 // let text = "beautiful";
 // let text = "beauti-ful";
 
+var skipHTML = true;
 var minWordLength = 5;
 // var hyphenChar = "\u00AD";
 var hyphenChar = "-";
 
 const readText = createTextReader(
   createHyphenationVerifier(
-    [createHTMLVerifier(true), createHyphenCharVerifier(hyphenChar)],
+    (skipHTML ? [createHTMLVerifier()] : []).concat(
+      createHyphenCharVerifier(hyphenChar)
+    ),
     minWordLength
   )
 );
