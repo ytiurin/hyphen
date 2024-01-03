@@ -734,17 +734,7 @@ It is part of the [CSS Text Level 3](https://drafts.csswg.org/css-text-3/#hyphen
 
 Option `html` default value changed from `false` to `true`
 
-Default exported `hyphenateHTML` function
-
-```javascript
-// Code before 1.10.0
-hyphenateHTML(text);
-```
-
-```javascript
-// Code after 1.10.0
-hyphenate(text);
-```
+In cases when text parser should not skip HTML tags, apply the following code changes.
 
 Default exported `hyphenate` function
 
