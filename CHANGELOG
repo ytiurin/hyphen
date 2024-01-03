@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.10.3]
+
 ### Changed
 
 - Optimized text parsing when `html` option is `false`
@@ -210,7 +212,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First working version with 75 language patterns
 
-[unreleased]: https://github.com/ytiurin/hyphen/compare/v1.10.2...HEAD
+[unreleased]: https://github.com/ytiurin/hyphen/compare/v1.10.3...HEAD
+[v1.10.3]: https://github.com/ytiurin/hyphen/compare/v1.10.2...v1.10.3
 [v1.10.2]: https://github.com/ytiurin/hyphen/compare/v1.10.1...v1.10.2
 [v1.10.1]: https://github.com/ytiurin/hyphen/compare/v1.10.0...v1.10.1
 [v1.10.0]: https://github.com/ytiurin/hyphen/compare/v1.9.1...v1.10.0
