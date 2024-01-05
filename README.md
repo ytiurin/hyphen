@@ -692,8 +692,8 @@ Predefined `hyphenate` functions are set in every language pack.
 It is possible to use `hyphen` on older websites with [jsDelivr](https://www.jsdelivr.com/) network. Check the [package page](https://www.jsdelivr.com/package/npm/hyphen) on their website.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/hyphen@1.10.3/patterns/en-us.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hyphen@1.10.3/hyphen.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hyphen@1.10.4/patterns/en-us.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hyphen@1.10.4/hyphen.min.js"></script>
 ```
 
 After the script is added on your page, use еру `createHyphenator` to create a `hyphenate` function.
