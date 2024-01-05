@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build:docs": "cd ./storybook && npm run build && cd .. && cp ./01.png ./docs",
-    "build:package": "node ./scripts/build-package.cjs",
+    "build:package": "rm -rf ./package && node ./scripts/build-package.cjs",
     "build:patterns": "node ./scripts/build-patterns.cjs",
     "build": "node ./scripts/build-src.cjs",
     "lint": "npx eslint hyphen.js",
