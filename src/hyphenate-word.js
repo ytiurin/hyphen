@@ -5,11 +5,7 @@ function createCharIterator(str) {
     return str[i++];
   }
 
-  function isLastLetter() {
-    return str.length === i + 1;
-  }
-
-  return [nextChar, isLastLetter];
+  return nextChar;
 }
 
 function createStringSlicer(str) {
@@ -52,9 +48,7 @@ export function hyphenateWord(
     slicer,
     nextSlice,
     isFirstCharacter,
-    charIterator,
-    nextLetter,
-    isLastLetter;
+    nextLetter;
 
   for (var i = levels.length; i--; ) levels[i] = 0;
 
@@ -70,9 +64,7 @@ export function hyphenateWord(
 
     treePtr = patternTree;
 
-    charIterator = createCharIterator(wordSlice);
-    nextLetter = charIterator[0];
-    isLastLetter = charIterator[1];
+    nextLetter = createCharIterator(wordSlice);
 
     while ((letter = nextLetter())) {
       if (treePtr[letter] === undefined) {
@@ -86,11 +78,6 @@ export function hyphenateWord(
       if (treePtr === undefined) {
         treePtr = {};
         patternLevelsIndex = nextPtr;
-      }
-
-      if (isLastLetter()) {
-        // ignore patterns for last letter
-        continue;
       }
 
       if (patternLevelsIndex === undefined) {

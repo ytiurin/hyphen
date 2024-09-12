@@ -115,10 +115,7 @@
     function nextChar() {
       return str[i++];
     }
-    function isLastLetter() {
-      return str.length === i + 1;
-    }
-    return [nextChar, isLastLetter];
+    return nextChar;
   }
   function createStringSlicer(str) {
     var i = 0,
@@ -148,9 +145,7 @@
       slicer,
       nextSlice,
       isFirstCharacter,
-      charIterator,
-      nextLetter,
-      isLastLetter;
+      nextLetter;
     for (var i = levels.length; i--; ) levels[i] = 0;
     slicer = createStringSlicer(loweredText);
     nextSlice = slicer[0];
@@ -161,9 +156,7 @@
         patternEntityIndex--;
       }
       treePtr = patternTree;
-      charIterator = createCharIterator(wordSlice);
-      nextLetter = charIterator[0];
-      isLastLetter = charIterator[1];
+      nextLetter = createCharIterator(wordSlice);
       while ((letter = nextLetter())) {
         if (treePtr[letter] === void 0) {
           break;
@@ -174,9 +167,6 @@
         if (treePtr === void 0) {
           treePtr = {};
           patternLevelsIndex = nextPtr;
-        }
-        if (isLastLetter()) {
-          continue;
         }
         if (patternLevelsIndex === void 0) {
           continue;
