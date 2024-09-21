@@ -1,8 +1,8 @@
-const { normalizeEmptyNodes } = require("../scripts/createPatternTree.cjs");
+const { normalizeEmptyNodes } = require("../scripts/createPatternTrie.cjs");
 
-const tree = {
+const trie = {
   a: [{ b: [{ c: [{}, 1] }] }]
 };
 
-normalizeEmptyNodes(tree);
-console.log(JSON.stringify(tree, null, 2));
+normalizeEmptyNodes(trie);
+console.log(JSON.stringify(trie, null, 2));

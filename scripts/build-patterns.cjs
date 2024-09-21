@@ -72,7 +72,7 @@ const purify = (patterns, hyphenation) => [
 console.log(`Porting patterns`);
 
 const { tex2js } = require("./tex2js.cjs");
-const { createPatternTree } = require("./createPatternTree.cjs");
+const { createPatternTrie } = require("./createPatternTrie.cjs");
 
 buildFiles(
   readdirSync(pathTo(DIR_TEX)).filter(a => ~a.indexOf(".tex")),
@@ -96,13 +96,13 @@ buildFiles(
 
     [patterns, hyphenation] = purify(patterns, hyphenation);
 
-    var [weightsTable, patternTree] = createPatternTree(patterns);
+    var [weightsTable, patternTrie] = createPatternTrie(patterns);
 
     const resultCode =
       "return ['" +
       weightsTable.join() +
       "','" +
-      JSON.stringify(patternTree).replace(/'/g, "\\'") +
+      JSON.stringify(patternTrie).replace(/'/g, "\\'") +
       "', " +
       JSON.stringify(hyphenation) +
       "];";

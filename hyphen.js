@@ -132,12 +132,12 @@
     }
     return [next, isFirstCharacter];
   }
-  function hyphenateWord(text, levelsTable, patternTree, debug, hyphenChar) {
+  function hyphenateWord(text, levelsTable, patternTrie, debug, hyphenChar) {
     var levels = new Array(text.length + 1),
       loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
       wordSlice,
       letter,
-      treePtr,
+      triePtr,
       nextPtr,
       patternLevelsIndex,
       patternLevels,
@@ -155,17 +155,17 @@
       if (isFirstCharacter()) {
         patternEntityIndex--;
       }
-      treePtr = patternTree;
+      triePtr = patternTrie;
       nextLetter = createCharIterator(wordSlice);
       while ((letter = nextLetter())) {
-        if (treePtr[letter] === void 0) {
+        if (triePtr[letter] === void 0) {
           break;
         }
-        nextPtr = treePtr[letter];
-        treePtr = nextPtr[0];
+        nextPtr = triePtr[letter];
+        triePtr = nextPtr[0];
         patternLevelsIndex = nextPtr[1];
-        if (treePtr === void 0) {
-          treePtr = {};
+        if (triePtr === void 0) {
+          triePtr = {};
           patternLevelsIndex = nextPtr;
         }
         if (patternLevelsIndex === void 0) {
