@@ -32,7 +32,7 @@ function createStringSlicer(str) {
 export function hyphenateWord(
   text,
   levelsTable,
-  patternTree,
+  patternTrie,
   debug,
   hyphenChar
 ) {
@@ -40,7 +40,7 @@ export function hyphenateWord(
     loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
     wordSlice,
     letter,
-    treePtr,
+    triePtr,
     nextPtr,
     patternLevelsIndex,
     patternLevels,
@@ -50,7 +50,7 @@ export function hyphenateWord(
     isFirstCharacter,
     nextLetter;
 
-  for (var i = levels.length; i--; ) levels[i] = 0;
+  for (var i = levels.length; i--;) levels[i] = 0;
 
   slicer = createStringSlicer(loweredText);
   nextSlice = slicer[0];
@@ -62,21 +62,21 @@ export function hyphenateWord(
       patternEntityIndex--;
     }
 
-    treePtr = patternTree;
+    triePtr = patternTrie;
 
     nextLetter = createCharIterator(wordSlice);
 
     while ((letter = nextLetter())) {
-      if (treePtr[letter] === undefined) {
+      if (triePtr[letter] === undefined) {
         break;
       }
 
-      nextPtr = treePtr[letter];
-      treePtr = nextPtr[0];
+      nextPtr = triePtr[letter];
+      triePtr = nextPtr[0];
       patternLevelsIndex = nextPtr[1];
 
-      if (treePtr === undefined) {
-        treePtr = {};
+      if (triePtr === undefined) {
+        triePtr = {};
         patternLevelsIndex = nextPtr;
       }
 
