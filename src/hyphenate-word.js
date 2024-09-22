@@ -41,7 +41,7 @@ export function hyphenateWord(
     wordSlice,
     letter,
     triePtr,
-    nextPtr,
+    trieNode,
     patternLevelsIndex,
     patternLevels,
     patternEntityIndex = -1,
@@ -67,20 +67,27 @@ export function hyphenateWord(
     nextLetter = createCharIterator(wordSlice);
 
     while ((letter = nextLetter())) {
-      if (triePtr[letter] === undefined) {
+      if ((trieNode = triePtr[letter]) === undefined) {
         break;
       }
 
-      nextPtr = triePtr[letter];
-      triePtr = nextPtr[0];
-      patternLevelsIndex = nextPtr[1];
+      triePtr = {};
+      patternLevelsIndex = -1;
 
-      if (triePtr === undefined) {
-        triePtr = {};
-        patternLevelsIndex = nextPtr;
+      switch (Object.prototype.toString.call(trieNode)) {
+        case '[object Array]':
+          triePtr = trieNode[0];
+          patternLevelsIndex = trieNode[1];
+          break;
+        case '[object Object]':
+          triePtr = trieNode;
+          break;
+        case '[object Number]':
+          patternLevelsIndex = trieNode;
+          break;
       }
 
-      if (patternLevelsIndex === undefined) {
+      if (patternLevelsIndex < 0) {
         continue;
       }
 

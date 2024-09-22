@@ -138,7 +138,7 @@
       wordSlice,
       letter,
       triePtr,
-      nextPtr,
+      trieNode,
       patternLevelsIndex,
       patternLevels,
       patternEntityIndex = -1,
@@ -158,17 +158,24 @@
       triePtr = patternTrie;
       nextLetter = createCharIterator(wordSlice);
       while ((letter = nextLetter())) {
-        if (triePtr[letter] === void 0) {
+        if ((trieNode = triePtr[letter]) === void 0) {
           break;
         }
-        nextPtr = triePtr[letter];
-        triePtr = nextPtr[0];
-        patternLevelsIndex = nextPtr[1];
-        if (triePtr === void 0) {
-          triePtr = {};
-          patternLevelsIndex = nextPtr;
+        triePtr = {};
+        patternLevelsIndex = -1;
+        switch (Object.prototype.toString.call(trieNode)) {
+          case "[object Array]":
+            triePtr = trieNode[0];
+            patternLevelsIndex = trieNode[1];
+            break;
+          case "[object Object]":
+            triePtr = trieNode;
+            break;
+          case "[object Number]":
+            patternLevelsIndex = trieNode;
+            break;
         }
-        if (patternLevelsIndex === void 0) {
+        if (patternLevelsIndex < 0) {
           continue;
         }
         if (!levelsTable[patternLevelsIndex].splice) {
