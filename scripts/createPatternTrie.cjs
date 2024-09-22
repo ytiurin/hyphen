@@ -10,12 +10,23 @@ function createIterator(str) {
   return next;
 }
 
-function normalizeEmptyNodes(trie) {
-  for (let key in trie) {
-    if (Object.keys(trie[key][0]).length === 0) {
-      trie[key] = trie[key][1];
-    } else {
-      normalizeEmptyNodes(trie[key][0]);
+function normalizeEmptyNodes(parent) {
+  for (let key in parent) {
+    let node = parent[key], ch5n = node[0], weights = node[1];
+
+    if (Object.keys(ch5n).length === 0) {
+      ch5n = undefined;
+    }
+
+    if (ch5n !== undefined && weights !== undefined) {
+      parent[key] = [ch5n, weights];
+    }
+    else {
+      parent[key] = ch5n || weights;
+    }
+
+    if (ch5n !== undefined) {
+      normalizeEmptyNodes(ch5n);
     }
   }
 }
