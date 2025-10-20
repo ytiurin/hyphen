@@ -6,12 +6,15 @@ var SETTING_DEFAULT_ASYNC = false,
   SETTING_DEFAULT_HTML = true,
   SETTING_DEFAULT_HYPH_CHAR = "\u00AD",
   SETTING_DEFAULT_MIN_WORD_LENGTH = 5,
+  SETTING_DEFAULT_CASE_INSENSITIVE = false,
   SETTING_NAME_ASYNC = "async",
   SETTING_NAME_DEBUG = "debug",
   SETTING_NAME_EXCEPTIONS = "exceptions",
   SETTING_NAME_HTML = "html",
   SETTING_NAME_HYPH_CHAR = "hyphenChar",
-  SETTING_NAME_MIN_WORD_LENGTH = "minWordLength";
+  SETTING_NAME_MIN_WORD_LENGTH = "minWordLength",
+  SETTING_NAME_CASE_INSENSITIVE = "caseInsensitive";
+  
 
 var _global =
   typeof global === "object"
@@ -82,6 +85,11 @@ export function createHyphenator(patternsDefinition, options) {
       SETTING_NAME_EXCEPTIONS,
       SETTING_DEFAULT_EXCEPTIONS,
       validateArray
+    ),
+    caseInsensitiveMode = keyOrDefault(
+      options,
+      SETTING_NAME_CASE_INSENSITIVE,
+      SETTING_DEFAULT_CASE_INSENSITIVE
     );
 
   // Prepare cache
@@ -156,7 +164,8 @@ export function createHyphenator(patternsDefinition, options) {
       localHyphenChar,
       skipHTML,
       localMinWordLength,
-      asyncMode
+      asyncMode,
+      caseInsensitiveMode
     );
   };
 }

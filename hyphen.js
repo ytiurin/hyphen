@@ -1,5 +1,5 @@
 /** Text hyphenation in Javascript.
- *  Copyright (C) 2024 Yevhen Tiurin (yevhentiurin@gmail.com)
+ *  Copyright (C) 2025 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *
  *  Released under the ISC license
@@ -202,6 +202,31 @@
     return hyphenatedText;
   }
 
+  function getObjectPropertyCaseInsensitive(obj, key) {
+    const lowerKey = key.toLowerCase();
+    for (const prop in obj) {
+      if (prop.toLowerCase() === lowerKey) {
+        return obj[prop];
+      }
+    }
+    return void 0;
+  }
+  function addHyphenMarkersFromExisting(existing, newVariant, hyphenChar) {
+    let result = "";
+    let newVariantIndex = 0;
+    let i = 0;
+    while (i < existing.length) {
+      if (existing.slice(i, i + hyphenChar.length) === hyphenChar) {
+        result += hyphenChar;
+        i += hyphenChar.length;
+      } else {
+        result += newVariant[newVariantIndex] || "";
+        newVariantIndex++;
+        i++;
+      }
+    }
+    return result;
+  }
   function start(
     text,
     levelsTable,
@@ -211,7 +236,8 @@
     hyphenChar,
     skipHTML,
     minWordLength,
-    isAsync
+    isAsync,
+    caseInsensitiveMode
   ) {
     function done() {
       resolveNewText(newText);
@@ -235,7 +261,21 @@
       ) {
         if (fragments[1]) {
           var cacheKey = fragments[1].length ? "~" + fragments[1] : "";
-          if (cache[cacheKey] === void 0) {
+          if (
+            caseInsensitiveMode &&
+            cache[cacheKey] === void 0 &&
+            getObjectPropertyCaseInsensitive(cache, cacheKey)
+          ) {
+            const existingCachedValue = getObjectPropertyCaseInsensitive(
+              cache,
+              cacheKey
+            );
+            cache[cacheKey] = addHyphenMarkersFromExisting(
+              existingCachedValue,
+              fragments[1],
+              hyphenChar
+            );
+          } else if (cache[cacheKey] === void 0) {
             cache[cacheKey] = hyphenateWord(
               fragments[1],
               levelsTable,
@@ -271,12 +311,14 @@
   var SETTING_DEFAULT_HTML = true;
   var SETTING_DEFAULT_HYPH_CHAR = "\xAD";
   var SETTING_DEFAULT_MIN_WORD_LENGTH = 5;
+  var SETTING_DEFAULT_CASE_INSENSITIVE = false;
   var SETTING_NAME_ASYNC = "async";
   var SETTING_NAME_DEBUG = "debug";
   var SETTING_NAME_EXCEPTIONS = "exceptions";
   var SETTING_NAME_HTML = "html";
   var SETTING_NAME_HYPH_CHAR = "hyphenChar";
   var SETTING_NAME_MIN_WORD_LENGTH = "minWordLength";
+  var SETTING_NAME_CASE_INSENSITIVE = "caseInsensitive";
   var _global =
     typeof global === "object"
       ? global
@@ -341,6 +383,11 @@
         SETTING_NAME_EXCEPTIONS,
         SETTING_DEFAULT_EXCEPTIONS,
         validateArray
+      ),
+      caseInsensitiveMode = keyOrDefault(
+        options,
+        SETTING_NAME_CASE_INSENSITIVE,
+        SETTING_DEFAULT_CASE_INSENSITIVE
       );
     var cacheKey = hyphenChar + minWordLength;
     exceptions[cacheKey] = {};
@@ -403,7 +450,8 @@
         localHyphenChar,
         skipHTML,
         localMinWordLength,
-        asyncMode
+        asyncMode,
+        caseInsensitiveMode
       );
     };
   }

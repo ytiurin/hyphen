@@ -6,6 +6,35 @@ import {
 } from "./hyphenationVerifier.js";
 import { hyphenateWord } from "./hyphenate-word.js";
 
+function getObjectPropertyCaseInsensitive(obj, key) {
+  const lowerKey = key.toLowerCase();
+  for (const prop in obj) {
+    if (prop.toLowerCase() === lowerKey) {
+      return obj[prop];
+    }
+  }
+  return undefined;
+}
+
+function addHyphenMarkersFromExisting(existing, newVariant, hyphenChar) {
+  let result = '';
+  let newVariantIndex = 0;
+  let i = 0;
+
+  while (i < existing.length) {
+    // Check if the next chunk matches the separator
+    if (existing.slice(i, i + hyphenChar.length) === hyphenChar) {
+      result += hyphenChar;
+      i += hyphenChar.length;
+    } else {
+      result += newVariant[newVariantIndex] || '';
+      newVariantIndex++;
+      i++;
+    }
+  }
+  return result;
+}
+
 export function start(
   text,
   levelsTable,
@@ -15,7 +44,8 @@ export function start(
   hyphenChar,
   skipHTML,
   minWordLength,
-  isAsync
+  isAsync,
+  caseInsensitiveMode
 ) {
   function done() {
     DEV: allTime = new Date() - allTime;
@@ -56,7 +86,6 @@ export function start(
 
   function nextTick() {
     var loopStart = new Date();
-
     while (
       (!isAsync || new Date() - loopStart < 10) &&
       (fragments = readText(text))
@@ -64,7 +93,11 @@ export function start(
       if (fragments[1]) {
         var cacheKey = fragments[1].length ? "~" + fragments[1] : "";
 
-        if (cache[cacheKey] === undefined) {
+        if (caseInsensitiveMode && cache[cacheKey] === undefined && getObjectPropertyCaseInsensitive(cache, cacheKey)) {
+          // Use existing cached hyphenate rule for different case variant
+          const existingCachedValue = getObjectPropertyCaseInsensitive(cache, cacheKey);
+          cache[cacheKey] = addHyphenMarkersFromExisting(existingCachedValue, fragments[1], hyphenChar);
+        } else if (cache[cacheKey] === undefined) {
           cache[cacheKey] = hyphenateWord(
             fragments[1],
             levelsTable,
