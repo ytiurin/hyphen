@@ -696,7 +696,7 @@ It is possible to use `hyphen` on older websites with [jsDelivr](https://www.jsd
 <script src="https://cdn.jsdelivr.net/npm/hyphen@1.10.6/hyphen.min.js"></script>
 ```
 
-After the script is added on your page, use еру `createHyphenator` to create a `hyphenate` function.
+After the script is added on your page, use the `createHyphenator` to create a `hyphenate` function.
 
 ```javascript
 var hyphenate = createHyphenator(hyphenationPatternsEnUs, {
