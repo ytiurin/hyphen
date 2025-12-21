@@ -37,7 +37,7 @@ import { hyphenate } from "hyphen/en";
 })();
 ```
 
-## Multilingual hyphenation
+## Select language
 
 To hypehante text in any other supported language, just change the `import` source. For example for German language, import a hyphenation function from a `"hyphen/de"` source.
 
@@ -51,6 +51,8 @@ import { hyphenate } from "hyphen/de";
   // result is "Ein ge\u00ADwis\u00ADser Kö\u00ADnig hat\u00ADte einen wun\u00ADder\u00ADschö\u00ADnen Gar\u00ADten"
 })();
 ```
+
+## Multilingual hyphenation
 
 It is possible to use many langauges on the same page.
 
@@ -73,7 +75,7 @@ import { hyphenate as hyphenateDe } from "hyphen/de";
 
 ## Sync version
 
-The `hyphenate` function returns a `Promise`, however a sync version of it returns a `string`.
+Use a sync version when you need to write a synchronous code.
 
 ```javascript
 import { hyphenateSync as hyphenate } from "hyphen/en";
