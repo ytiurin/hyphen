@@ -50,7 +50,7 @@ export function hyphenateWord(
     isFirstCharacter,
     nextLetter;
 
-  for (var i = levels.length; i--;) levels[i] = 0;
+  for (var i = levels.length; i--; ) levels[i] = 0;
 
   slicer = createStringSlicer(loweredText);
   nextSlice = slicer[0];
@@ -75,14 +75,14 @@ export function hyphenateWord(
       patternLevelsIndex = -1;
 
       switch (Object.prototype.toString.call(trieNode)) {
-        case '[object Array]':
+        case "[object Array]":
           triePtr = trieNode[0];
           patternLevelsIndex = trieNode[1];
           break;
-        case '[object Object]':
+        case "[object Object]":
           triePtr = trieNode;
           break;
-        case '[object Number]':
+        case "[object Number]":
           patternLevelsIndex = trieNode;
           break;
       }
@@ -119,10 +119,12 @@ export function hyphenateWord(
   }
 
   for (var i = 0; i < levels.length; i++) {
-    hyphenatedText += (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
+    hyphenatedText +=
+      ((levels[i] & 1) === 1 ? hyphenChar : "") + text.charAt(i);
 
     DEV: if (debug) {
-      debugHyphenatedText += (levels[i] % 2 === 1 ? "-" : "") + text.charAt(i);
+      debugHyphenatedText +=
+        ((levels[i] & 1) === 1 ? "-" : "") + text.charAt(i);
       leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
     }
   }
