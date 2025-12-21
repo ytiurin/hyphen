@@ -197,7 +197,7 @@
     var hyphenatedText = "";
     for (var i = 0; i < levels.length; i++) {
       hyphenatedText +=
-        (levels[i] % 2 === 1 ? hyphenChar : "") + text.charAt(i);
+        ((levels[i] & 1) === 1 ? hyphenChar : "") + text.charAt(i);
     }
     return hyphenatedText;
   }
