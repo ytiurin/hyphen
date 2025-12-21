@@ -146,10 +146,22 @@ import { hyphenate } from "hyphen/af";
 import { hyphenate } from "hyphen/sq";
 ```
 
+- Armenian language
+
+```javascript
+import { hyphenate } from "hyphen/hy";
+```
+
 - Assamese language
 
 ```javascript
 import { hyphenate } from "hyphen/as";
+```
+
+- Basque language
+
+```javascript
+import { hyphenate } from "hyphen/eu";
 ```
 
 - Belarusian language
@@ -158,16 +170,16 @@ import { hyphenate } from "hyphen/as";
 import { hyphenate } from "hyphen/be";
 ```
 
-- Bulgarian language
-
-```javascript
-import { hyphenate } from "hyphen/bg";
-```
-
 - Bengali language
 
 ```javascript
 import { hyphenate } from "hyphen/bn";
+```
+
+- Bulgarian language
+
+```javascript
+import { hyphenate } from "hyphen/bg";
 ```
 
 - Catalan language
@@ -182,28 +194,88 @@ import { hyphenate } from "hyphen/ca";
 import { hyphenate } from "hyphen/cop";
 ```
 
+- Croatian language
+
+```javascript
+import { hyphenate } from "hyphen/hr";
+```
+
 - Czech language
 
 ```javascript
 import { hyphenate } from "hyphen/cs";
 ```
 
-- Welsh language
-
-```javascript
-import { hyphenate } from "hyphen/cy";
-```
-
-- Church Slavonic language
-
-```javascript
-import { hyphenate } from "hyphen/cu";
-```
-
 - Danish language
 
 ```javascript
 import { hyphenate } from "hyphen/da";
+```
+
+- Dutch language
+
+```javascript
+import { hyphenate } from "hyphen/nl";
+```
+
+- English, American spelling language
+
+```javascript
+import { hyphenate } from "hyphen/en-us";
+```
+
+- English, British spelling language
+
+```javascript
+import { hyphenate } from "hyphen/en-gb";
+```
+
+- Estonian language
+
+```javascript
+import { hyphenate } from "hyphen/et";
+```
+
+- Multiple languages using the Ethiopic scripts
+
+```javascript
+import { hyphenate } from "hyphen/mul-ethi";
+```
+
+- Finnish language
+
+```javascript
+import { hyphenate } from "hyphen/fi";
+```
+
+- Finnish language (school hyphenation)
+
+```javascript
+import { hyphenate } from "hyphen/fi-x-school";
+```
+
+- French language
+
+```javascript
+import { hyphenate } from "hyphen/fr";
+```
+
+- Friulan language
+
+```javascript
+import { hyphenate } from "hyphen/fur";
+```
+
+- Galician language
+
+```javascript
+import { hyphenate } from "hyphen/gl";
+```
+
+- Georgian language
+
+```javascript
+import { hyphenate } from "hyphen/ka";
 ```
 
 - German, traditional spelling
@@ -236,72 +308,6 @@ import { hyphenate } from "hyphen/el-monoton";
 import { hyphenate } from "hyphen/el-polyton";
 ```
 
-- English, British spelling language
-
-```javascript
-import { hyphenate } from "hyphen/en-gb";
-```
-
-- English, American spelling language
-
-```javascript
-import { hyphenate } from "hyphen/en-us";
-```
-
-- Spanish language
-
-```javascript
-import { hyphenate } from "hyphen/es";
-```
-
-- Estonian language
-
-```javascript
-import { hyphenate } from "hyphen/et";
-```
-
-- Basque language
-
-```javascript
-import { hyphenate } from "hyphen/eu";
-```
-
-- Finnish language
-
-```javascript
-import { hyphenate } from "hyphen/fi";
-```
-
-- Finnish language (school hyphenation)
-
-```javascript
-import { hyphenate } from "hyphen/fi-x-school";
-```
-
-- French language
-
-```javascript
-import { hyphenate } from "hyphen/fr";
-```
-
-- Friulan language
-
-```javascript
-import { hyphenate } from "hyphen/fur";
-```
-
-- Irish language
-
-```javascript
-import { hyphenate } from "hyphen/ga";
-```
-
-- Galician language
-
-```javascript
-import { hyphenate } from "hyphen/gl";
-```
-
 - Ancient Greek language
 
 ```javascript
@@ -320,40 +326,10 @@ import { hyphenate } from "hyphen/gu";
 import { hyphenate } from "hyphen/hi";
 ```
 
-- Croatian language
-
-```javascript
-import { hyphenate } from "hyphen/hr";
-```
-
-- Upper Sorbian language
-
-```javascript
-import { hyphenate } from "hyphen/hsb";
-```
-
 - Hungarian language
 
 ```javascript
 import { hyphenate } from "hyphen/hu";
-```
-
-- Armenian language
-
-```javascript
-import { hyphenate } from "hyphen/hy";
-```
-
-- Interlingua language
-
-```javascript
-import { hyphenate } from "hyphen/ia";
-```
-
-- Bahasa Indonesia, Indonesian language
-
-```javascript
-import { hyphenate } from "hyphen/id";
 ```
 
 - Icelandic language
@@ -362,16 +338,34 @@ import { hyphenate } from "hyphen/id";
 import { hyphenate } from "hyphen/is";
 ```
 
+- Bahasa Indonesia, Indonesian language
+
+```javascript
+import { hyphenate } from "hyphen/id";
+```
+
+- Interlingua language
+
+```javascript
+import { hyphenate } from "hyphen/ia";
+```
+
+- Irish language
+
+```javascript
+import { hyphenate } from "hyphen/ga";
+```
+
 - Italian language
 
 ```javascript
 import { hyphenate } from "hyphen/it";
 ```
 
-- Georgian language
+- Kannada language
 
 ```javascript
-import { hyphenate } from "hyphen/ka";
+import { hyphenate } from "hyphen/kn";
 ```
 
 - Kurmanji, Northern Kurdish language
@@ -380,10 +374,10 @@ import { hyphenate } from "hyphen/ka";
 import { hyphenate } from "hyphen/kmr";
 ```
 
-- Kannada language
+- Latin language
 
 ```javascript
-import { hyphenate } from "hyphen/kn";
+import { hyphenate } from "hyphen/la";
 ```
 
 - Classical Latin language
@@ -398,10 +392,10 @@ import { hyphenate } from "hyphen/la-x-classic";
 import { hyphenate } from "hyphen/la-x-liturgic";
 ```
 
-- Latin language
+- Latvian language
 
 ```javascript
-import { hyphenate } from "hyphen/la";
+import { hyphenate } from "hyphen/lv";
 ```
 
 - Lithuanian language
@@ -410,34 +404,10 @@ import { hyphenate } from "hyphen/la";
 import { hyphenate } from "hyphen/lt";
 ```
 
-- Latvian language
-
-```javascript
-import { hyphenate } from "hyphen/lv";
-```
-
 - Macedonian language
 
 ```javascript
 import { hyphenate } from "hyphen/mk";
-```
-
-- Malayalam language
-
-```javascript
-import { hyphenate } from "hyphen/ml";
-```
-
-- Mongolian, Cyrillic script, alternative patterns
-
-```javascript
-import { hyphenate } from "hyphen/mn-cyrl-x-lmc";
-```
-
-- Mongolian, Cyrillic script
-
-```javascript
-import { hyphenate } from "hyphen/mn-cyrl";
 ```
 
 - Marathi language
@@ -446,10 +416,34 @@ import { hyphenate } from "hyphen/mn-cyrl";
 import { hyphenate } from "hyphen/mr";
 ```
 
-- Multiple languages using the Ethiopic scripts
+- Malayalam language
 
 ```javascript
-import { hyphenate } from "hyphen/mul-ethi";
+import { hyphenate } from "hyphen/ml";
+```
+
+- Mandarin Chinese, pinyin transliteration
+
+```javascript
+import { hyphenate } from "hyphen/zh-latn-pinyin";
+```
+
+- Mongolian, Cyrillic script
+
+```javascript
+import { hyphenate } from "hyphen/mn-cyrl";
+```
+
+- Mongolian, Cyrillic script, alternative patterns
+
+```javascript
+import { hyphenate } from "hyphen/mn-cyrl-x-lmc";
+```
+
+- Norwegian, norsk language
+
+```javascript
+import { hyphenate } from "hyphen/no";
 ```
 
 - Norwegian Bokmål, bokmål, norsk bokmål language
@@ -458,22 +452,10 @@ import { hyphenate } from "hyphen/mul-ethi";
 import { hyphenate } from "hyphen/nb";
 ```
 
-- Dutch language
-
-```javascript
-import { hyphenate } from "hyphen/nl";
-```
-
 - Norwegian Nynorsk, nynorsk language
 
 ```javascript
 import { hyphenate } from "hyphen/nn";
-```
-
-- Norwegian, norsk language
-
-```javascript
-import { hyphenate } from "hyphen/no";
 ```
 
 - Occitan language
@@ -488,28 +470,28 @@ import { hyphenate } from "hyphen/oc";
 import { hyphenate } from "hyphen/or";
 ```
 
-- Panjabi, Punjabi language
-
-```javascript
-import { hyphenate } from "hyphen/pa";
-```
-
 - Pāli language
 
 ```javascript
 import { hyphenate } from "hyphen/pi";
 ```
 
-- Polish language
+- Panjabi, Punjabi language
 
 ```javascript
-import { hyphenate } from "hyphen/pl";
+import { hyphenate } from "hyphen/pa";
 ```
 
 - Piedmontese language
 
 ```javascript
 import { hyphenate } from "hyphen/pms";
+```
+
+- Polish language
+
+```javascript
+import { hyphenate } from "hyphen/pl";
 ```
 
 - Portuguese language
@@ -542,6 +524,12 @@ import { hyphenate } from "hyphen/ru";
 import { hyphenate } from "hyphen/sa";
 ```
 
+- Serbian, Cyrillic script
+
+```javascript
+import { hyphenate } from "hyphen/sr-cyrl";
+```
+
 - Serbocroatian, Cyrillic script
 
 ```javascript
@@ -552,6 +540,12 @@ import { hyphenate } from "hyphen/sh-cyrl";
 
 ```javascript
 import { hyphenate } from "hyphen/sh-latn";
+```
+
+- Church Slavonic language
+
+```javascript
+import { hyphenate } from "hyphen/cu";
 ```
 
 - Slovak language
@@ -566,10 +560,16 @@ import { hyphenate } from "hyphen/sk";
 import { hyphenate } from "hyphen/sl";
 ```
 
-- Serbian, Cyrillic script
+- Upper Sorbian language
 
 ```javascript
-import { hyphenate } from "hyphen/sr-cyrl";
+import { hyphenate } from "hyphen/hsb";
+```
+
+- Spanish language
+
+```javascript
+import { hyphenate } from "hyphen/es";
 ```
 
 - Swedish language
@@ -596,16 +596,16 @@ import { hyphenate } from "hyphen/te";
 import { hyphenate } from "hyphen/th";
 ```
 
-- Turkmen language
-
-```javascript
-import { hyphenate } from "hyphen/tk";
-```
-
 - Turkish language
 
 ```javascript
 import { hyphenate } from "hyphen/tr";
+```
+
+- Turkmen language
+
+```javascript
+import { hyphenate } from "hyphen/tk";
 ```
 
 - Ukrainian language
@@ -614,10 +614,10 @@ import { hyphenate } from "hyphen/tr";
 import { hyphenate } from "hyphen/uk";
 ```
 
-- Mandarin Chinese, pinyin transliteration
+- Welsh language
 
 ```javascript
-import { hyphenate } from "hyphen/zh-latn-pinyin";
+import { hyphenate } from "hyphen/cy";
 ```
 
 ### Aliases for specific languages
