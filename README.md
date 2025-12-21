@@ -140,6 +140,12 @@ import { hyphenate } from "hyphen/en";
 import { hyphenate } from "hyphen/af";
 ```
 
+- Albanian language
+
+```javascript
+import { hyphenate } from "hyphen/sq";
+```
+
 - Assamese language
 
 ```javascript
@@ -215,7 +221,7 @@ import { hyphenate } from "hyphen/de-1996";
 - German, traditional Swiss spelling
 
 ```javascript
-import { hyphenate } from "hyphen/de-CH-1901";
+import { hyphenate } from "hyphen/de-ch-1901";
 ```
 
 - Modern Greek, monotonic spelling
@@ -264,6 +270,12 @@ import { hyphenate } from "hyphen/eu";
 
 ```javascript
 import { hyphenate } from "hyphen/fi";
+```
+
+- Finnish language (school hyphenation)
+
+```javascript
+import { hyphenate } from "hyphen/fi-x-school";
 ```
 
 - French language
@@ -402,6 +414,12 @@ import { hyphenate } from "hyphen/lt";
 
 ```javascript
 import { hyphenate } from "hyphen/lv";
+```
+
+- Macedonian language
+
+```javascript
+import { hyphenate } from "hyphen/mk";
 ```
 
 - Malayalam language

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added patterns: Albanian, Finnish (school hyphenation), Macedonian 
+- Updated patterns: Classical Latin, German (traditional spelling), German (reformed spelling), German (traditional Swiss spelling), Liturgical Latin, Mandarin Chinese (pinyin transliteration), Portuguese, Romansh, Spanish
 - Optimized tex2js conversion script
 - Fixed broken exceptions for Bahasa Indonesia patterns
 
