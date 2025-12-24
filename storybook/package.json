@@ -6,7 +6,7 @@
   "scripts": {
     "build": "storybook build -c .storybook -o ../docs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ../scripts/build-package.js && npm run storybook",
+    "start": "node ../scripts/build-package.cjs && npm run storybook",
     "storybook": "storybook dev -p 6006"
   },
   "author": "",
