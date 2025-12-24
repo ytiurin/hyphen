@@ -232,8 +232,7 @@
     levelsTable,
     patterns,
     cache,
-    markersDic,
-    debug,
+    markersDict,
     hyphenChar,
     skipHTML,
     minWordLength,
@@ -263,8 +262,8 @@
           var cacheKey = fragments[1].length ? "~" + fragments[1] : "";
           if (!Object.prototype.hasOwnProperty.call(cache, cacheKey)) {
             var loweredWord = fragments[1].toLocaleLowerCase();
-            if (!Object.prototype.hasOwnProperty.call(markersDic, loweredWord))
-              markersDic[loweredWord] = hyphenateWord(
+            if (!Object.prototype.hasOwnProperty.call(markersDict, loweredWord))
+              markersDict[loweredWord] = hyphenateWord(
                 fragments[1],
                 loweredWord,
                 levelsTable,
@@ -273,7 +272,7 @@
             cache[cacheKey] = insertChar(
               fragments[1],
               hyphenChar,
-              markersDic[loweredWord]
+              markersDict[loweredWord]
             );
           }
           fragments[1] = cache[cacheKey];
@@ -298,13 +297,11 @@
   }
 
   var SETTING_DEFAULT_ASYNC = false;
-  var SETTING_DEFAULT_DEBUG = false;
   var SETTING_DEFAULT_EXCEPTIONS = [];
   var SETTING_DEFAULT_HTML = true;
   var SETTING_DEFAULT_HYPH_CHAR = "\xAD";
   var SETTING_DEFAULT_MIN_WORD_LENGTH = 5;
   var SETTING_NAME_ASYNC = "async";
-  var SETTING_NAME_DEBUG = "debug";
   var SETTING_NAME_EXCEPTIONS = "exceptions";
   var SETTING_NAME_HTML = "html";
   var SETTING_NAME_HYPH_CHAR = "hyphenChar";
@@ -353,7 +350,6 @@
       ),
       caches = {},
       markersDict = {},
-      debug = keyOrDefault(options, SETTING_NAME_DEBUG, SETTING_DEFAULT_DEBUG),
       exceptions = {},
       hyphenChar = keyOrDefault(
         options,
@@ -402,8 +398,7 @@
     }
     return function (text, options2) {
       options2 = options2 || {};
-      var localDebug = keyOrDefault(options2, SETTING_NAME_DEBUG, debug),
-        localHyphenChar = keyOrDefault(
+      var localHyphenChar = keyOrDefault(
           options2,
           SETTING_NAME_HYPH_CHAR,
           hyphenChar
@@ -442,7 +437,6 @@
         patterns,
         caches[cacheKey2],
         markersDict,
-        localDebug,
         localHyphenChar,
         skipHTML,
         localMinWordLength,

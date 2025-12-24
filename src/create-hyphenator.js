@@ -2,13 +2,11 @@ import { start } from "./start.js";
 import { markersFromExceptionsDefinition } from "./markers.js";
 
 var SETTING_DEFAULT_ASYNC = false,
-  SETTING_DEFAULT_DEBUG = false,
   SETTING_DEFAULT_EXCEPTIONS = [],
   SETTING_DEFAULT_HTML = true,
   SETTING_DEFAULT_HYPH_CHAR = "\u00AD",
   SETTING_DEFAULT_MIN_WORD_LENGTH = 5,
   SETTING_NAME_ASYNC = "async",
-  SETTING_NAME_DEBUG = "debug",
   SETTING_NAME_EXCEPTIONS = "exceptions",
   SETTING_NAME_HTML = "html",
   SETTING_NAME_HYPH_CHAR = "hyphenChar",
@@ -63,7 +61,6 @@ export function createHyphenator(patternsDefinition, options) {
     ),
     caches = {},
     markersDict = {},
-    debug = keyOrDefault(options, SETTING_NAME_DEBUG, SETTING_DEFAULT_DEBUG),
     exceptions = {},
     hyphenChar = keyOrDefault(
       options,
@@ -122,8 +119,7 @@ export function createHyphenator(patternsDefinition, options) {
   return function (text, options) {
     options = options || {};
 
-    var localDebug = keyOrDefault(options, SETTING_NAME_DEBUG, debug),
-      localHyphenChar = keyOrDefault(
+    var localHyphenChar = keyOrDefault(
         options,
         SETTING_NAME_HYPH_CHAR,
         hyphenChar
@@ -167,7 +163,6 @@ export function createHyphenator(patternsDefinition, options) {
       patterns,
       caches[cacheKey],
       markersDict,
-      localDebug,
       localHyphenChar,
       skipHTML,
       localMinWordLength,

@@ -13,7 +13,6 @@ export function start(
   patterns,
   cache,
   markersDict,
-  debug,
   hyphenChar,
   skipHTML,
   minWordLength,
@@ -23,7 +22,7 @@ export function start(
     DEV: allTime = new Date() - allTime;
     resolveNewText(newText);
 
-    DEV: if (debug) {
+    DEV: {
       console.log(
         "----------------\nHyphenation stats: " +
           processedN +
