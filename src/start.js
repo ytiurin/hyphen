@@ -5,12 +5,14 @@ import {
   createHyphenationVerifier
 } from "./hyphenationVerifier.js";
 import { hyphenateWord } from "./hyphenate-word.js";
+import { insertChar } from "./markers.js";
 
 export function start(
   text,
   levelsTable,
   patterns,
   cache,
+  markersDict,
   debug,
   hyphenChar,
   skipHTML,
@@ -64,13 +66,21 @@ export function start(
       if (fragments[1]) {
         var cacheKey = fragments[1].length ? "~" + fragments[1] : "";
 
-        if (cache[cacheKey] === undefined) {
-          cache[cacheKey] = hyphenateWord(
+        if (!Object.prototype.hasOwnProperty.call(cache, cacheKey)) {
+          var loweredWord = fragments[1].toLocaleLowerCase();
+
+          if (!Object.prototype.hasOwnProperty.call(markersDict, loweredWord))
+            markersDict[loweredWord] = hyphenateWord(
+              fragments[1],
+              loweredWord,
+              levelsTable,
+              patterns
+            );
+
+          cache[cacheKey] = insertChar(
             fragments[1],
-            levelsTable,
-            patterns,
-            debug,
-            hyphenChar
+            hyphenChar,
+            markersDict[loweredWord]
           );
         }
 

@@ -48,4 +48,12 @@ describe("User exceptions", () => {
 
     expect(hyphenate(text)).toBe(predictable);
   });
+
+  test("User exceptions should be case insensitive", () => {
+    const text = "Hello HELLO";
+    const exception = "h-ello";
+    const predictable = "H-ello H-ELLO";
+
+    expect(hyphenate(text)).toBe(predictable);
+  });
 });
