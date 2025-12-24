@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.0]
+
+### Changed
+
+- Implement case insensitive caching, support case insensitive exceptions
+- Deprecate `debug` option
+
 ## [1.12.0]
 
 ### Changed
@@ -251,7 +258,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First working version with 75 language patterns
 
-[unreleased]: https://github.com/ytiurin/hyphen/compare/v1.12.0...HEAD
+[unreleased]: https://github.com/ytiurin/hyphen/compare/v1.13.0...HEAD
+[v1.13.0]: https://github.com/ytiurin/hyphen/compare/v1.12.0...v1.13.0
 [v1.12.0]: https://github.com/ytiurin/hyphen/compare/v1.11.0...v1.12.0
 [v1.11.0]: https://github.com/ytiurin/hyphen/compare/v1.10.6...v1.11.0
 [v1.10.6]: https://github.com/ytiurin/hyphen/compare/v1.10.5...v1.10.6

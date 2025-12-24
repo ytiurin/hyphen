@@ -110,6 +110,36 @@
     };
   }
 
+  function levelsToMarkers(levels) {
+    var markers = [];
+    for (var i = 0; i < levels.length; i++)
+      if ((levels[i] & 1) === 1) markers.push(i);
+    return markers;
+  }
+  function insertChar(text, hyphenChar, markers) {
+    if (markers.length === 0) {
+      return text;
+    }
+    var resultText = [text.slice(0, markers[0])];
+    if (markers.length > 1)
+      for (var i = 0, j = 1; j < markers.length; i++, j++) {
+        resultText.push(text.slice(markers[i], markers[j]));
+      }
+    resultText.push(text.slice(markers[markers.length - 1]));
+    return resultText.join(hyphenChar);
+  }
+  function markersFromExceptionsDefinition(exceptionsList) {
+    return exceptionsList.reduce(function (markersDict, definition) {
+      var i = 0,
+        markers = [];
+      while ((i = definition.indexOf("-", i + 1)) > -1) {
+        markers.push(i);
+      }
+      markersDict[definition.toLocaleLowerCase().replace(/\-/g, "")] = markers;
+      return markersDict;
+    }, {});
+  }
+
   function createCharIterator(str) {
     var i = 0;
     function nextChar() {
@@ -132,9 +162,9 @@
     }
     return [next, isFirstCharacter];
   }
-  function hyphenateWord(text, levelsTable, patternTrie, debug, hyphenChar) {
+  function hyphenateWord(text, loweredText, levelsTable, patternTrie) {
     var levels = new Array(text.length + 1),
-      loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
+      loweredText = ("." + loweredText + ".").split(""),
       wordSlice,
       letter,
       triePtr,
@@ -194,12 +224,7 @@
     levels[0] = levels[1] = levels[levels.length - 1] = levels[
       levels.length - 2
     ] = 0;
-    var hyphenatedText = "";
-    for (var i = 0; i < levels.length; i++) {
-      hyphenatedText +=
-        ((levels[i] & 1) === 1 ? hyphenChar : "") + text.charAt(i);
-    }
-    return hyphenatedText;
+    return levelsToMarkers(levels);
   }
 
   function start(
@@ -207,7 +232,7 @@
     levelsTable,
     patterns,
     cache,
-    debug,
+    markersDict,
     hyphenChar,
     skipHTML,
     minWordLength,
@@ -235,13 +260,19 @@
       ) {
         if (fragments[1]) {
           var cacheKey = fragments[1].length ? "~" + fragments[1] : "";
-          if (cache[cacheKey] === void 0) {
-            cache[cacheKey] = hyphenateWord(
+          if (!Object.prototype.hasOwnProperty.call(cache, cacheKey)) {
+            var loweredWord = fragments[1].toLocaleLowerCase();
+            if (!Object.prototype.hasOwnProperty.call(markersDict, loweredWord))
+              markersDict[loweredWord] = hyphenateWord(
+                fragments[1],
+                loweredWord,
+                levelsTable,
+                patterns
+              );
+            cache[cacheKey] = insertChar(
               fragments[1],
-              levelsTable,
-              patterns,
-              debug,
-              hyphenChar
+              hyphenChar,
+              markersDict[loweredWord]
             );
           }
           fragments[1] = cache[cacheKey];
@@ -266,13 +297,11 @@
   }
 
   var SETTING_DEFAULT_ASYNC = false;
-  var SETTING_DEFAULT_DEBUG = false;
   var SETTING_DEFAULT_EXCEPTIONS = [];
   var SETTING_DEFAULT_HTML = true;
   var SETTING_DEFAULT_HYPH_CHAR = "\xAD";
   var SETTING_DEFAULT_MIN_WORD_LENGTH = 5;
   var SETTING_NAME_ASYNC = "async";
-  var SETTING_NAME_DEBUG = "debug";
   var SETTING_NAME_EXCEPTIONS = "exceptions";
   var SETTING_NAME_HTML = "html";
   var SETTING_NAME_HYPH_CHAR = "hyphenChar";
@@ -303,8 +332,8 @@
     }
     return defaultValue;
   }
-  function exceptionsFromDefinition(excetionsList, hyphenChar) {
-    return excetionsList.reduce(function (exceptions, exception) {
+  function exceptionsFromDefinition(exceptionsList, hyphenChar) {
+    return exceptionsList.reduce(function (exceptions, exception) {
       exceptions["~" + exception.replace(/\-/g, "")] = exception.replace(
         /\-/g,
         hyphenChar
@@ -320,7 +349,7 @@
         SETTING_DEFAULT_ASYNC
       ),
       caches = {},
-      debug = keyOrDefault(options, SETTING_NAME_DEBUG, SETTING_DEFAULT_DEBUG),
+      markersDict = {},
       exceptions = {},
       hyphenChar = keyOrDefault(
         options,
@@ -349,11 +378,16 @@
         patternsDefinition[2],
         hyphenChar
       );
+      markersDict = markersFromExceptionsDefinition(patternsDefinition[2]);
     }
     if (userExceptions && userExceptions.length) {
       exceptions[cacheKey] = extend(
         exceptions[cacheKey],
         exceptionsFromDefinition(userExceptions, hyphenChar)
+      );
+      markersDict = extend(
+        markersDict,
+        markersFromExceptionsDefinition(userExceptions)
       );
     }
     caches[cacheKey] = extend({}, exceptions[cacheKey]);
@@ -364,8 +398,7 @@
     }
     return function (text, options2) {
       options2 = options2 || {};
-      var localDebug = keyOrDefault(options2, SETTING_NAME_DEBUG, debug),
-        localHyphenChar = keyOrDefault(
+      var localHyphenChar = keyOrDefault(
           options2,
           SETTING_NAME_HYPH_CHAR,
           hyphenChar
@@ -392,6 +425,10 @@
           exceptions[cacheKey2],
           exceptionsFromDefinition(localUserExceptions, localHyphenChar)
         );
+        markersDict = extend(
+          markersDict,
+          markersFromExceptionsDefinition(localUserExceptions)
+        );
         caches[cacheKey2] = extend(caches[cacheKey2], exceptions[cacheKey2]);
       }
       return start(
@@ -399,7 +436,7 @@
         levelsTable,
         patterns,
         caches[cacheKey2],
-        localDebug,
+        markersDict,
         localHyphenChar,
         skipHTML,
         localMinWordLength,

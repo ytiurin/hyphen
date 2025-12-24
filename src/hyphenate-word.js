@@ -1,3 +1,5 @@
+import { levelsToMarkers } from "./markers.js";
+
 function createCharIterator(str) {
   var i = 0;
 
@@ -29,15 +31,9 @@ function createStringSlicer(str) {
   return [next, isFirstCharacter];
 }
 
-export function hyphenateWord(
-  text,
-  levelsTable,
-  patternTrie,
-  debug,
-  hyphenChar
-) {
+export function hyphenateWord(text, loweredText, levelsTable, patternTrie) {
   var levels = new Array(text.length + 1),
-    loweredText = ("." + text.toLocaleLowerCase() + ".").split(""),
+    loweredText = ("." + loweredText + ".").split(""),
     wordSlice,
     letter,
     triePtr,
@@ -111,32 +107,13 @@ export function hyphenateWord(
     levels.length - 2
   ] = 0;
 
-  var hyphenatedText = "";
-
   DEV: {
-    var leveledText = "",
-      debugHyphenatedText = "";
-  }
-
-  for (var i = 0; i < levels.length; i++) {
-    hyphenatedText +=
-      ((levels[i] & 1) === 1 ? hyphenChar : "") + text.charAt(i);
-
-    DEV: if (debug) {
-      debugHyphenatedText +=
-        ((levels[i] & 1) === 1 ? "-" : "") + text.charAt(i);
-      leveledText += (levels[i] > 0 ? levels[i] : "") + text.charAt(i);
-    }
-  }
-
-  DEV: if (debug)
-    console.log.apply(
-      console,
-      [text, "->"]
-        .concat(levels)
-        .concat(["->", leveledText])
-        .concat(["->", debugHyphenatedText])
+    console.log(
+      loweredText.join(""),
+      levels.join(""),
+      levelsToMarkers(levels).join()
     );
+  }
 
-  return hyphenatedText;
+  return levelsToMarkers(levels);
 }
