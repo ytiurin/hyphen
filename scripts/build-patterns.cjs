@@ -1,24 +1,22 @@
 const DIR_PATTERNS = "patterns";
 const DIR_TEX = "tex";
 
-const makeUMD = (code, globalName) => `(function (root, factory) {
+const makeUMD = (code, globalName) => `(function (root, exports) {
   if (typeof define === "function" && define.amd) {
     // AMD. Register as an anonymous module.
-    define([], factory);
+    define([], function () {
+      return exports;
+    });
   } else if (typeof module === "object" && module.exports) {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
-    module.exports = factory();
+    module.exports = exports;
   } else {
     // Browser globals (root is window)
-    root.${globalName} = factory();
+    root.${globalName} = exports;
   }
-})(this, function () {
-
-  ${code}
-
-});
+})(this, ${code});
 `;
 
 const { basename, dirname, join, resolve } = require("path");
@@ -112,7 +110,7 @@ buildFiles(
     var [weightsTable, patternTrie] = createPatternTrie(patterns);
 
     const resultCode =
-      "return [" +
+      "[" +
       JSON.stringify(
         weightsTable.map(levels =>
           levels.split("").map(level => parseInt(level))
@@ -122,7 +120,7 @@ buildFiles(
       JSON.stringify(patternTrie) +
       ", " +
       JSON.stringify(markersFromExceptionsDefinition(hyphenation)) +
-      "];";
+      "]";
 
     return prettier.format(
       makeUMD(resultCode, makeGlobalName(tagFromFilename(filename))),

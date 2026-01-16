@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Optimize patterns UMD code to reduce file size when processed with Terser compiler
+
 ## [1.14.0]
 
 ### Changed
