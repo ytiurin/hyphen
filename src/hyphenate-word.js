@@ -87,12 +87,6 @@ export function hyphenateWord(text, loweredText, levelsTable, patternTrie) {
         continue;
       }
 
-      if (!levelsTable[patternLevelsIndex].splice) {
-        levelsTable[patternLevelsIndex] = levelsTable[patternLevelsIndex].slice(
-          ""
-        );
-      }
-
       patternLevels = levelsTable[patternLevelsIndex];
 
       for (var k = 0; k < patternLevels.length; k++)
