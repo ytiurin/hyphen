@@ -1,5 +1,5 @@
 import { start } from "./start.js";
-import { markersFromExceptionsDefinition } from "./markers.js";
+import { insertChar, markersFromExceptionsDefinition } from "./markers.js";
 
 var SETTING_DEFAULT_ASYNC = false,
   SETTING_DEFAULT_EXCEPTIONS = [],
@@ -42,6 +42,16 @@ function keyOrDefault(object, key, defaultValue, test) {
   return defaultValue;
 }
 
+function exceptionsFromMarkers(markers, hyphenChar) {
+  var exceptions = {};
+
+  for (var word in markers) {
+    exceptions["~" + word] = insertChar(word, hyphenChar, markers[word]);
+  }
+
+  return exceptions;
+}
+
 function exceptionsFromDefinition(exceptionsList, hyphenChar) {
   return exceptionsList.reduce(function (exceptions, exception) {
     exceptions["~" + exception.replace(/\-/g, "")] = exception.replace(
@@ -67,8 +77,8 @@ export function createHyphenator(patternsDefinition, options) {
       SETTING_NAME_HYPH_CHAR,
       SETTING_DEFAULT_HYPH_CHAR
     ),
-    levelsTable = patternsDefinition[0].split(","),
-    patterns = JSON.parse(patternsDefinition[1]),
+    levelsTable = patternsDefinition[0],
+    patterns = patternsDefinition[1],
     minWordLength =
       keyOrDefault(
         options,
@@ -88,12 +98,12 @@ export function createHyphenator(patternsDefinition, options) {
   exceptions[cacheKey] = {};
 
   if (patternsDefinition[2]) {
-    exceptions[cacheKey] = exceptionsFromDefinition(
+    exceptions[cacheKey] = exceptionsFromMarkers(
       patternsDefinition[2],
       hyphenChar
     );
 
-    markersDict = markersFromExceptionsDefinition(patternsDefinition[2]);
+    markersDict = patternsDefinition[2];
   }
 
   if (userExceptions && userExceptions.length) {
@@ -135,7 +145,7 @@ export function createHyphenator(patternsDefinition, options) {
       cacheKey = localHyphenChar + localMinWordLength;
 
     if (!exceptions[cacheKey] && patternsDefinition[2]) {
-      exceptions[cacheKey] = exceptionsFromDefinition(
+      exceptions[cacheKey] = exceptionsFromMarkers(
         patternsDefinition[2],
         localHyphenChar
       );

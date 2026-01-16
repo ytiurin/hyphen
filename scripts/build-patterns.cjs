@@ -68,6 +68,19 @@ const purify = (patterns, hyphenation) => [
   (hyphenation || []).filter(a => a !== "")
 ];
 
+const markersFromExceptionsDefinition = exceptionsList =>
+  exceptionsList.reduce((markersDict, definition) => {
+    let i = 0,
+      markers = [];
+
+    while ((i = definition.indexOf("-", i + 1)) > -1) {
+      markers.push(i);
+    }
+
+    markersDict[definition.toLocaleLowerCase().replace(/\-/g, "")] = markers;
+
+    return markersDict;
+  }, {});
 /******************************************************************************/
 console.log(`Porting patterns`);
 
@@ -99,12 +112,16 @@ buildFiles(
     var [weightsTable, patternTrie] = createPatternTrie(patterns);
 
     const resultCode =
-      "return ['" +
-      weightsTable.join() +
-      "','" +
-      JSON.stringify(patternTrie).replace(/'/g, "\\'") +
-      "', " +
-      JSON.stringify(hyphenation) +
+      "return [" +
+      JSON.stringify(
+        weightsTable.map(levels =>
+          levels.split("").map(level => parseInt(level))
+        )
+      ) +
+      "," +
+      JSON.stringify(patternTrie) +
+      ", " +
+      JSON.stringify(markersFromExceptionsDefinition(hyphenation)) +
       "];";
 
     return prettier.format(

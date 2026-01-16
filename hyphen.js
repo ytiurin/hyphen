@@ -1,5 +1,5 @@
 /** Text hyphenation in Javascript.
- *  Copyright (C) 2025 Yevhen Tiurin (yevhentiurin@gmail.com)
+ *  Copyright (C) 2026 Yevhen Tiurin (yevhentiurin@gmail.com)
  *  https://github.com/ytiurin/hyphen
  *
  *  Released under the ISC license
@@ -208,11 +208,6 @@
         if (patternLevelsIndex < 0) {
           continue;
         }
-        if (!levelsTable[patternLevelsIndex].splice) {
-          levelsTable[patternLevelsIndex] = levelsTable[
-            patternLevelsIndex
-          ].slice("");
-        }
         patternLevels = levelsTable[patternLevelsIndex];
         for (var k = 0; k < patternLevels.length; k++)
           levels[patternEntityIndex + k] = Math.max(
@@ -332,6 +327,13 @@
     }
     return defaultValue;
   }
+  function exceptionsFromMarkers(markers, hyphenChar) {
+    var exceptions = {};
+    for (var word in markers) {
+      exceptions["~" + word] = insertChar(word, hyphenChar, markers[word]);
+    }
+    return exceptions;
+  }
   function exceptionsFromDefinition(exceptionsList, hyphenChar) {
     return exceptionsList.reduce(function (exceptions, exception) {
       exceptions["~" + exception.replace(/\-/g, "")] = exception.replace(
@@ -356,8 +358,8 @@
         SETTING_NAME_HYPH_CHAR,
         SETTING_DEFAULT_HYPH_CHAR
       ),
-      levelsTable = patternsDefinition[0].split(","),
-      patterns = JSON.parse(patternsDefinition[1]),
+      levelsTable = patternsDefinition[0],
+      patterns = patternsDefinition[1],
       minWordLength =
         keyOrDefault(
           options,
@@ -374,11 +376,11 @@
     var cacheKey = hyphenChar + minWordLength;
     exceptions[cacheKey] = {};
     if (patternsDefinition[2]) {
-      exceptions[cacheKey] = exceptionsFromDefinition(
+      exceptions[cacheKey] = exceptionsFromMarkers(
         patternsDefinition[2],
         hyphenChar
       );
-      markersDict = markersFromExceptionsDefinition(patternsDefinition[2]);
+      markersDict = patternsDefinition[2];
     }
     if (userExceptions && userExceptions.length) {
       exceptions[cacheKey] = extend(
@@ -414,7 +416,7 @@
         ),
         cacheKey2 = localHyphenChar + localMinWordLength;
       if (!exceptions[cacheKey2] && patternsDefinition[2]) {
-        exceptions[cacheKey2] = exceptionsFromDefinition(
+        exceptions[cacheKey2] = exceptionsFromMarkers(
           patternsDefinition[2],
           localHyphenChar
         );
