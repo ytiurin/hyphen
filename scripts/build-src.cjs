@@ -33,7 +33,7 @@ const { exec } = require("child_process");
 
 const { buildSync } = require("esbuild");
 const { readFileSync, writeFileSync } = require("fs");
-const prettier = require("prettier");
+const prettier = require("@prettier/sync");
 
 console.log(`Building to ${FILENAME_BUNDLE}`);
 

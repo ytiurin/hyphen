@@ -6,12 +6,13 @@
     "build:docs": "cd ./storybook && npm run build && cd .. && cp ./01.png ./docs",
     "build:package": "rm -rf ./package && node ./scripts/build-package.cjs",
     "build:patterns": "node ./scripts/build-patterns.cjs",
-    "build": "node ./scripts/build-src.cjs",
-    "lint": "npx eslint hyphen.js",
+    "build:src": "node ./scripts/build-src.cjs",
+    "contributors:generate": "all-contributors generate",
+    "lint": "eslint hyphen.js",
     "start": "npm run watch",
     "test": "jest",
-    "watch:package": "npx nodemon -w ./export-contract.js -w ./hyphen.js ./scripts/build-package.cjs",
-    "watch:src": "npx nodemon -w ./src ./scripts/build-src.cjs",
+    "watch:package": "nodemon -w ./export-contract.js -w ./hyphen.js ./scripts/build-package.cjs",
+    "watch:src": "nodemon -w ./src ./scripts/build-src.cjs",
     "watch": "npm run watch:src & npm run watch:package"
   },
   "repository": {
@@ -20,13 +21,17 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^10.0.1",
+    "@prettier/sync": "^0.6.1",
     "all-contributors-cli": "^6.26.1",
-    "esbuild": "0.19.5",
-    "eslint": "^6.8.0",
-    "husky": "^8.0.3",
-    "jest": "^29.5.0",
-    "nodemon": "^3.0.1",
-    "prettier": "^2.0.2"
+    "esbuild": "^0.28.0",
+    "eslint": "^10.2.1",
+    "globals": "^17.5.0",
+    "husky": "^9.1.7",
+    "jest": "^30.3.0",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.3"
   },
   "husky": {
     "hooks": {

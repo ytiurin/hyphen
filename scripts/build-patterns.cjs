@@ -27,7 +27,7 @@ const {
   readdirSync,
   writeFileSync
 } = require("fs");
-const prettier = require("prettier");
+const prettier = require("@prettier/sync");
 
 function buildFiles(arr, destPathFactory, contentFactory, done) {
   for (var item of arr) {

@@ -216,9 +216,11 @@
           );
       }
     }
-    levels[0] = levels[1] = levels[levels.length - 1] = levels[
-      levels.length - 2
-    ] = 0;
+    levels[0] =
+      levels[1] =
+      levels[levels.length - 1] =
+      levels[levels.length - 2] =
+        0;
     return levelsToMarkers(levels);
   }
 
@@ -305,12 +307,12 @@
     typeof global === "object"
       ? global
       : typeof window === "object"
-      ? window
-      : typeof self === "object"
-      ? self
-      : false
-      ? void 0
-      : {};
+        ? window
+        : typeof self === "object"
+          ? self
+          : false
+            ? void 0
+            : {};
   function extend(target, source) {
     target = target || {};
     for (var key in source) {
