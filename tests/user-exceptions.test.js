@@ -56,4 +56,23 @@ describe("User exceptions", () => {
 
     expect(hyphenate(text)).toBe(predictable);
   });
+
+  test("Case insensitive user exceptions should keep every hyphen in place", () => {
+    const text = "declaration Declaration DECLARATION";
+    const exception = "de-cla-ra-tion";
+    const predictable = "de-cla-ra-tion De-cla-ra-tion DE-CLA-RA-TION";
+
+    expect(hyphenate(text, { exceptions: [exception] })).toBe(predictable);
+  });
+
+  test("Case insensitive user exceptions should not add a trailing hyphen", () => {
+    const hyphenateFresh = createHyphenator(patterns, {
+      hyphenChar: "-",
+      exceptions: ["h-e-l-l-o"]
+    });
+    const text = "Hello";
+    const predictable = "H-e-l-l-o";
+
+    expect(hyphenateFresh(text)).toBe(predictable);
+  });
 });

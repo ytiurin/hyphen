@@ -2336,9 +2336,9 @@
   },
   {
     dosť: [],
-    metóda: [2, 5],
-    metódy: [2, 5],
-    nedostatkami: [2, 5, 10, 13],
-    septembra: [3, 7]
+    metóda: [2, 4],
+    metódy: [2, 4],
+    nedostatkami: [2, 4, 8, 10],
+    septembra: [3, 6]
   }
 ]);

@@ -2653,10 +2653,10 @@
     ]
   },
   {
-    koeficient: [3, 6, 9],
-    koeficienty: [3, 6, 9, 12],
-    projekční: [3, 7],
-    úhlopříčka: [4, 9],
-    úhlopříčky: [4, 9]
+    koeficient: [3, 5, 7],
+    koeficienty: [3, 5, 7, 9],
+    projekční: [3, 6],
+    úhlopříčka: [4, 8],
+    úhlopříčky: [4, 8]
   }
 ]);

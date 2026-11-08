@@ -35,4 +35,12 @@ describe("Patterns exceptions", () => {
 
     expect(hyphenate(text)).toBe(predictable);
   });
+
+  test("Exceptions with several hyphens should break at every hyphen", () => {
+    const text = "associate reformation retribution philanthropic";
+    const predictable =
+      "as-so-ciate ref-or-ma-tion ret-ri-bu-tion phil-an-thropic";
+
+    expect(hyphenate(text)).toBe(predictable);
+  });
 });
