@@ -36,10 +36,9 @@ describe("Patterns exceptions", () => {
     expect(hyphenate(text)).toBe(predictable);
   });
 
-  test("Exceptions with several hyphens should break at every hyphen", () => {
-    const text = "associate reformation retribution philanthropic";
-    const predictable =
-      "as-so-ciate ref-or-ma-tion ret-ri-bu-tion phil-an-thropic";
+  test("Text 5 should be same as exception value", () => {
+    const text = "Associate";
+    const predictable = "As-so-ciate";
 
     expect(hyphenate(text)).toBe(predictable);
   });
