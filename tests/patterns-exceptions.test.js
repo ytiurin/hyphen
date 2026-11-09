@@ -35,4 +35,11 @@ describe("Patterns exceptions", () => {
 
     expect(hyphenate(text)).toBe(predictable);
   });
+
+  test("Text 5 should be same as exception value", () => {
+    const text = "Associate";
+    const predictable = "As-so-ciate";
+
+    expect(hyphenate(text)).toBe(predictable);
+  });
 });

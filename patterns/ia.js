@@ -465,14 +465,14 @@
   },
   {
     alcun: [3],
-    alcunissime: [3, 5, 9, 12],
-    alcunmente: [3, 6, 10],
-    alicun: [1, 5],
-    alicunissime: [1, 5, 7, 11, 14],
-    alicunmente: [1, 5, 8, 12],
+    alcunissime: [3, 4, 7, 9],
+    alcunmente: [3, 5, 8],
+    alicun: [1, 4],
+    alicunissime: [1, 4, 5, 8, 10],
+    alicunmente: [1, 4, 6, 9],
     moslem: [3],
     qualcun: [5],
-    qualcunissime: [5, 7, 11, 14],
-    qualcunmente: [5, 8, 12]
+    qualcunissime: [5, 6, 9, 11],
+    qualcunmente: [5, 7, 10]
   }
 ]);

@@ -133,7 +133,7 @@
       var i = 0,
         markers = [];
       while ((i = definition.indexOf("-", i + 1)) > -1) {
-        markers.push(i);
+        markers.push(i - markers.length);
       }
       markersDict[definition.toLocaleLowerCase().replace(/\-/g, "")] = markers;
       return markersDict;

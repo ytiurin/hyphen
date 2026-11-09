@@ -3,7 +3,7 @@ const patterns = require("../patterns/en-us.js");
 
 let hyphenate;
 
-beforeAll(() => {
+beforeEach(() => {
   hyphenate = createHyphenator(patterns, {
     hyphenChar: "-",
     exceptions: ["h-e-l-l-o"]
@@ -51,8 +51,12 @@ describe("User exceptions", () => {
 
   test("User exceptions should be case insensitive", () => {
     const text = "Hello HELLO";
-    const exception = "h-ello";
-    const predictable = "H-ello H-ELLO";
+    const exception = "h-el-lo";
+    const predictable = "H-el-lo H-EL-LO";
+    const hyphenate = createHyphenator(patterns, {
+      hyphenChar: "-",
+      exceptions: [exception]
+    });
 
     expect(hyphenate(text)).toBe(predictable);
   });

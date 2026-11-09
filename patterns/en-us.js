@@ -4062,19 +4062,19 @@
     }
   },
   {
-    associate: [2, 5],
-    associates: [2, 5],
-    declination: [3, 6, 9],
-    obligatory: [5, 7],
-    philanthropic: [4, 7],
+    associate: [2, 4],
+    associates: [2, 4],
+    declination: [3, 5, 7],
+    obligatory: [5, 6],
+    philanthropic: [4, 6],
     present: [],
     presents: [],
     project: [],
     projects: [],
     reciprocity: [4],
-    recognizance: [2, 6, 9],
-    reformation: [3, 6, 9],
-    retribution: [3, 6, 9],
+    recognizance: [2, 5, 7],
+    reformation: [3, 5, 7],
+    retribution: [3, 5, 7],
     table: [2]
   }
 ]);

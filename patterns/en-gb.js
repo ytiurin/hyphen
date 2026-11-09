@@ -6444,12 +6444,12 @@
     }
   },
   {
-    university: [3, 7],
-    universities: [3, 7, 11],
+    university: [3, 6],
+    universities: [3, 6, 9],
     however: [3],
-    manuscript: [2, 5],
-    manuscripts: [2, 5],
-    reciprocity: [2, 5, 9],
+    manuscript: [2, 4],
+    manuscripts: [2, 4],
+    reciprocity: [2, 4, 7],
     throughout: [7],
     something: [4]
   }

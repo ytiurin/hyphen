@@ -30,7 +30,7 @@ export function markersFromExceptionsDefinition(exceptionsList) {
       markers = [];
 
     while ((i = definition.indexOf("-", i + 1)) > -1) {
-      markers.push(i);
+      markers.push(i - markers.length);
     }
 
     markersDict[definition.toLocaleLowerCase().replace(/\-/g, "")] = markers;
